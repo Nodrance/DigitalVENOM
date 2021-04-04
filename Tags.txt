@@ -1,0 +1,52 @@
+-Controller Input Tags-
+[I]X Movement
+Either -1, 0, or 1. This number denotes which direction (if at all) the player should be moving in. -1 is left, 0 is neutral, and 1 is right.
+
+[I]Jump
+Either True or False, this tag denotes whether the player should attempt a jump on a given frame.
+
+[I]Jab
+Either True or False, this tag denotes whether the player should attempt a light punch.
+
+[I]Strong
+Either True or False, this tag denotes whether the player should attempt a medium punch.
+
+[I]Fierce
+Either True or False, this tag denotes whether the player should attempt a heavy punch.
+
+[I]Short
+Either True or False, this tag denotes whether the player should attempt a light kick.
+
+[I]Forward
+Either True or False, this tag denotes whether the player should attempt a medium kick.
+
+[I]Roundhouse
+Either True or False, this tag denotes whether the player should attempt a heavy kick.
+
+[I]Block
+Either True or False, this tag denotes whether the player should attempt to block.
+
+-Other Input Tags-
+[I]Triggers
+A list of trigger collisions with the other player. Each list contains to triggers.
+The first being the one created by the character in question, the other being created by the other character.
+
+[I]Side
+1 if the player is on the right side, 0 if the player is on the left.
+
+[I]Other Player
+The other player character. Be careful when using this.
+
+-Output Tags-
+[I]Hit Lag
+This is a number, the number denotes the number of frames the game should pause for before the next render.
+Note that this value will be added to the other player's value to get the total pause time.
+
+[I]Sounds
+A list of pygame sound objects that the renderer should play.
+
+[I]Sprites
+A list of pygame surfaces, their relative locations, and their dimensions to be drawn by the renderer.
+
+[I]GUI
+A list of pygame surfaces, their locations, and their dimensions to be drawn by the renderer as GUI.
