@@ -6,6 +6,7 @@ class Character:
 		self.Offset=(0,-55)
 		self.XV=0
 		self.YV=0
+		self.KV=0
 		self.W=128
 		self.H=128
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
@@ -111,21 +112,6 @@ class Character:
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/4.png"),
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/5.png"),
 		]
-		self.Voices={
-		"Panchira":[
-			pygame.mixer.Sound("Characters/QuW/Voices/パンツ.wav"),
-			pygame.mixer.Sound("Characters/QuW/Voices/パンチラ.wav"),
-			],
-		"Attack":[
-			pygame.mixer.Sound("Characters/QuW/Voices/オラ.wav"),
-			pygame.mixer.Sound("Characters/QuW/Voices/これを取る.wav"),
-			pygame.mixer.Sound("Characters/QuW/Voices/ムダムダムダ.wav"),
-			],
-		"Other":[
-			pygame.mixer.Sound("Characters/QuW/Voices/あなたは私のパンツを見ることができます.wav"),
-			pygame.mixer.Sound("Characters/QuW/Voices/私はご主人様を満足させることができると思います.wav"),
-			],
-		}
 		self.HitLag=0
 	def RNG(self):
 		self.RNGV+=1+self.StateFrame+self.pygame.time.get_ticks()
@@ -239,7 +225,7 @@ class Character:
 			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Hit":
 				Damage+=i[1]["Damage"]
 				ChipDamage+=i[1]["Chip Damage"]
-				Stun+=i[1]["Stun"]
+				Stun=i[1]["Stun"]
 				BlockStun+=i[1]["Block Stun"]
 				Knockback+=i[1]["Knockback"]
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt" and self.Y==0:
@@ -252,7 +238,7 @@ class Character:
 					self.XV=Knockback*2*Tags["Side"]-Knockback
 					self.KV=Knockback
 				self.State=self.HitStun
-				self.Stun+=Stun
+				self.Stun=Stun
 			self.DF=1
 		else:
 			self.DF=0
@@ -349,6 +335,24 @@ class Character:
 		self.Y=0
 		self.YV=0
 		self.XV=Tags["Controller"]["X"]*15
+		if Tags["Controller"]["Roundhouse"]:
+			self.Pangeki()
+			self.State=self.Roundhouse
+		if Tags["Controller"]["Forward"]:
+			self.Pangeki()
+			self.State=self.Forward
+		if Tags["Controller"]["Short"]:
+			self.Pangeki()
+			self.State=self.Short
+		if Tags["Controller"]["Fierce"]:
+			self.Nogeki()
+			self.State=self.Fierce
+		if Tags["Controller"]["Strong"]:
+			self.Nogeki()
+			self.State=self.Strong
+		if Tags["Controller"]["Jab"]:
+			self.Nogeki()
+			self.State=self.Jab
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		if Tags["Controller"]["Jump"]:
@@ -365,6 +369,24 @@ class Character:
 		self.Y=0
 		self.YV=0
 		self.XV=Tags["Controller"]["X"]*10
+		if Tags["Controller"]["Roundhouse"]:
+			self.Pangeki()
+			self.State=self.Roundhouse
+		if Tags["Controller"]["Forward"]:
+			self.Pangeki()
+			self.State=self.Forward
+		if Tags["Controller"]["Short"]:
+			self.Pangeki()
+			self.State=self.Short
+		if Tags["Controller"]["Fierce"]:
+			self.Nogeki()
+			self.State=self.Fierce
+		if Tags["Controller"]["Strong"]:
+			self.Nogeki()
+			self.State=self.Strong
+		if Tags["Controller"]["Jab"]:
+			self.Nogeki()
+			self.State=self.Jab
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		if Tags["Controller"]["Jump"]:
