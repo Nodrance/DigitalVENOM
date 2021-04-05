@@ -271,7 +271,7 @@ class Character:
 				self.State=self.Idle
 		if self.StateFrame==0:
 			self.HitSound+=1
-			self.HitSound=self.HitSound%6
+			self.HitSound=self.HitSound%4
 			return {"Sounds":[self.HitSounds[self.HitSound]]}
 		else:
 			return {}
