@@ -34,6 +34,7 @@ class Character:
 		"startup_3":pygame.image.load("Characters/InjectionCube/Sprites/startup_3.png"),
 		"beam_1":pygame.image.load("Characters/InjectionCube/Sprites/beam_1.png"),
 		"beam_2":pygame.image.load("Characters/InjectionCube/Sprites/beam_2.png"),
+		"beam_3":pygame.image.load("Characters/InjectionCube/Sprites/beam_3.png"),
 		}
 		self.Sprite=self.Sprites["blank"]
 		self.Stun=0
@@ -46,6 +47,8 @@ class Character:
 		self.ShortData=self.ViperZero("Short")
 		self.ForwardData=self.ViperZero("Forward")
 		self.RoundhouseData=self.ViperZero("Roundhouse")
+		self.ForwardDashData=self.ViperZero("Forward Dash")
+		self.BackDashData=self.ViperZero("Back Dash")
 		self.AirDashTime=0
 		self.AirDashable=1
 		self.DF=0
@@ -55,8 +58,6 @@ class Character:
 		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound2.wav"),
 		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound3.wav"),
 		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound4.wav"),
-		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound5.wav"),
-		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound6.wav"),
 		]
 	def Reset(self,P,pygame):
 		self.X=500*P-250
@@ -148,7 +149,7 @@ class Character:
 					self.Health-=ChipDamage
 					self.XV=Tags["Side"]*20-10
 					self.State=self.BlockStun
-					self.Stun+=BlockStun
+					self.Stun=BlockStun
 				else:
 					self.Health-=Damage
 					if Knockback>0:
@@ -156,7 +157,7 @@ class Character:
 						self.XV=Knockback*2*Tags["Side"]-Knockback
 						self.KV=Knockback
 					self.State=self.HitStun
-					self.Stun+=Stun
+					self.Stun=Stun
 			self.DF=1
 		else:
 			self.DF=0
@@ -385,6 +386,13 @@ class Character:
 		self.YV=0
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["blank"]
+		if self.StateFrame==0:
+			if (self.XV>0)!=(Tags["Side"]==1):
+				self.Triggers=self.ForwardDashData["Triggers"][0]
+				return {"Sprites":[{"Sprite":self.Sprites["beam_3"],"X":-96,"Y":-32,"W":128,"H":64}]}
+			else:
+				self.Triggers=self.BackDashData["Triggers"][0]
+				return {"Sprites":[{"Sprite":self.Sprites["beam_1"],"X":96,"Y":-32,"W":128,"H":64}]}
 		if self.AirDashTime==0:
 			#self.XV=int(self.XV/10)
 			self.AirDashable=0
