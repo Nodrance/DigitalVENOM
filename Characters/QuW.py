@@ -334,7 +334,10 @@ class Character:
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.YV=0
-		self.XV=Tags["Controller"]["X"]*15
+		if self.StateFrame>5:
+			self.XV=Tags["Controller"]["X"]*15
+		else:
+			self.XV=Tags["Controller"]["X"]*self.StateFrame*3
 		if Tags["Controller"]["Roundhouse"]:
 			self.Pangeki()
 			self.State=self.Roundhouse
@@ -368,7 +371,10 @@ class Character:
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.YV=0
-		self.XV=Tags["Controller"]["X"]*10
+		if self.StateFrame>5:
+			self.XV=Tags["Controller"]["X"]*10
+		else:
+			self.XV=Tags["Controller"]["X"]*self.StateFrame*2
 		if Tags["Controller"]["Roundhouse"]:
 			self.Pangeki()
 			self.State=self.Roundhouse
@@ -398,6 +404,8 @@ class Character:
 				self.State=self.Idle
 		return {}
 	def Jump(self,Tags):
+		if self.StateFrame < 1:
+			self.XV=Tags["Controller"]["X"]*10
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="jump"
 		if Tags["Controller"]["Roundhouse"]:
@@ -519,7 +527,7 @@ class Character:
 			self.Y=Tags["Other Player"].Y
 			self.X=Tags["Other Player"].X+(Tags["Side"]*50-25)
 			self.Panchira-=5
-			self.AirDashable=1
+			self.AirDashable=0
 			self.State=self.Jump
 		if self.StateFrame == 0 or self.StateFrame == 1:
 			self.TS.append({"Sprite":self.Sprites["roundhouse swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
@@ -603,13 +611,13 @@ class Character:
 		self.YV+=3
 		self.SN=self.RoundhouseAerialData["Animation"][self.StateFrame]
 		self.Triggers=self.RoundhouseAerialData["Triggers"][self.StateFrame]
-		if Tags["Controller"]["Jump"] and self.Panchira>=5 and self.StateFrame==4 and abs((Tags["Other Player"].X-self.X))+abs((Tags["Other Player"].Y-self.Y))<500:
+		if Tags["Controller"]["Jump"] and self.Panchira>=10 and self.StateFrame==4 and abs((Tags["Other Player"].X-self.X))+abs((Tags["Other Player"].Y-self.Y))<500:
 			self.YV=Tags["Other Player"].YV
 			self.XV=Tags["Other Player"].XV
 			self.Y=Tags["Other Player"].Y
 			self.X=Tags["Other Player"].X+(Tags["Side"]*50-25)
-			self.Panchira-=5
-			self.AirDashable=1
+			self.Panchira-=10
+			self.AirDashable=0
 			self.State=self.Jump
 		if self.Y>=0:
 			self.State=self.Idle

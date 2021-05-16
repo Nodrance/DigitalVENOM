@@ -8,30 +8,31 @@ class Character:
 		self.YV=0
 		self.W=64
 		self.H=64
+		self.KV=0
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Health=500
 		self.MaxHealth=500
 		self.Sprites={
-		"blank":pygame.image.load("Characters/InjectionCube/Sprites/blank.png"),
-		"idle_1":pygame.image.load("Characters/InjectionCube/Sprites/idle_1.png"),
-		"idle_2":pygame.image.load("Characters/InjectionCube/Sprites/idle_2.png"),
-		"error_404":pygame.image.load("Characters/InjectionCube/Sprites/error_404.png"),
-		"attack_right":pygame.image.load("Characters/InjectionCube/Sprites/attack_right.png"),
-		"wifi_1":pygame.image.load("Characters/InjectionCube/Sprites/wifi_1.png"),
-		"wifi_2":pygame.image.load("Characters/InjectionCube/Sprites/wifi_2.png"),
-		"wifi_3":pygame.image.load("Characters/InjectionCube/Sprites/wifi_3.png"),
-		"wifi_4":pygame.image.load("Characters/InjectionCube/Sprites/wifi_4.png"),
-		"loading_1":pygame.image.load("Characters/InjectionCube/Sprites/loading_1.png"),
-		"loading_2":pygame.image.load("Characters/InjectionCube/Sprites/loading_2.png"),
-		"loading_3":pygame.image.load("Characters/InjectionCube/Sprites/loading_3.png"),
-		"loading_4":pygame.image.load("Characters/InjectionCube/Sprites/loading_4.png"),
-		"loading_5":pygame.image.load("Characters/InjectionCube/Sprites/loading_5.png"),
-		"loading_6":pygame.image.load("Characters/InjectionCube/Sprites/loading_6.png"),
-		"loading_7":pygame.image.load("Characters/InjectionCube/Sprites/loading_7.png"),
-		"loading_8":pygame.image.load("Characters/InjectionCube/Sprites/loading_8.png"),
-		"startup_1":pygame.image.load("Characters/InjectionCube/Sprites/startup_1.png"),
-		"startup_2":pygame.image.load("Characters/InjectionCube/Sprites/startup_2.png"),
-		"startup_3":pygame.image.load("Characters/InjectionCube/Sprites/startup_3.png"),
+		"blank":pygame.image.load("Characters/InjectionCube/Sprites/blank.png").convert(),
+		"idle_1":pygame.image.load("Characters/InjectionCube/Sprites/idle_1.png").convert(),
+		"idle_2":pygame.image.load("Characters/InjectionCube/Sprites/idle_2.png").convert(),
+		"error_404":pygame.image.load("Characters/InjectionCube/Sprites/error_404.png").convert(),
+		"attack_right":pygame.image.load("Characters/InjectionCube/Sprites/attack_right.png").convert(),
+		"wifi_1":pygame.image.load("Characters/InjectionCube/Sprites/wifi_1.png").convert(),
+		"wifi_2":pygame.image.load("Characters/InjectionCube/Sprites/wifi_2.png").convert(),
+		"wifi_3":pygame.image.load("Characters/InjectionCube/Sprites/wifi_3.png").convert(),
+		"wifi_4":pygame.image.load("Characters/InjectionCube/Sprites/wifi_4.png").convert(),
+		"loading_1":pygame.image.load("Characters/InjectionCube/Sprites/loading_1.png").convert(),
+		"loading_2":pygame.image.load("Characters/InjectionCube/Sprites/loading_2.png").convert(),
+		"loading_3":pygame.image.load("Characters/InjectionCube/Sprites/loading_3.png").convert(),
+		"loading_4":pygame.image.load("Characters/InjectionCube/Sprites/loading_4.png").convert(),
+		"loading_5":pygame.image.load("Characters/InjectionCube/Sprites/loading_5.png").convert(),
+		"loading_6":pygame.image.load("Characters/InjectionCube/Sprites/loading_6.png").convert(),
+		"loading_7":pygame.image.load("Characters/InjectionCube/Sprites/loading_7.png").convert(),
+		"loading_8":pygame.image.load("Characters/InjectionCube/Sprites/loading_8.png").convert(),
+		"startup_1":pygame.image.load("Characters/InjectionCube/Sprites/startup_1.png").convert(),
+		"startup_2":pygame.image.load("Characters/InjectionCube/Sprites/startup_2.png").convert(),
+		"startup_3":pygame.image.load("Characters/InjectionCube/Sprites/startup_3.png").convert(),
 		"beam_1":pygame.image.load("Characters/InjectionCube/Sprites/beam_1.png"),
 		"beam_2":pygame.image.load("Characters/InjectionCube/Sprites/beam_2.png"),
 		"beam_3":pygame.image.load("Characters/InjectionCube/Sprites/beam_3.png"),
@@ -204,9 +205,14 @@ class Character:
 			self.State=self.Jump
 		else:
 			if not Tags["Controller"]["X"] == 0:
-				self.State=self.Walk
+				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
+					self.State=self.BackWalk
+				else:
+					self.State=self.Walk
 		return {}
 	def Jump(self,Tags):
+		if self.StateFrame < 1:
+			self.XV=Tags["Controller"]["X"]*20
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["idle_1"]
 		if Tags["Controller"]["Jab"] and self.AirDashable:
@@ -242,7 +248,10 @@ class Character:
 				self.XV=0
 				self.State=self.Idle
 			else:
-				self.State=self.Walk
+				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
+					self.State=self.BackWalk
+				else:
+					self.State=self.Walk
 		return {}
 		pass
 	def HitStun(self, Tags):
@@ -314,7 +323,10 @@ class Character:
 			self.State=self.Block
 		self.Y=0
 		self.YV=0
-		self.XV=Tags["Controller"]["X"]*20
+		if self.StateFrame>5:
+			self.XV=Tags["Controller"]["X"]*20
+		else:
+			self.XV=Tags["Controller"]["X"]*self.StateFrame*4
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		if Tags["Controller"]["Jump"]:
@@ -323,10 +335,52 @@ class Character:
 			self.State=self.Jump
 		else:
 			if Tags["Controller"]["X"] == 0:
+				self.XV=0
 				self.State=self.Idle
+			else:
+				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
+					self.State=self.BackWalk
+		return {}
+	def BackWalk(self,Tags):
+		self.Sprite=self.Sprites["idle_1"]
+		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
+		if Tags["Controller"]["Jab"]:
+			self.State=self.Jab
+		if Tags["Controller"]["Strong"]:
+			self.State=self.Strong
+		if Tags["Controller"]["Fierce"]:
+			self.State=self.Fierce
+		if Tags["Controller"]["Short"]:
+			self.State=self.Short
+		if Tags["Controller"]["Forward"]:
+			self.State=self.Forward
+		if Tags["Controller"]["Roundhouse"]:
+			self.State=self.Roundhouse
+		if Tags["Controller"]["Block"]:
+			self.State=self.Block
+		self.Y=0
+		self.YV=0
+		if self.StateFrame>5:
+			self.XV=Tags["Controller"]["X"]*20
+		else:
+			self.XV=Tags["Controller"]["X"]*self.StateFrame*4
+		#if Tags["Controller"]["X"] == 0:
+			#self.State=self.Idle
+		if Tags["Controller"]["Jump"]:
+			self.YV=-35
+			self.AirDashable=1
+			self.State=self.Jump
+		else:
+			if Tags["Controller"]["X"] == 0:
+				self.XV=0
+				self.State=self.Idle
+			else:
+				if Tags["Controller"]["X"] != Tags["Side"]*2-1:
+					self.State=self.Walk
 		return {}
 	def Jab(self,Tags):
 		self.YV=0
+		self.XV=0
 		self.Sprite=self.Sprites[self.JabData["Animation"][self.StateFrame]]
 		self.Triggers=self.JabData["Triggers"][self.StateFrame]
 		if self.StateFrame == self.JabData["Frames"]:
@@ -334,6 +388,7 @@ class Character:
 		return {}
 	def Strong(self,Tags):
 		self.YV=0
+		self.XV=0
 		self.Sprite=self.Sprites[self.StrongData["Animation"][self.StateFrame]]
 		self.Triggers=self.StrongData["Triggers"][self.StateFrame]
 		if self.StateFrame == self.StrongData["Frames"]:
@@ -344,6 +399,7 @@ class Character:
 			return {}
 	def Fierce(self,Tags):
 		self.YV=0
+		self.XV=0
 		self.Sprite=self.Sprites[self.FierceData["Animation"][self.StateFrame]]
 		self.Triggers=self.FierceData["Triggers"][self.StateFrame]
 		if self.StateFrame == self.FierceData["Frames"]:
@@ -354,6 +410,7 @@ class Character:
 			return {}
 	def Short(self,Tags):
 		self.YV=0
+		self.XV=0
 		self.Sprite=self.Sprites[self.ShortData["Animation"][self.StateFrame]]
 		self.Triggers=self.ShortData["Triggers"][self.StateFrame]
 		if self.StateFrame == self.ShortData["Frames"]:
@@ -364,6 +421,7 @@ class Character:
 			return {}
 	def Forward(self,Tags):
 		self.YV=0
+		self.XV=0
 		self.Sprite=self.Sprites[self.ForwardData["Animation"][self.StateFrame]]
 		self.Triggers=self.ForwardData["Triggers"][self.StateFrame]
 		if self.StateFrame == self.ForwardData["Frames"]:
@@ -374,6 +432,7 @@ class Character:
 			return {}
 	def Roundhouse(self,Tags):
 		self.YV=0
+		self.XV=0
 		self.Sprite=self.Sprites[self.RoundhouseData["Animation"][self.StateFrame]]
 		self.Triggers=self.RoundhouseData["Triggers"][self.StateFrame]
 		if self.StateFrame == self.RoundhouseData["Frames"]:
@@ -384,6 +443,8 @@ class Character:
 			return {}
 	def AirDash(self,Tags):
 		self.YV=0
+		if Tags["Controller"]["Jump"]:
+			self.XV=0
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["blank"]
 		if self.StateFrame==0:
