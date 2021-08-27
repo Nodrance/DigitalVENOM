@@ -13,8 +13,8 @@ class Controller:
 		"Short":keys[pygame.K_b] or (abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT])and keys[pygame.K_UP]),
 		"Forward":keys[pygame.K_n] or (abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT])and keys[pygame.K_UP]),
 		"Roundhouse":keys[pygame.K_m] or (abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT])and keys[pygame.K_UP]),
-		"Block":0,#keys[pygame.K_g],
-		"Special":0,#keys[pygame.K_v],
+		"Block":keys[pygame.K_g],
+		"Special":keys[pygame.K_v],
 		}
 		pass
 	pass

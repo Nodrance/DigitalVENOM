@@ -13,6 +13,6 @@ class Controller:
 		"Short":keys[pygame.K_f],
 		"Forward":keys[pygame.K_u],
 		"Roundhouse":keys[pygame.K_y],
-		"Block":0,#keys[pygame.K_o],
-		"Special":0,#keys[pygame.K_i],
+		"Block":keys[pygame.K_o],
+		"Special":keys[pygame.K_i],
 		}
