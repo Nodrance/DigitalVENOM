@@ -1,6 +1,6 @@
 ViperZero
 
-24
+15
 
 roundhouse2
 roundhouse1
@@ -17,25 +17,7 @@ roundhouse2
 roundhouse2
 roundhouse2
 roundhouse2
-roundhouse2
-roundhouse2
-roundhouse2
-roundhouse2
-roundhouse2
-roundhouse2
-roundhouse2
-roundhouse2
-roundhouse2
 
--25,30,-105,0
--25,30,-105,0
--25,30,-105,0
--25,30,-105,0
--25,30,-105,0
--25,30,-105,0
--25,30,-105,0
--25,30,-105,0
--25,30,-105,0
 -25,30,-105,0
 -25,30,-105,0
 -25,30,-105,0
@@ -53,16 +35,7 @@ roundhouse2
 -25,30,-105,0
 
 ;
--16,80,-128,0,10,0,20,10,50
-;
-;
-;
-;
-;
-;
-;
-;
-;
+-16,75,-128,0,10,0,20,10,50,10,50
 ;
 ;
 ;

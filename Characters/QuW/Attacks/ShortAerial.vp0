@@ -1,16 +1,21 @@
 ViperZero
 
-3
+5
 
 short aerial 1
 short aerial 1
 short aerial 1
+short aerial 1
+short aerial 1
 
 -25,30,-105,0
 -25,30,-105,0
 -25,30,-105,0
 -25,30,-105,0
+-25,30,-105,0
 
-0,64,-64,0,3,0,5,3,0
+;
+;
+0,64,-64,0,3,0,8,3,0,3,0
 ;
 ;
