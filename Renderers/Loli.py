@@ -21,7 +21,7 @@ CamCap=(win.get_width()*0.9)
 P1W=0
 P2W=0
 HBR=0
-pygame.mixer.set_num_channels(128)
+pygame.mixer.set_num_channels(32)
 SimScaling=4
 HitFlashes=[pygame.image.load("Sprites/Hit Effects/Hit Flash 1.png"),
 pygame.image.load("Sprites/Hit Effects/Hit Flash 2.png"),
@@ -49,9 +49,10 @@ for (dirpath, dirnames, filenames) in walk("Music"):
 for i in Files:
 	if i.endswith(".wav"):
 		SoundtrackList.append(i)
-pygame.mixer.music.load(random.choice(SoundtrackList))
-pygame.mixer.music.play()
-pygame.mixer.music.queue(random.choice(SoundtrackList))
+#pygame.mixer.music.load(random.choice(SoundtrackList))
+#pygame.mixer.music.play()
+#pygame.mixer.music.queue(random.choice(SoundtrackList))
+#The above commented code began 
 Particles=[]
 def FakeTimeFunction():
 	global FakeTime
@@ -490,7 +491,6 @@ def RenderSelect(P1,P2,I1,I2):
 
 def DefaultMenuFunction():
 	pass
-
 class MenuTitle:
 	Font=pygame.font.Font("Fonts/Kenney Future Square.ttf",150)
 	def __init__(self,Text,Color=(255,255,0),Function=None):

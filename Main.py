@@ -4,6 +4,7 @@ from Renderers import Loli
 from Rulesets import Competitive,Warmup
 from Engines import Alchemy
 from Stages import VenomCompetitive,VenomWarmup
+from Tools import HitBoxer
 import sys,copy,json,pygame
 #CSCharacters=[InjectionCube.Character,QuW.Character]
 CSCharacters=[QuW.Character,QuW.Character]
@@ -176,6 +177,7 @@ def MenuScreen():
 		Loli.MenuLabel("Training",Function=TrainingF),
 		Loli.MenuLabel("Casual",Function=CasualF),
 		Loli.MenuLabel("Replay",Function=ReplayF),
+		Loli.MenuLabel("HitBoxer",Function=HitBoxer.Start),
 		Loli.MenuLabel("Settings",Function=Settings.Menu),
 		Loli.MenuLabel("Quit",Function=QuitGame),
 		]).Open()
