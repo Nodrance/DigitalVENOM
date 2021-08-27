@@ -49,10 +49,10 @@ for (dirpath, dirnames, filenames) in walk("Music"):
 for i in Files:
 	if i.endswith(".wav"):
 		SoundtrackList.append(i)
-#pygame.mixer.music.load(random.choice(SoundtrackList))
-#pygame.mixer.music.play()
-#pygame.mixer.music.queue(random.choice(SoundtrackList))
-#The above commented code began 
+pygame.mixer.music.load(random.choice(SoundtrackList))
+pygame.mixer.music.play()
+pygame.mixer.music.queue(random.choice(SoundtrackList))
+#The above commented code began crashing the game, this has now been fixed.
 Particles=[]
 def FakeTimeFunction():
 	global FakeTime
