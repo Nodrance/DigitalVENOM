@@ -1,7 +1,8 @@
 import copy
+from Characters import ViperOne
 class Character:
 	def __init__(self,P,pygame):
-		self.X=500*P-250
+		self.X=200*P-100
 		self.Y=0
 		self.Offset=(0,-32)
 		self.XV=0
@@ -9,6 +10,7 @@ class Character:
 		self.W=64
 		self.H=64
 		self.KV=0
+		self.SSN="Idle"
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Health=500
 		self.MaxHealth=500
@@ -52,6 +54,7 @@ class Character:
 		self.BackDashData=self.ViperZero("Back Dash")
 		self.AirDashTime=0
 		self.AirDashable=1
+		self.HitLag=0
 		self.DF=0
 		self.HitSound=0
 		self.HitSounds=[
@@ -60,26 +63,69 @@ class Character:
 		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound3.wav"),
 		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound4.wav"),
 		]
+		pass
 	def Reset(self,P,pygame):
-		self.X=500*P-250
+		self.X=200*P-100
 		self.Y=0
 		self.Offset=(0,-32)
 		self.XV=0
 		self.YV=0
 		self.W=64
 		self.H=64
+		self.KV=0
+		self.SSN="Idle"
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Health=500
 		self.MaxHealth=500
+		self.Sprites={
+		"blank":pygame.image.load("Characters/InjectionCube/Sprites/blank.png").convert(),
+		"idle_1":pygame.image.load("Characters/InjectionCube/Sprites/idle_1.png").convert(),
+		"idle_2":pygame.image.load("Characters/InjectionCube/Sprites/idle_2.png").convert(),
+		"error_404":pygame.image.load("Characters/InjectionCube/Sprites/error_404.png").convert(),
+		"attack_right":pygame.image.load("Characters/InjectionCube/Sprites/attack_right.png").convert(),
+		"wifi_1":pygame.image.load("Characters/InjectionCube/Sprites/wifi_1.png").convert(),
+		"wifi_2":pygame.image.load("Characters/InjectionCube/Sprites/wifi_2.png").convert(),
+		"wifi_3":pygame.image.load("Characters/InjectionCube/Sprites/wifi_3.png").convert(),
+		"wifi_4":pygame.image.load("Characters/InjectionCube/Sprites/wifi_4.png").convert(),
+		"loading_1":pygame.image.load("Characters/InjectionCube/Sprites/loading_1.png").convert(),
+		"loading_2":pygame.image.load("Characters/InjectionCube/Sprites/loading_2.png").convert(),
+		"loading_3":pygame.image.load("Characters/InjectionCube/Sprites/loading_3.png").convert(),
+		"loading_4":pygame.image.load("Characters/InjectionCube/Sprites/loading_4.png").convert(),
+		"loading_5":pygame.image.load("Characters/InjectionCube/Sprites/loading_5.png").convert(),
+		"loading_6":pygame.image.load("Characters/InjectionCube/Sprites/loading_6.png").convert(),
+		"loading_7":pygame.image.load("Characters/InjectionCube/Sprites/loading_7.png").convert(),
+		"loading_8":pygame.image.load("Characters/InjectionCube/Sprites/loading_8.png").convert(),
+		"startup_1":pygame.image.load("Characters/InjectionCube/Sprites/startup_1.png").convert(),
+		"startup_2":pygame.image.load("Characters/InjectionCube/Sprites/startup_2.png").convert(),
+		"startup_3":pygame.image.load("Characters/InjectionCube/Sprites/startup_3.png").convert(),
+		"beam_1":pygame.image.load("Characters/InjectionCube/Sprites/beam_1.png"),
+		"beam_2":pygame.image.load("Characters/InjectionCube/Sprites/beam_2.png"),
+		"beam_3":pygame.image.load("Characters/InjectionCube/Sprites/beam_3.png"),
+		}
 		self.Sprite=self.Sprites["blank"]
 		self.Stun=0
 		self.State=self.Idle
 		self.StateFrame=0
 		self.BackState=self.Idle
+		self.JabData=self.ViperZero("Jab")
+		self.StrongData=self.ViperZero("Strong")
+		self.FierceData=self.ViperZero("Fierce")
+		self.ShortData=self.ViperZero("Short")
+		self.ForwardData=self.ViperZero("Forward")
+		self.RoundhouseData=self.ViperZero("Roundhouse")
+		self.ForwardDashData=self.ViperZero("Forward Dash")
+		self.BackDashData=self.ViperZero("Back Dash")
 		self.AirDashTime=0
 		self.AirDashable=1
+		self.HitLag=0
 		self.DF=0
 		self.HitSound=0
+		self.HitSounds=[
+		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound1.wav"),
+		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound2.wav"),
+		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound3.wav"),
+		pygame.mixer.Sound("Characters/InjectionCube/Sounds/HitSound4.wav"),
+		]
 	def ViperZero(self,AN):
 		A=open("Characters/InjectionCube/Attacks/"+AN+".vp0").read()
 		B=A.split("\n\n")
@@ -113,6 +159,7 @@ class Character:
 						"Stun":int(F[6]),
 						"Block Stun":int(F[7]),
 						"Knockback":int(F[8]),
+						"Knockback2":int(F[8]),
 						"Hit Lag":int(3),
 						})
 				except:
@@ -130,6 +177,7 @@ class Character:
 			T.append(H)
 		self.Triggers=T
 	def Frame(self,Tags):
+		self.HitLag=0
 		Damage=0
 		ChipDamage=0
 		Stun=0
@@ -139,11 +187,13 @@ class Character:
 			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Hit":
 				Damage+=i[1]["Damage"]
 				ChipDamage+=i[1]["Chip Damage"]
+				self.StateFrame=0
 				Stun+=i[1]["Stun"]
 				BlockStun+=i[1]["Block Stun"]
 				Knockback+=i[1]["Knockback"]
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
 				self.XV=Tags["Side"]*10-5
+				self.HitLag+=i[0]["Hit Lag"]
 		if Damage>0:
 			if not self.DF:
 				if self.State==self.Block or self.State==self.BlockStun:
@@ -154,9 +204,9 @@ class Character:
 				else:
 					self.Health-=Damage
 					if Knockback>0:
-						self.YV=-Knockback
-						self.XV=Knockback*2*Tags["Side"]-Knockback
-						self.KV=Knockback
+						self.YV=-Knockback*0.75
+						self.XV=Knockback*0.1*(Tags["Side"]-0.5)
+						self.KV=Knockback*0.2
 					self.State=self.HitStun
 					self.Stun=Stun
 			self.DF=1
@@ -168,6 +218,7 @@ class Character:
 			self.StateFrame=0
 			self.BackState=self.State
 		R=self.State(Tags)
+		R["Hit Lag"]=self.HitLag
 		self.X+=self.XV
 		self.Y+=self.YV
 		if self.Y>0:
@@ -177,6 +228,7 @@ class Character:
 			self.HitFlip()
 		return R
 	def Idle(self,Tags):
+		self.SSN="Idle"
 		self.XV=0
 		if self.StateFrame%48 in [26,27,28]:
 			self.Sprite=self.Sprites["idle_2"]
@@ -200,7 +252,8 @@ class Character:
 		self.Y=0
 		self.YV=0
 		if Tags["Controller"]["Jump"]:
-			self.YV=-30
+			self.YV=-25
+			self.XV=Tags["Controller"]["X"]*10
 			self.AirDashable=1
 			self.State=self.Jump
 		else:
@@ -211,8 +264,7 @@ class Character:
 					self.State=self.Walk
 		return {}
 	def Jump(self,Tags):
-		if self.StateFrame < 1:
-			self.XV=Tags["Controller"]["X"]*20
+		self.SSN="Jump"
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["idle_1"]
 		if Tags["Controller"]["Jab"] and self.AirDashable:
@@ -255,6 +307,7 @@ class Character:
 		return {}
 		pass
 	def HitStun(self, Tags):
+		self.SSN="HitStun"
 		self.AirDashable=1
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["error_404"]
@@ -286,6 +339,7 @@ class Character:
 			return {}
 		pass
 	def BlockStun(self, Tags):
+		self.SSN="BlockStun"
 		self.AirDashable=1
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["startup_3"]
@@ -305,6 +359,7 @@ class Character:
 		return {}
 		pass
 	def Walk(self,Tags):
+		self.SSN="Walk"
 		self.Sprite=self.Sprites["idle_1"]
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		if Tags["Controller"]["Jab"]:
@@ -324,13 +379,14 @@ class Character:
 		self.Y=0
 		self.YV=0
 		if self.StateFrame>5:
-			self.XV=Tags["Controller"]["X"]*20
+			self.XV=Tags["Controller"]["X"]*10
 		else:
-			self.XV=Tags["Controller"]["X"]*self.StateFrame*4
+			self.XV=Tags["Controller"]["X"]*self.StateFrame*2
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		if Tags["Controller"]["Jump"]:
-			self.YV=-35
+			self.YV=-25
+			self.XV=Tags["Controller"]["X"]*10
 			self.AirDashable=1
 			self.State=self.Jump
 		else:
@@ -342,6 +398,7 @@ class Character:
 					self.State=self.BackWalk
 		return {}
 	def BackWalk(self,Tags):
+		self.SSN="BackWalk"
 		self.Sprite=self.Sprites["idle_1"]
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		if Tags["Controller"]["Jab"]:
@@ -361,13 +418,14 @@ class Character:
 		self.Y=0
 		self.YV=0
 		if self.StateFrame>5:
-			self.XV=Tags["Controller"]["X"]*20
+			self.XV=Tags["Controller"]["X"]*10
 		else:
-			self.XV=Tags["Controller"]["X"]*self.StateFrame*4
+			self.XV=Tags["Controller"]["X"]*self.StateFrame*2
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		if Tags["Controller"]["Jump"]:
-			self.YV=-35
+			self.YV=-25
+			self.XV=Tags["Controller"]["X"]*10
 			self.AirDashable=1
 			self.State=self.Jump
 		else:
@@ -379,6 +437,7 @@ class Character:
 					self.State=self.Walk
 		return {}
 	def Jab(self,Tags):
+		self.SSN="Attack"
 		self.YV=0
 		self.XV=0
 		self.Sprite=self.Sprites[self.JabData["Animation"][self.StateFrame]]
@@ -387,6 +446,7 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def Strong(self,Tags):
+		self.SSN="Attack"
 		self.YV=0
 		self.XV=0
 		self.Sprite=self.Sprites[self.StrongData["Animation"][self.StateFrame]]
@@ -398,6 +458,7 @@ class Character:
 		else:
 			return {}
 	def Fierce(self,Tags):
+		self.SSN="Attack"
 		self.YV=0
 		self.XV=0
 		self.Sprite=self.Sprites[self.FierceData["Animation"][self.StateFrame]]
@@ -409,6 +470,7 @@ class Character:
 		else:
 			return {}
 	def Short(self,Tags):
+		self.SSN="Attack"
 		self.YV=0
 		self.XV=0
 		self.Sprite=self.Sprites[self.ShortData["Animation"][self.StateFrame]]
@@ -420,6 +482,7 @@ class Character:
 		else:
 			return {}
 	def Forward(self,Tags):
+		self.SSN="Attack"
 		self.YV=0
 		self.XV=0
 		self.Sprite=self.Sprites[self.ForwardData["Animation"][self.StateFrame]]
@@ -431,6 +494,7 @@ class Character:
 		else:
 			return {}
 	def Roundhouse(self,Tags):
+		self.SSN="Attack"
 		self.YV=0
 		self.XV=0
 		self.Sprite=self.Sprites[self.RoundhouseData["Animation"][self.StateFrame]]
@@ -443,17 +507,17 @@ class Character:
 			return {}
 	def AirDash(self,Tags):
 		self.YV=0
-		if Tags["Controller"]["Jump"]:
-			self.XV=0
+		#if Tags["Controller"]["Jump"]:
+		#	self.XV= 0.01 * (0.5-(self.XV<0))
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["blank"]
 		if self.StateFrame==0:
 			if (self.XV>0)!=(Tags["Side"]==1):
 				self.Triggers=self.ForwardDashData["Triggers"][0]
-				return {"Sprites":[{"Sprite":self.Sprites["beam_3"],"X":-96,"Y":-32,"W":128,"H":64}]}
+				return {"Sprites":[{"Sprite":self.Sprites["beam_3"],"X":-82,"Y":-32,"W":100,"H":64}]}
 			else:
 				self.Triggers=self.BackDashData["Triggers"][0]
-				return {"Sprites":[{"Sprite":self.Sprites["beam_1"],"X":96,"Y":-32,"W":128,"H":64}]}
+				return {"Sprites":[{"Sprite":self.Sprites["beam_1"],"X":82,"Y":-32,"W":100,"H":64}]}
 		if self.AirDashTime==0:
 			#self.XV=int(self.XV/10)
 			self.AirDashable=0
@@ -462,6 +526,7 @@ class Character:
 			self.AirDashTime-=1
 		return {}
 	def Block(self,Tags):
+		self.SSN="Block"
 		self.XV=0
 		self.YV=0
 		self.Sprite=self.Sprites["startup_3"]

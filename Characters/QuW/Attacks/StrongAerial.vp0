@@ -1,6 +1,6 @@
 ViperZero
 
-9
+10
 
 strong aerial 1
 strong aerial 1
@@ -11,7 +11,9 @@ strong aerial 1
 strong aerial 1
 strong aerial 1
 strong aerial 1
+strong aerial 1
 
+-25,30,-105,0
 -25,30,-105,0
 -25,30,-105,0
 -25,30,-105,0
@@ -23,8 +25,9 @@ strong aerial 1
 -25,30,-105,0
 
 ;
--12,62,-95,-60,3,1,5,3,0
 ;
+;
+-12,62,-95,-60,3,1,8,3,0,5,0
 ;
 ;
 ;

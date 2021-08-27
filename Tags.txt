@@ -50,3 +50,15 @@ A list of pygame surfaces, their relative locations, and their dimensions to be 
 
 [I]GUI
 A list of pygame surfaces, their locations, and their dimensions to be drawn by the renderer as GUI.
+
+-Standardized State Names (SSN)-
+Idle
+Walk
+BackWalk
+Jump
+Block
+HitStun
+BlockStun
+Attack
+Aerial
+Other
