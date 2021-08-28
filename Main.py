@@ -9,9 +9,9 @@ import sys,copy,json,pygame
 #CSCharacters=[InjectionCube.Character,QuW.Character]
 CSCharacters=[QuW.Character,QuW.Character]
 #BG=pygame.image.load("Stages/Test1/Test1.bmp")
-TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert_alpha()
-P1WImage=pygame.image.load("Sprites/Win Screen/Player 1 Wins.png").convert_alpha()
-P2WImage=pygame.image.load("Sprites/Win Screen/Player 2 Wins.png").convert_alpha()
+TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert()
+P1WImage=pygame.image.load("Sprites/Win Screen/Player 1 Wins.png").convert()
+P2WImage=pygame.image.load("Sprites/Win Screen/Player 2 Wins.png").convert()
 MenuSounds=[
 pygame.mixer.Sound("Sounds/Menu Screen/Switch.wav"),
 pygame.mixer.Sound("Sounds/Menu Screen/Select.wav"),

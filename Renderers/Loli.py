@@ -8,15 +8,15 @@ pygame.init()
 FakeTime=0
 Clock=pygame.time.Clock()
 #win=pygame.Surface((1366,768))
-ReadyScreen=pygame.image.load("Sprites/Game Start.png")
 win=pygame.Surface((683,384))
 FZ=-1
 #win=pygame.Surface((683*2,384*2))
 BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
-TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
+TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.SWSURFACE|pygame.DOUBLEBUF)
 TrueWin.convert()
+ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
 CamCap=(win.get_width()*0.9)
 P1W=0
 P2W=0
@@ -27,16 +27,16 @@ HitFlashes=[pygame.image.load("Sprites/Hit Effects/Hit Flash 1.png"),
 pygame.image.load("Sprites/Hit Effects/Hit Flash 2.png"),
 pygame.image.load("Sprites/Hit Effects/Hit Flash 3.png"),
 pygame.image.load("Sprites/Hit Effects/Hit Flash 4.png")]
-P1WSprite=pygame.image.load("Sprites/Victory Cyan.png")
-P2WSprite=pygame.image.load("Sprites/Victory Magenta.png")
-KO2Sprite=pygame.image.load("Sprites/KO2.png")
-CSP1Image=pygame.image.load("Sprites/Character Select Screen/P1.png")
-CSP2Image=pygame.image.load("Sprites/Character Select Screen/P2.png")
+P1WSprite=pygame.image.load("Sprites/Victory Cyan.png").convert()
+P2WSprite=pygame.image.load("Sprites/Victory Magenta.png").convert()
+KO2Sprite=pygame.image.load("Sprites/KO2.png").convert()
+CSP1Image=pygame.image.load("Sprites/Character Select Screen/P1.png").convert_alpha()
+CSP2Image=pygame.image.load("Sprites/Character Select Screen/P2.png").convert_alpha()
 CSSImage=pygame.image.load("Sprites/Character Select Screen/Screen.png").convert()
 CSBackground=pygame.image.load("Sprites/Character Select Screen/Background.png").convert()#.convert_alpha()
 CSCharacters=[
-pygame.image.load("Sprites/Character Select Screen/InjectionCubePortrait.png"),
-pygame.image.load("Sprites/Character Select Screen/QuWPortrait.png"),
+pygame.image.load("Sprites/Character Select Screen/InjectionCubePortrait.png").convert_alpha(),
+pygame.image.load("Sprites/Character Select Screen/QuWPortrait.png").convert_alpha(),
 ]
 """SoundtrackList=[
 "Music/Lethal Injection.wav",
@@ -189,13 +189,33 @@ class LoliCamera: #Defines the camera object.
 		self.Z=Z
 		self.FOV=FOV
 Camera=LoliCamera(0,-15,-1,1)
+
+def UpdateTrueWin():
+	pygame.display.flip()
+
+def ScaleWin():
+	pygame.transform.scale(win,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
+	UpdateTrueWin()
+
 def HandleMusic():
 	global SoundtrackList
 	if P.mixer.music.get_busy()==0:
 		P.mixer.music.load(random.choice(SoundtrackList))
 		P.mixer.music.play()
 		P.mixer.music.queue(random.choice(SoundtrackList))
-def RenderSprite(Sprite,Pos,Width,Height,Camera,Blending=None,Smooth=0): #Defines the sprite render function.
+
+def CreateOutline(Sprite,Position):
+	Mask=pygame.mask.from_surface(Sprite)
+	Surface=Mask.to_surface(setcolor=(0,0,0),unsetcolor=(255,255,255))
+	Surface.set_colorkey((255,255,255))
+	return [
+	(Surface,(Position[0]+1,Position[1])),
+	(Surface,(Position[0]-1,Position[1])),
+	(Surface,(Position[0],Position[1]+1)),
+	(Surface,(Position[0],Position[1]-1)),
+	]
+
+def RenderSprite(Sprite,Pos,Width,Height,Camera,Blending=None,Smooth=0,Blit=1): #Defines the sprite render function.
 	#X/(Z*FOV) - Reminder of the perspective projection equation.
 	Pos2=(Pos[0]-Camera.X,Pos[1]-Camera.Y,Pos[2]-Camera.Z) #Subtracts the camera position to find out where the sprite should be rendered relatively
 	DH=Height/(Pos2[2]*Camera.FOV) #Calculates the height according to distance
@@ -212,10 +232,16 @@ def RenderSprite(Sprite,Pos,Width,Height,Camera,Blending=None,Smooth=0): #Define
 		if Smooth==2:
 			Sprite1B=P.transform.scale(Sprite,((int(DW/Sprite.get_width())+1)*Sprite.get_width(),(int(DH/Sprite.get_height())+1)*Sprite.get_height())) #Scales the sprite to the correct size.
 			Sprite2=P.transform.smoothscale(Sprite1B,(int(DW),int(DH))) #Scales the sprite to the correct size.
-	if Blending==None:
-		win.blit(Sprite2,Pos4) #Blits the sprite to the screen.
+	if Blit:
+		if Blending==None:
+			win.blit(Sprite2,Pos4) #Blits the sprite to the screen.
+		else:
+			win.blit(Sprite2,Pos4,special_flags=Blending) #Blits the sprite to the screen.
 	else:
-		win.blit(Sprite2,Pos4,special_flags=Blending) #Blits the sprite to the screen.
+		if Blending==None:
+			return Sprite2,Pos4
+		else:
+			return Sprite2,Pos4,None,Blending
 def RenderLargeSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None):
 	#X/(Z*FOV) - Reminder of the perspective projection equation.
 	if Transparent:
@@ -374,6 +400,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	except:
 		Clock=pygame.time.Clock()
 	for CurrentRenderFrame in range(RenderFrames):
+		BlitList=[]
 		FakeTime+=42
 		Clock.tick(24)
 		#print(Clock.get_fps())
@@ -391,7 +418,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 					else:
 						RenderLargeSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,A>0,i["Blending"])
 				else:
-					RenderSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera)
+					BlitList.append(RenderSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,Blit=0))
 				A+=1
 		W0=win.get_width()
 		W1=int(P1.Health*W0/P1.MaxHealth/2)
@@ -406,16 +433,22 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			win.blit(P2WSprite,(W0-15,15))
 			#pygame.draw.rect(win,(255,0,255),[W0-15,15,15,15])
 		win.blit(KO2Sprite,(W3-7,0))
-		RenderSprite(pygame.transform.flip(P1.Sprite,P1.X>P2.X,0),(P1.X+P1.Offset[0],P1.Y+P1.Offset[1],0),P1.W,P1.H,Camera,Smooth=0)
-		RenderSprite(pygame.transform.flip(P2.Sprite,P2.X>P1.X,0),(P2.X+P2.Offset[0],P2.Y+P2.Offset[1],0),P2.W,P2.H,Camera,Smooth=0)
+		P1RS=RenderSprite(pygame.transform.flip(P1.Sprite,P1.X>P2.X,0),(P1.X+P1.Offset[0],P1.Y+P1.Offset[1],0),P1.W,P1.H,Camera,Smooth=0,Blit=0)
+		P2RS=RenderSprite(pygame.transform.flip(P2.Sprite,P2.X>P1.X,0),(P2.X+P2.Offset[0],P2.Y+P2.Offset[1],0),P2.W,P2.H,Camera,Smooth=0,Blit=0)
+		BlitList.extend(CreateOutline(P1RS[0],P1RS[1]))
+		BlitList.extend(CreateOutline(P2RS[0],P2RS[1]))
+		BlitList.append(P1RS)
+		BlitList.append(P2RS)
+		if BlitBloom==1:
+			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_ADD)
 		try:
 			for i in P1T["Sprites"]:
-				RenderSprite(pygame.transform.flip(i["Sprite"],P1.X>P2.X,0),(P1.X+i["X"]*((P1.X>P2.X)*-2+1),P1.Y+i["Y"],0),i["W"],i["H"],Camera)
+				BlitList.append(RenderSprite(pygame.transform.flip(i["Sprite"],P1.X>P2.X,0),(P1.X+i["X"]*((P1.X>P2.X)*-2+1),P1.Y+i["Y"],0),i["W"],i["H"],Camera,Blit=0))
 		except:
 			pass
 		try:
 			for i in P2T["Sprites"]:
-				RenderSprite(pygame.transform.flip(i["Sprite"],P2.X>P1.X,0),(P2.X+i["X"]*((P2.X>P1.X)*-2+1),P2.Y+i["Y"],0),i["W"],i["H"],Camera)
+				BlitList.append(RenderSprite(pygame.transform.flip(i["Sprite"],P2.X>P1.X,0),(P2.X+i["X"]*((P2.X>P1.X)*-2+1),P2.Y+i["Y"],0),i["W"],i["H"],Camera,Blit=0))
 		except:
 			pass
 		C=0
@@ -436,23 +469,21 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			pass
 		if HBR:
 			for i in P1.Triggers:
-				RenderSprite(pygame.image.load("Sprites/Trigger.png"),((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD)
+				BlitList.append(RenderSprite(pygame.image.load("Sprites/Trigger.png"),((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
 			for i in P2.Triggers:
-				RenderSprite(pygame.image.load("Sprites/Trigger.png"),((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD)
+				BlitList.append(RenderSprite(pygame.image.load("Sprites/Trigger.png"),((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
+		win.blits(BlitList)
 		if not Countdown == 0:
-			win.blit(pygame.transform.scale(ReadyScreen,(W0,win.get_height())),(0,0))
-		if BlitBloom==1:
-			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert_alpha(),(0,0),special_flags=pygame.BLEND_ADD)
+			win.blit(pygame.transform.scale(ReadyScreen,(W0,win.get_height())).convert_alpha(),(0,0))
 		if HF and ImpactGlitch:
 			WinPixels=pygame.surfarray.pixels2d(win)
 			BloomPixels=pygame.surfarray.pixels2d(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())))
 			G=pygame.surfarray.make_surface(numpy.add(WinPixels,BloomPixels))
 			del WinPixels
 			del BloomPixels
-			win.blit(G,(0,0))
+			win.blit(G.convert(),(0,0))
 			#win.blit(pygame.surfarray.make_surface(pygame.surfarray.pixels2d(win)),(0,0))
-		pygame.transform.scale(win,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
-		pygame.display.flip()
+		ScaleWin()
 	"""if Clock!=None:
 		try:
 			for i in range(P1T["Hit Lag"]):
@@ -485,8 +516,7 @@ def RenderSelect(P1,P2,I1,I2):
 	RenderSprite(CSSImage,(0,0,0),128,64,Camera,Smooth=0)
 	RenderSprite(CSP1Image,(P1[0],P1[1],0),64,64,Camera,Smooth=0)
 	RenderSprite(CSP2Image,(P2[0],P2[1],0),64,64,Camera,Smooth=0)
-	P.transform.scale(win,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
-	P.display.flip()
+	ScaleWin()
 	pass
 
 def DefaultMenuFunction():
@@ -496,7 +526,7 @@ class MenuTitle:
 	def __init__(self,Text,Color=(255,255,0),Function=None):
 		self.Text=Text
 		self.Color=Color
-		self.Sprite=self.Font.render(self.Text,1,self.Color)
+		self.Sprite=self.Font.render(self.Text,1,self.Color).convert_alpha()
 		self.Function=Function
 	def Render(self):
 		return self.Sprite
@@ -506,7 +536,7 @@ class MenuHeader:
 	def __init__(self,Text,Color=(255,255,0),Function=None):
 		self.Text=Text
 		self.Color=Color
-		self.Sprite=self.Font.render(self.Text,1,self.Color)
+		self.Sprite=self.Font.render(self.Text,1,self.Color).convert_alpha()
 		self.Function=Function
 	def Render(self):
 		return self.Sprite
@@ -516,7 +546,7 @@ class MenuLabel:
 	def __init__(self,Text,Color=(255,255,0),Function=None):
 		self.Text=Text
 		self.Color=Color
-		self.Sprite=self.Font.render(self.Text,1,self.Color)
+		self.Sprite=self.Font.render(self.Text,1,self.Color).convert_alpha()
 		self.Function=Function
 	def Render(self):
 		return self.Sprite
@@ -533,7 +563,7 @@ class MenuCycleLabel:
 		self.Attribute=Attribute
 		self.CycleValues=CycleValues
 		for i in CycleTexts:
-			self.Sprites.append(self.Font.render(i,1,self.Color))
+			self.Sprites.append(self.Font.render(i,1,self.Color).convert_alpha())
 	def Function(self):
 		self.Cycle+=1
 		self.Cycle%=len(self.CycleTexts)
@@ -570,7 +600,7 @@ class SlideMenu:
 		YLength=0
 		for i in range(G):
 			pygame.draw.rect(TrueWin,self.Color,[(0,0),(X+(X/(G*G))-(X/((i*i)+1)),Y)])
-			pygame.display.update()
+			UpdateTrueWin()
 			Clock.tick(24)
 		for i in range(G):
 			pygame.draw.rect(TrueWin,(0,0,0),[(0,0),(X+(X/(G*G))-(X/((i*i)+1)),Y)])
@@ -579,7 +609,7 @@ class SlideMenu:
 				X2=MenuItem.Render()
 				TrueWin.blit(X2,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
 				YLength+=X2.get_height()
-			pygame.display.update()
+			UpdateTrueWin()
 			Clock.tick(24)
 		Selected=0
 		while self.MenuList[Selected].Function==None:
@@ -626,7 +656,7 @@ class SlideMenu:
 					pygame.draw.rect(TrueWin,self.Color,[(0,self.YMargin+self.YPadding+YLength),(self.XMargin+(TrueWin.get_width()/(SelectedTime*SelectedTime)),G)])
 				YLength+=G
 			SelectedTime+=1
-			pygame.display.update()
+			UpdateTrueWin()
 			Clock.tick(24)
 		Y=TrueWin.get_height()
 		X=TrueWin.get_width()
@@ -641,13 +671,13 @@ class SlideMenu:
 				X2=MenuItem.Render()
 				TrueWin.blit(X2,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
 				YLength+=X2.get_height()
-			pygame.display.update()
+			UpdateTrueWin()
 			Clock.tick(24)
 		for c in range(G):
 			TrueWin.blit(TrueWinScreenshot,(0,0))
 			i=G-c
 			pygame.draw.rect(TrueWin,self.Color,[(0,0),(X+(X/(G*G))-(X/((i*i)+1)),Y)])
-			pygame.display.update()
+			UpdateTrueWin()
 			Clock.tick(24)
 		pass
 class GradientMenu:
@@ -709,6 +739,6 @@ class GradientMenu:
 					pygame.draw.rect(TrueWin,self.Color,[(0,self.YMargin+self.YPadding+YLength),(self.XMargin+(TrueWin.get_width()/(SelectedTime*SelectedTime)),G)])
 				YLength+=G
 			SelectedTime+=1
-			pygame.display.update()
+			UpdateTrueWin()
 			Clock.tick(24)
 		pass
