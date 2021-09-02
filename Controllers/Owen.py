@@ -10,9 +10,9 @@ class Controller:
 		"Jab":keys[pygame.K_h],
 		"Strong":keys[pygame.K_j],
 		"Fierce":keys[pygame.K_k],
-		"Short":keys[pygame.K_b] or (abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT])and keys[pygame.K_UP]),
-		"Forward":keys[pygame.K_n] or (abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT])and keys[pygame.K_UP]),
-		"Roundhouse":keys[pygame.K_m] or (abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT])and keys[pygame.K_UP]),
+		"Short":keys[pygame.K_b],# or abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]),
+		"Forward":keys[pygame.K_n],# or abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]),
+		"Roundhouse":keys[pygame.K_m],# or abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]),
 		"Block":0,#keys[pygame.K_g],
 		"Special":0,#keys[pygame.K_v],
 		}

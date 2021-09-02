@@ -1,4 +1,4 @@
-from Controllers import Owen,Eden,EdenJoystick,Replayer
+from Controllers import Owen,Owen2,Eden,EdenJoystick,Replayer
 from Characters import InjectionCube,QuW
 from Renderers import Loli
 from Rulesets import Competitive,Warmup
@@ -177,7 +177,8 @@ def MenuScreen():
 		Loli.MenuLabel("Training",Function=TrainingF),
 		Loli.MenuLabel("Casual",Function=CasualF),
 		Loli.MenuLabel("Replay",Function=ReplayF),
-		Loli.MenuLabel("HitBoxer",Function=HitBoxer.Start),
+		#Loli.MenuLabel("HitBoxer",Function=HitBoxer.Start),
+		Loli.MenuLabel("TextBoxTest",Function=Loli.TextInputBox),
 		Loli.MenuLabel("Settings",Function=Settings.Menu),
 		Loli.MenuLabel("Quit",Function=QuitGame),
 		]).Open()

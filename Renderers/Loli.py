@@ -4,17 +4,17 @@ import pygame,random,math,numpy
 from os import walk
 #Here we define some basic variables.
 P=pygame
+pygame.mixer.pre_init()
 pygame.init()
 FakeTime=0
 Clock=pygame.time.Clock()
 #win=pygame.Surface((1366,768))
 win=pygame.Surface((683,384))
 FZ=-1
-#win=pygame.Surface((683*2,384*2))
 BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
-TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.SWSURFACE|pygame.DOUBLEBUF)
+TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 TrueWin.convert()
 ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
 CamCap=(win.get_width()*0.9)
@@ -23,10 +23,7 @@ P2W=0
 HBR=0
 pygame.mixer.set_num_channels(32)
 SimScaling=4
-HitFlashes=[pygame.image.load("Sprites/Hit Effects/Hit Flash 1.png"),
-pygame.image.load("Sprites/Hit Effects/Hit Flash 2.png"),
-pygame.image.load("Sprites/Hit Effects/Hit Flash 3.png"),
-pygame.image.load("Sprites/Hit Effects/Hit Flash 4.png")]
+TriggerSprite=pygame.image.load("Sprites/Trigger.png").convert()
 P1WSprite=pygame.image.load("Sprites/Victory Cyan.png").convert()
 P2WSprite=pygame.image.load("Sprites/Victory Magenta.png").convert()
 KO2Sprite=pygame.image.load("Sprites/KO2.png").convert()
@@ -341,7 +338,7 @@ def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None
 def Sound(X):
 	return P.mixer.Sound(X)
 def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render function
-	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,HBR,SoundtrackList,FZ,HitFlashes,Particles,Clock,ImpactGlitch
+	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,HBR,SoundtrackList,FZ,Particles,Clock,ImpactGlitch
 	HandleMusic()
 	try:
 		for i in P1T["Sounds"]:
@@ -378,7 +375,6 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	except:
 		pass
 	if HF:
-		#RenderLargeSprite(random.choice(HitFlashes),(int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32,0),128,128,Camera,1,None)
 		Particles.append(StarParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-8,8),random.randint(32,64)),random.randint(1,5)/10,0.6,(255,255,255)))
 		for i in range(min(RenderFrames*5,50)):
 			Particles.append(LineParticle((int((P1.X+P2.X)/2)+random.randint(-64,64),int((P1.Y+P2.Y)/2)-32+random.randint(-64,64)),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,EffectColor))
@@ -469,9 +465,9 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			pass
 		if HBR:
 			for i in P1.Triggers:
-				BlitList.append(RenderSprite(pygame.image.load("Sprites/Trigger.png"),((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
+				BlitList.append(RenderSprite(TriggerSprite,((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
 			for i in P2.Triggers:
-				BlitList.append(RenderSprite(pygame.image.load("Sprites/Trigger.png"),((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
+				BlitList.append(RenderSprite(TriggerSprite,((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
 		win.blits(BlitList)
 		if not Countdown == 0:
 			win.blit(pygame.transform.scale(ReadyScreen,(W0,win.get_height())).convert_alpha(),(0,0))
@@ -519,8 +515,30 @@ def RenderSelect(P1,P2,I1,I2):
 	ScaleWin()
 	pass
 
-def DefaultMenuFunction():
-	pass
+def TextInputBox(OldText=""):
+	Text=OldText
+	BG=TrueWin.copy()
+	Font=pygame.font.Font("Fonts/Kenney Future Narrow.ttf",25)
+	Sprite=Font.render(Text,1,(255,255,0),(0,0,0)).convert_alpha()
+	X=int(TrueWin.get_width()/2)
+	Y=int(TrueWin.get_height()/2)
+	while 1:
+		TrueWin.blit(BG,(0,0))
+		TrueWin.blit(Sprite,(X-int(Sprite.get_width()/2),Y-int(Sprite.get_height()/2)))
+		UpdateTrueWin()
+		for Event in pygame.event.get():
+			if Event.type==pygame.KEYDOWN:
+				if Event.key==pygame.K_ESCAPE:
+					return OldText
+				elif Event.key==pygame.K_RETURN:
+					return Text
+				elif Event.key==pygame.K_BACKSPACE:
+					Text=Text[:-1]
+					Sprite=Font.render(Text,1,(255,255,0),(0,0,0)).convert_alpha()
+				else:
+					Text+=Event.unicode
+					Sprite=Font.render(Text,1,(255,255,0),(0,0,0)).convert_alpha()
+
 class MenuTitle:
 	Font=pygame.font.Font("Fonts/Kenney Future Square.ttf",150)
 	def __init__(self,Text,Color=(255,255,0),Function=None):

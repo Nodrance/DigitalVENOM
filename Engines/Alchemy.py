@@ -1,4 +1,5 @@
 import sys,numpy,random,copy,json,time,pygame
+from Tools import HitBoxer
 DuelFault=0
 SimulatedFramerate=24
 SimulatedFrames=0
@@ -7,6 +8,21 @@ ReplayData=[]
 InputList=[]
 def EndGame():
 	return "End Game"
+def SetupHitBoxer():
+	global GlobalPlayer1
+	HitBoxer.AttackData=GlobalPlayer1.HitBoxerFrameData
+	HitBoxer.SpriteOffset=GlobalPlayer1.Offset
+	HitBoxer.SpriteWidth=GlobalPlayer1.W
+	HitBoxer.SpriteHeight=GlobalPlayer1.H
+	HitBoxer.Sprites=GlobalPlayer1.Sprites
+	HitBoxer.Start()
+def PauseMenu(Renderer):
+	return Renderer.SlideMenu([
+		Renderer.MenuTitle("Game Paused"),
+		Renderer.MenuLabel("HitBoxer",Function=SetupHitBoxer),
+		Renderer.MenuLabel("End Game",Function=EndGame),
+		]).Open()
+	pass
 def CheckOverlap1D(V1,V2): #Check for overlap between two 1D stretches.
 	return (V1[0]<V2[1] and V2[0]<V1[1])
 def CheckOverlap2D(Box1,Box2): #Check for overlap between two 2D boxes.
@@ -36,22 +52,21 @@ def CheckCollisions(P1,P2): #Check all hurtboxes to find any collisions and retu
 	return P1T,P2T
 	pass
 def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG): #This function runs one frame of gameplay.
-	global RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2
+	global RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2
 	for Event in pygame.event.get():
 		if Event.type == pygame.QUIT:
 			pygame.quit()
 			sys.exit()
 		if Event.type == pygame.KEYDOWN:
 			if Event.key==pygame.K_ESCAPE:
-				L=Renderer.SlideMenu([
-					Renderer.MenuTitle("Game Paused"),
-					Renderer.MenuLabel("End Game",Function=EndGame),
-					]).Open()
+				L=PauseMenu(Renderer)
 				if L=="End Game":
 					return 2,"End Game"
 				#pygame.quit()
 				#sys.exit()
 	keys=pygame.key.get_pressed()
+	GlobalPlayer1=P1
+	GlobalPlayer2=P2
 	Fault=[0,numpy.sign(P2.X-P1.X)*numpy.sign(P1.X)][numpy.sign(P1.X)==numpy.sign(P2.X)]
 	Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 	Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))

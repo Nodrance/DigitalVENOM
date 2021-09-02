@@ -1,4 +1,4 @@
-import copy,random,math
+import copy,random,math,json
 from Characters import ViperOne
 class Character:
 	def __init__(self,P,pygame):
@@ -24,6 +24,7 @@ class Character:
 		#self.Combo=0
 		self.MaxHealth=500
 		self.Costume=["64Cyan","64Alt"][P]
+		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"
 		self.Hearts=[]
 		self.pygame=pygame
@@ -195,6 +196,7 @@ class Character:
 		self.Panchira=0
 		#self.LTags={}
 	def ViperZero(self,AN):
+		return json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
 		A=open("Characters/QuW/Attacks/"+AN+".vp0").read()
 		B=A.split("\n\n")
 		C={"Format":B[0],"Frames":int(B[1])-1,"Animation":B[2].split("\n"),"Triggers":[]}
@@ -235,6 +237,7 @@ class Character:
 			for j in E:
 				C["Triggers"][G].append(j)
 			G+=1
+		json.dump(C,open("Characters/QuW/Attacks/"+AN+".json","w"))
 		return C
 		pass
 	def HitFlip(self):
@@ -582,6 +585,7 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def Jab(self,Tags):
+		self.HitBoxerFrameData=self.JabData
 		self.SSN="Attack"
 		self.YV=0
 		self.SN=self.JabData["Animation"][self.StateFrame]
@@ -597,6 +601,7 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def Strong(self,Tags):
+		self.HitBoxerFrameData=self.StrongData
 		self.SSN="Attack"
 		self.YV=0
 		self.SN=self.StrongData["Animation"][self.StateFrame]
@@ -612,6 +617,7 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def Fierce(self,Tags):
+		self.HitBoxerFrameData=self.FierceData
 		self.SSN="Attack"
 		self.YV=0
 		self.SN=self.FierceData["Animation"][self.StateFrame]
@@ -639,6 +645,7 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def Short(self,Tags):
+		self.HitBoxerFrameData=self.ShortData
 		self.SSN="Attack"
 		self.YV=0
 		self.SN=self.ShortData["Animation"][self.StateFrame]
@@ -647,13 +654,14 @@ class Character:
 			self.TS.append({"Sprite":self.Sprites["short swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
 		if self.StateFrame == 2:
 			self.TS.append({"Sprite":self.Sprites["short swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if 4>self.StateFrame>0 and Tags["Controller"]["Forward"]:
+		if 4>self.StateFrame and Tags["Controller"]["Forward"]:
 			self.Pangeki()
 			self.State=self.Forward
 		if self.StateFrame == self.ShortData["Frames"]:
 			self.State=self.Idle
 		return {}
 	def Forward(self,Tags):
+		self.HitBoxerFrameData=self.ForwardData
 		self.SSN="Attack"
 		self.YV=0
 		self.SN=self.ForwardData["Animation"][self.StateFrame]
@@ -669,6 +677,7 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def Roundhouse(self,Tags):
+		self.HitBoxerFrameData=self.RoundhouseData
 		self.SSN="Attack"
 		self.YV=0
 		self.SN=self.RoundhouseData["Animation"][self.StateFrame]
@@ -699,6 +708,7 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def JabAerial(self,Tags):
+		self.HitBoxerFrameData=self.JabAerialData
 		self.SSN="Aerial"
 		self.YV+=3
 		self.SN=self.JabAerialData["Animation"][self.StateFrame]
@@ -716,6 +726,7 @@ class Character:
 			self.State=self.Jump
 		return {}
 	def StrongAerial(self,Tags):
+		self.HitBoxerFrameData=self.StrongAerialData
 		self.SSN="Aerial"
 		self.YV+=3
 		self.SN=self.StrongAerialData["Animation"][self.StateFrame]
@@ -733,6 +744,7 @@ class Character:
 			self.State=self.Jump
 		return {}
 	def FierceAerial(self,Tags):
+		self.HitBoxerFrameData=self.FierceAerialData
 		self.SSN="Aerial"
 		self.YV+=3
 		self.SN=self.FierceAerialData["Animation"][self.StateFrame]
@@ -753,6 +765,7 @@ class Character:
 			self.State=self.Jump
 		return {}
 	def ShortAerial(self,Tags):
+		self.HitBoxerFrameData=self.ShortAerialData
 		self.SSN="Aerial"
 		self.YV+=3
 		self.SN=self.ShortAerialData["Animation"][self.StateFrame]
@@ -770,6 +783,7 @@ class Character:
 			self.State=self.Jump
 		return {}
 	def ForwardAerial(self,Tags):
+		self.HitBoxerFrameData=self.ForwardAerialData
 		self.SSN="Aerial"
 		self.YV+=3
 		self.SN=self.ForwardAerialData["Animation"][self.StateFrame]
@@ -787,6 +801,7 @@ class Character:
 			self.State=self.Jump
 		return {}
 	def RoundhouseAerial(self,Tags):
+		self.HitBoxerFrameData=self.RoundhouseAerialData
 		self.SSN="Aerial"
 		self.YV+=3
 		self.SN=self.RoundhouseAerialData["Animation"][self.StateFrame]
