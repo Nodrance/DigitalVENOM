@@ -1,4 +1,4 @@
-import copy,random,math,json
+import copy,random,math,json,pygame
 from Characters import ViperOne
 class Character:
 	def __init__(self,P,pygame):
@@ -27,7 +27,6 @@ class Character:
 		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"
 		self.Hearts=[]
-		self.pygame=pygame
 		self.TS=[]
 		self.Sprites={
 		"idle1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle1.png").convert_alpha(),
@@ -161,9 +160,12 @@ class Character:
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/4.png").convert_alpha(),
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/5.png").convert_alpha(),
 		]
+		if 1:
+			for i in self.Sprites.keys():
+				self.Sprites[i]=pygame.transform.scale2x(self.Sprites[i])
 		#self.HitLag=0
 	def RNG(self):
-		self.RNGV+=1+self.StateFrame+self.pygame.time.get_ticks()
+		self.RNGV+=1+self.StateFrame+pygame.time.get_ticks()
 		return self.RNGV
 		pass
 	def Reset(self,P,pygame):
@@ -337,7 +339,7 @@ class Character:
 					self.Sounds.append(random.choice(self.HitSounds["Medium"]))
 				#if self.State==self.Fierce and not self.The48Frame:
 					#self.Sounds.append(self.HitSounds["The48Frame"])
-					#self.pygame.mixer.music.pause()
+					#pygame.mixer.music.pause()
 					#self.The48Frame=True
 				if self.State in [self.Fierce,self.Roundhouse,self.FierceAerial,self.RoundhouseAerial]:# and not self.The48Frame:
 					self.Sounds.append(random.choice(self.HitSounds["Heavy"]))

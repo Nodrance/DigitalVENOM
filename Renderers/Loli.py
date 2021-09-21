@@ -1,6 +1,7 @@
 import os,sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 import pygame,random,math,numpy
+import pygame.gfxdraw
 from os import walk
 #Here we define some basic variables.
 P=pygame
@@ -186,12 +187,14 @@ class LoliCamera: #Defines the camera object.
 		self.Z=Z
 		self.FOV=FOV
 Camera=LoliCamera(0,-15,-1,1)
-
 def UpdateTrueWin():
 	pygame.display.flip()
 
 def ScaleWin():
 	pygame.transform.scale(win,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
+	#pygame.transform.scale(pygame.transform.scale(win,(int(win.get_width()/2),int(win.get_height()/2))),(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
+	#pygame.transform.scale2x(win,TrueWin)
+	#pygame.transform.scale(pygame.transform.scale2x(pygame.transform.scale2x(win)),(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
 	UpdateTrueWin()
 
 def HandleMusic():
@@ -211,6 +214,31 @@ def CreateOutline(Sprite,Position):
 	(Surface,(Position[0],Position[1]+1)),
 	(Surface,(Position[0],Position[1]-1)),
 	]
+
+def PolygonVertexShader(Points,Camera): #Defines the sprite render function.
+	#X/(Z*FOV) - Reminder of the perspective projection equation.
+	L=[]
+	for Pos in Points:
+		Pos2=(Pos[0]-Camera.X,Pos[1]-Camera.Y,Pos[2]-Camera.Z) #Subtracts the camera position to find out where the sprite should be rendered relatively
+		Pos3=(Pos2[0]/(Pos2[2]*Camera.FOV),Pos2[1]/(Pos2[2]*Camera.FOV)) #Uses the perspective projection equation to calculate the 2D position of the sprite.
+		X=(win.get_width()/2,win.get_height()/2) #Divides the screen size by two to find the center.
+		Pos4=(Pos3[0]+X[0],Pos3[1]+X[1]) #Accounts for the centers of the sprite and screen to set the origin point at zero.
+		L.append(Pos4)
+	return L
+
+def PolygonPixelShader(Polygon,Shaded=0):
+	if Shaded:
+		Surface=win.copy()
+		#print(Polygon["Color"])
+		Surface.fill((0,0,0))
+		pygame.draw.polygon(Surface,Polygon["Color"],PolygonVertexShader(Polygon["Points"],Camera))
+		Texture=pygame.transform.smoothscale(pygame.transform.smoothscale(Surface,(2,2)),(win.get_width(),win.get_height()))
+		try:
+			pygame.gfxdraw.textured_polygon(win,PolygonVertexShader(Polygon["Points"],Camera),Texture,0,0)
+		except:
+			pass
+	else:
+		pygame.draw.polygon(win,Polygon["Color"],PolygonVertexShader(Polygon["Points"],Camera))
 
 def RenderSprite(Sprite,Pos,Width,Height,Camera,Blending=None,Smooth=0,Blit=1): #Defines the sprite render function.
 	#X/(Z*FOV) - Reminder of the perspective projection equation.
@@ -407,15 +435,24 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			Camera.X=PsudoX+random.randint(-RenderFrames,RenderFrames)
 			Camera.Y=PsudoY+random.randint(-RenderFrames,RenderFrames)
 		else:
-			for i in BG.Sprites:
-				if i["Large"]:
-					if i["Large"]>1:
-						RenderMassiveSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,A>0,i["Blending"])
+			try:
+				for i in BG.Sprites:
+					if i["Large"]:
+						if i["Large"]>1:
+							RenderMassiveSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,A>0,i["Blending"])
+						else:
+							RenderLargeSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,A>0,i["Blending"])
 					else:
-						RenderLargeSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,A>0,i["Blending"])
-				else:
-					BlitList.append(RenderSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,Blit=0))
-				A+=1
+						BlitList.append(RenderSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,Blit=0))
+					A+=1
+			except:
+				pass
+			try:
+				for Polygon in BG.Polygons:
+					PolygonPixelShader(Polygon)
+					#pygame.draw.polygon(win,Polygon["Color"],PolygonVertexShader(Polygon["Points"],Camera))
+			except Exception as e:
+				pass
 		W0=win.get_width()
 		W1=int(P1.Health*W0/P1.MaxHealth/2)
 		W2=int(P2.Health*W0/P2.MaxHealth/2)

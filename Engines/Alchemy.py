@@ -1,4 +1,4 @@
-import sys,numpy,random,copy,json,time,pygame
+import sys,numpy,random,copy,json,time,pygame,cProfile,pstats
 from Tools import HitBoxer
 DuelFault=0
 SimulatedFramerate=24
@@ -219,11 +219,11 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1):
 		pass
 	while True:
 		X,Y = Frame(P1,P2,Renderer,pygame,P1C,P2C,BG)
-		if Rendering:
-			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1)
 		if X==2:
 			if Y=="End Game":
 				return (0,0)
+		if Rendering:
+			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1)
 		if X or Y:
 			if SaveReplay:
 				json.dump(ReplayData,open("Replays/"+str(time.time())+".json","w"))

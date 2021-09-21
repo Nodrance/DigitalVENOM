@@ -1,11 +1,12 @@
-from Controllers import Owen,Owen2,Eden,EdenJoystick,Replayer
+from Controllers import Owen,Eden,EdenJoystick,Replayer
 from Characters import InjectionCube,QuW
 from Renderers import Loli
 from Rulesets import Competitive,Warmup
 from Engines import Alchemy
-from Stages import VenomCompetitive,VenomWarmup
+from Stages import VenomCompetitive,VenomWarmup,City
 from Tools import HitBoxer
 import sys,copy,json,pygame
+
 #CSCharacters=[InjectionCube.Character,QuW.Character]
 CSCharacters=[QuW.Character,QuW.Character]
 #BG=pygame.image.load("Stages/Test1/Test1.bmp")
@@ -130,6 +131,7 @@ def TrainingF():
 	Loli.P1W=0
 	Loli.P2W=0
 	while True:
+		#X=Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
 		X=Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
 		if X==(0,0):
 			return X
@@ -177,8 +179,6 @@ def MenuScreen():
 		Loli.MenuLabel("Training",Function=TrainingF),
 		Loli.MenuLabel("Casual",Function=CasualF),
 		Loli.MenuLabel("Replay",Function=ReplayF),
-		#Loli.MenuLabel("HitBoxer",Function=HitBoxer.Start),
-		Loli.MenuLabel("TextBoxTest",Function=Loli.TextInputBox),
 		Loli.MenuLabel("Settings",Function=Settings.Menu),
 		Loli.MenuLabel("Quit",Function=QuitGame),
 		]).Open()
