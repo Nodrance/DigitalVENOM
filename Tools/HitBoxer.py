@@ -9,23 +9,7 @@ SpriteHeight=128
 Sprites={}
 TriggerSprite1=pygame.image.load("Sprites/Trigger.png").convert()
 TriggerSprite2=pygame.image.load("Sprites/Trigger2.png").convert()
-AttackData={
-	"Triggers":
-	[
-		[
-			{
-				"Box":[[-64,64],[-64,64]],
-				"Type":"Hurt",
-			},
-		],
-		[
-			{
-				"Box":[[-64,64],[-64,64]],
-				"Type":"Hurt",
-			},
-		],
-	],
-}
+AttackData=[]
 
 Camera=Loli.LoliCamera(0,0,-1,1)
 
@@ -38,6 +22,12 @@ class TriggerSelecter:
 
 def ExitHitBoxer():
 	return "Exit"
+
+def AddStartupFrame():
+	AttackData["Triggers"].insert(0,AttackData["Triggers"][0])
+	AttackData["Animation"].insert(0,AttackData["Animation"][0])
+	AttackData["Cancels"].insert(0,AttackData["Cancels"][0])
+	pass
 
 def SelectTrigger():
 	global AttackData,Frame
@@ -60,7 +50,12 @@ def DuplicateTrigger():
 
 def ExportJSONFile():
 	global AttackData
-	json.dump(AttackData,open("HitBoxerAttackData.json","w"))
+	json.dump(AttackData,open("HitBoxerAttackData.json","w"),indent="\t")
+	pass
+
+def Implement():
+	global AttackData
+	json.dump(AttackData,open(AttackData["Filename"],"w"),indent="\t")
 	pass
 
 def ConvertToHurtBox():
@@ -141,6 +136,7 @@ def Menu():
 		Loli.MenuLabel("Change Trigger Type",Function=ChangeTriggerType),
 		Loli.MenuLabel("Hit Box Attributes",Function=HitBoxAttributes),
 		Loli.MenuLabel("Export JSON",Function=ExportJSONFile),
+		Loli.MenuLabel("Implement (Requires match restart)",Function=Implement),
 		Loli.MenuLabel("Exit",Function=ExitHitBoxer),
 		]).Open()
 
@@ -159,7 +155,15 @@ def Render():
 	pass
 
 def Start():
-	global HitBoxResizeSpeed,Frame
+	global HitBoxResizeSpeed,Frame,SelectedTrigger
+	SelectedTrigger=0
+	Frame=0
+	try:
+		AttackData["Cancels"]
+	except:
+		AttackData["Cancels"]=[]
+		for i in range(AttackData["Frames"]+1):
+			AttackData["Cancels"].append([])
 	while 1:
 		for Event in pygame.event.get():
 			if Event.type==pygame.KEYDOWN:

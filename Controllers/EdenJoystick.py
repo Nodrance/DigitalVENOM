@@ -43,8 +43,6 @@ class Controller:
 		"Short":self.Joystick.get_button(B) or self.Joystick.get_button(R),
 		"Forward":self.Joystick.get_button(A) or self.Joystick.get_button(R),
 		"Roundhouse":self.Joystick.get_button(ZR) or self.Joystick.get_button(R),
-		"Block":0,#self.Joystick.get_button(ZL),
-		"Special":0,#self.Joystick.get_button(R),
 		}
 		pass
 	pass

@@ -1,3 +1,55 @@
+class Cancel:
+	def __init__(self,CHA,State):
+		self.CHA=CHA
+		self.State=State
+	def __call__(self):
+		self.CHA.State=self.State
+class Move:
+	def __init__(self,Character,FrameData,SSN,PreFrame=None,PreMove=None,PostFrame=None,PostMove=None):
+		self.Character=Character
+		self.FrameData=FrameData
+		self.SSN=SSN
+		self.CancelState=None
+		self.PreFrame=PreFrame
+		self.PostFrame=PostFrame
+		self.PreMove=PreMove
+		self.PostMove=PostMove
+		pass
+	def __call__(self,Tags):
+		if self.Character.StateFrame==0 and self.PreMove!=None:
+			self.PreMove()
+		elif self.PreFrame!=None:
+			self.PreFrame()
+		self.Character.HitBoxerFrameData=self.FrameData
+		self.Character.SSN=self.SSN
+		self.Character.SN=self.FrameData["Animation"][self.Character.StateFrame]
+		self.Character.Triggers=self.FrameData["Triggers"][self.Character.StateFrame]
+		if self.SSN=="Aerial":
+			#self.Character.YV+=3
+			self.Character.XV/=1.3
+			self.Character.YV/=1.3
+			if self.Character.Y>=0:
+				self.Character.State=self.Character.Idle
+				if self.PostMove!=None:
+					self.PostMove()
+		if self.Character.StateFrame == self.FrameData["Frames"]:
+			self.Character.State=self.Character.Jump
+		for Cancel in self.FrameData["Cancels"][self.Character.StateFrame]:
+			if min([Tags["Controller"][Condition] in Cancel["Conditions"][Condition] for Condition in Cancel["Conditions"]]):
+				self.CancelState=Cancel["State"]
+			if Cancel["Effect"] and self.CancelState!=None:
+				print(self.CancelState)
+				#self.Character.State=self.Character.States[self.CancelState]
+				self.Character.CancelStates[self.CancelState]()
+				X=self.CancelState
+				self.CancelState=None
+				if self.PostMove!=None:
+					self.PostMove()
+				return {"CancelState":X}
+		if self.PostFrame!=None:
+			self.PostFrame()
+		pass
+	pass
 class Default:
 	def __init__(self,Player,DIR,MaxHealth=500,Offset=(0,-64),Height=128,Width=128):
 		self.StartDistance=100
@@ -32,50 +84,4 @@ class Default:
 		CHA.Sounds=[]
 		CHA.HitLag=0
 		CHA.LTags={}
-		pass
-	def ViperZero(self,AN):
-		A=open(self.DIR+"/Attacks/"+AN+".vp0").read()
-		B=A.split("\n\n")
-		C={"Format":B[0],"Frames":int(B[1])-1,"Animation":B[2].split("\n"),"Triggers":[]}
-		D=B[3]
-		for i in D.split("\n"):
-			E=[]
-			for j in i.split(";"):
-				F=j.split(",")
-				try:
-					E.append({
-						"Box":[[int(F[0]),int(F[1])],[int(F[2]),int(F[3])]],
-						"Type":"Hurt",
-						})
-
-				except:
-					pass
-			C["Triggers"].append(E)
-		D=B[4]
-		G=0
-		for i in D.split("\n"):
-			E=[]
-			for j in i.split(";"):
-				F=j.split(",")
-				try:
-					try:
-						HL=int(F[9])
-					except:
-						HL=int(3)
-					E.append({
-						"Box":[[int(F[0]),int(F[1])],[int(F[2]),int(F[3])]],
-						"Damage":int(F[4]),
-						"Chip Damage":int(F[5]),
-						"Type":"Hit",
-						"Stun":int(F[6]),
-						"Block Stun":int(F[7]),
-						"Knockback":int(F[8]),
-						"Hit Lag":HL,
-						})
-				except:
-					pass
-			for j in E:
-				C["Triggers"][G].append(j)
-			G+=1
-		return C
 		pass

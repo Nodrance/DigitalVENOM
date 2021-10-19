@@ -1,15 +1,31 @@
 from Controllers import Owen,Eden,EdenJoystick,Replayer
 from Characters import InjectionCube,QuW
 from Renderers import Loli
-from Rulesets import Competitive,Warmup
+from Rulesets import Competitive,Warmup,Training
 from Engines import Alchemy
 from Stages import VenomCompetitive,VenomWarmup,City
 from Tools import HitBoxer
 import sys,copy,json,pygame
 
-#CSCharacters=[InjectionCube.Character,QuW.Character]
+"""
+-Todo-
+Add SFX back to moves
+Change Standardized State Names
+Add gattling again
+Add jump cancels and dash cancels again
+
+-Done-
+Converted moves to ViperOne
+Fix panchira attacks
+
+-Gattling Chain-
+GB>GN>GM
+GB>GN>GH>GJ>GK
+JB>JN>JM
+JB>JN>JH>JJ>JK
+"""
+
 CSCharacters=[QuW.Character,QuW.Character]
-#BG=pygame.image.load("Stages/Test1/Test1.bmp")
 TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert()
 P1WImage=pygame.image.load("Sprites/Win Screen/Player 1 Wins.png").convert()
 P2WImage=pygame.image.load("Sprites/Win Screen/Player 2 Wins.png").convert()
@@ -23,7 +39,6 @@ try:
 	P2C=EdenJoystick.Controller(pygame)
 except:
 	P2C=Eden.Controller(pygame)
-#P2C=EdenJoystick.Controller(pygame)
 P1=QuW.Character#(0,pygame)
 P2=QuW.Character#(1,pygame)
 
@@ -132,7 +147,7 @@ def TrainingF():
 	Loli.P2W=0
 	while True:
 		#X=Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
-		X=Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
+		X=Training.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
 		if X==(0,0):
 			return X
 	#X=Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)

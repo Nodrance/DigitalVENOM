@@ -5,6 +5,9 @@ SimulatedFramerate=24
 SimulatedFrames=0
 StartTime=0
 ReplayData=[]
+MaxWallDurability=24
+WallDurability1=MaxWallDurability
+WallDurability2=MaxWallDurability
 InputList=[]
 def EndGame():
 	return "End Game"
@@ -16,9 +19,32 @@ def SetupHitBoxer():
 	HitBoxer.SpriteHeight=GlobalPlayer1.H
 	HitBoxer.Sprites=GlobalPlayer1.Sprites
 	HitBoxer.Start()
+def TrainingResetGame():
+	global GlobalPlayer1,GlobalPlayer2
+	GlobalPlayer1.Reset(0,pygame)
+	GlobalPlayer2.Reset(1,pygame)
+	return 0
+	pass
+def TrainingFillMeters():
+	global GlobalPlayer1,GlobalPlayer2
+	try:
+		GlobalPlayer1.Panchira=25
+		GlobalPlayer2.Panchira=25
+	except:
+		pass
+	pass
 def PauseMenu(Renderer):
 	return Renderer.SlideMenu([
 		Renderer.MenuTitle("Game Paused"),
+		Renderer.MenuLabel("HitBoxer",Function=SetupHitBoxer),
+		Renderer.MenuLabel("End Game",Function=EndGame),
+		]).Open()
+	pass
+def TrainingMenu(Renderer):
+	return Renderer.SlideMenu([
+		Renderer.MenuTitle("Game Paused"),
+		Renderer.MenuLabel("Reset",Function=TrainingResetGame),
+		Renderer.MenuLabel("Fill Meters",Function=TrainingFillMeters),
 		Renderer.MenuLabel("HitBoxer",Function=SetupHitBoxer),
 		Renderer.MenuLabel("End Game",Function=EndGame),
 		]).Open()
@@ -51,15 +77,18 @@ def CheckCollisions(P1,P2): #Check all hurtboxes to find any collisions and retu
 				P2T.append([D2,D])
 	return P1T,P2T
 	pass
-def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG): #This function runs one frame of gameplay.
-	global RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2
+def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one frame of gameplay.
+	global MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2
 	for Event in pygame.event.get():
 		if Event.type == pygame.QUIT:
 			pygame.quit()
 			sys.exit()
 		if Event.type == pygame.KEYDOWN:
 			if Event.key==pygame.K_ESCAPE:
-				L=PauseMenu(Renderer)
+				if Training:
+					L=TrainingMenu(Renderer)
+				else:
+					L=PauseMenu(Renderer)
 				if L=="End Game":
 					return 2,"End Game"
 				#pygame.quit()
@@ -68,16 +97,16 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG): #This function runs one frame of ga
 	GlobalPlayer1=P1
 	GlobalPlayer2=P2
 	Fault=[0,numpy.sign(P2.X-P1.X)*numpy.sign(P1.X)][numpy.sign(P1.X)==numpy.sign(P2.X)]
-	Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-	Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+	#Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+	#Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 	try:
 		if Fault != PreFault:
 			if Fault==0:
-				for i in range(50):
+				for i in range(10):
 					Renderer.Particles.append(Renderer.CircleParticle((0,0),(random.randint(-8,8),random.randint(-64,0)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 					Renderer.Particles.append(Renderer.LineParticle((0,0),(random.randint(-8,8),random.randint(-64,0)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 			else:
-				for i in range(50):
+				for i in range(10):
 					Renderer.Particles.append(Renderer.CircleParticle(([P2.X,(P1.X+P2.X)/2,P1.X][int(Fault+1)],0),(random.randint(-8,8),random.randint(-64,0)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 					Renderer.Particles.append(Renderer.LineParticle(([P2.X,(P1.X+P2.X)/2,P1.X][int(Fault+1)],0),(random.randint(-8,8),random.randint(-64,0)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 			"""if Fault==-PreFault:
@@ -129,44 +158,40 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG): #This function runs one frame of ga
 	LFC1=P1C1
 	LFC2=P2C1
 	ReplayData.append([P1C1,P2C1])
-	P1T=P1.Frame({"Side":P1.X>P2.X,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C2,"Other Player":P2})
-	P2T=P2.Frame({"Side":P2.X>P1.X,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C2,"Other Player":P1})
+	P1T=P1.Frame({"Side":0,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C2,"Other Player":P2})
+	P2T=P2.Frame({"Side":1,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C2,"Other Player":P1})
+	if P1.X+32>P2.X:
+		P1.X=P2.X=(P2.X+P1.X)/2
+		P1.X-=16
+		P2.X+=16
 	if P1.X<BG.Bounds[0]:
-		DuelFault=max(-BG.FaultOffset,DuelFault-1)
-		P1.X=BG.Bounds[1]-200
-		P2.X=BG.Bounds[1]-100
-		Renderer.Camera.X=BG.Bounds[1]+BG.DuelFaultCameraOffset
-		DuelFaultChangeSound.play()
-		for i in range(100):
-			Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[1],random.randint(BG.Bounds[2],0)),(random.randint(-64,-16),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-		#P1.XV=-P1.XV
-	if P2.X<BG.Bounds[0]:
-		DuelFault=min(BG.FaultOffset,DuelFault+1)
-		P1.X=BG.Bounds[1]-100
-		P2.X=BG.Bounds[1]-200
-		Renderer.Camera.X=BG.Bounds[1]+BG.DuelFaultCameraOffset
-		DuelFaultChangeSound.play()
-		for i in range(100):
-			Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[1],random.randint(BG.Bounds[2],0)),(random.randint(-64,-16),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-		#P2.XV=-P2.XV
-	if P1.X>BG.Bounds[1]:
-		DuelFault=max(-BG.FaultOffset,DuelFault-1)
-		P1.X=BG.Bounds[0]+200
-		P2.X=BG.Bounds[0]+100
-		Renderer.Camera.X=BG.Bounds[0]-BG.DuelFaultCameraOffset
-		DuelFaultChangeSound.play()
-		for i in range(100):
-			Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[0],random.randint(BG.Bounds[2],0)),(random.randint(16,64),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-		#P1.XV=-P1.XV
+		if WallDurability1<0:
+			WallDurability1=MaxWallDurability
+			DuelFault=max(-BG.FaultOffset,DuelFault-1)
+			P1.X=BG.Bounds[1]-200
+			P2.X=BG.Bounds[1]-100
+			Renderer.Camera.X=BG.Bounds[1]+BG.DuelFaultCameraOffset
+			DuelFaultChangeSound.play()
+			for i in range(100):
+				Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[1],random.randint(BG.Bounds[2],0)),(random.randint(-64,-16),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+			#P1.XV=-P1.XV
+		else:
+			P1.X=BG.Bounds[0]
+			WallDurability1-=1
 	if P2.X>BG.Bounds[1]:
-		DuelFault=min(BG.FaultOffset,DuelFault+1)
-		P1.X=BG.Bounds[0]+100
-		P2.X=BG.Bounds[0]+200
-		Renderer.Camera.X=BG.Bounds[0]-BG.DuelFaultCameraOffset
-		DuelFaultChangeSound.play()
-		for i in range(100):
-			Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[0],random.randint(BG.Bounds[2],0)),(random.randint(16,64),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-		#P2.XV=-P2.XV
+		if WallDurability2<0:
+			WallDurability2=MaxWallDurability
+			DuelFault=min(BG.FaultOffset,DuelFault+1)
+			P1.X=BG.Bounds[0]+100
+			P2.X=BG.Bounds[0]+200
+			Renderer.Camera.X=BG.Bounds[0]-BG.DuelFaultCameraOffset
+			DuelFaultChangeSound.play()
+			for i in range(100):
+				Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[0],random.randint(BG.Bounds[2],0)),(random.randint(16,64),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+			#P2.XV=-P2.XV
+		else:
+			P2.X=BG.Bounds[1]
+			WallDurability2-=1
 	if P1.Y<BG.Bounds[2]:
 		P1.Y=BG.Bounds[2]
 		P1.YV=-P1.YV
@@ -189,8 +214,11 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG): #This function runs one frame of ga
 		#pygame.time.delay(int(((pygame.time.get_ticks()-StartTime)-SimulatedFrames*(1000/SimulatedFramerate))/2))"""
 	return P1.Health<1, P2.Health<1
 	pass
-def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1):
-	global Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
+def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
+	global MaxWallDurability,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
+	WallDurability1=MaxWallDurability
+	WallDurability2=MaxWallDurability
+	pygame.mixer.music.set_volume(100)
 	ReplayData=[{
 	"Engine Module Name":__name__,
 	"Engine Module Hash":hash(sys.modules[__name__]),
@@ -218,7 +246,7 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1):
 	except:
 		pass
 	while True:
-		X,Y = Frame(P1,P2,Renderer,pygame,P1C,P2C,BG)
+		X,Y = Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=Training)
 		if X==2:
 			if Y=="End Game":
 				return (0,0)

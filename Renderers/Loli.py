@@ -8,13 +8,17 @@ P=pygame
 pygame.mixer.pre_init()
 pygame.init()
 FakeTime=0
+GlobalAlerts=[]
+LocalAlerts=[]
 Clock=pygame.time.Clock()
 #win=pygame.Surface((1366,768))
-win=pygame.Surface((683,384))
+#win=pygame.Surface((683,384))
+win=pygame.Surface((int(683/2),int(384/2)))
 FZ=-1
 BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
+LastOutlines=[[],[],[]]
 TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 TrueWin.convert()
 ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
@@ -73,8 +77,8 @@ class LineParticle:
 		T2=TT+self.Length*(self.Life-TT/10)
 		X=self.X-Camera.X
 		Y=self.Y-Camera.Y
-		X/=-Camera.Z/Camera.FOV
-		Y/=-Camera.Z/Camera.FOV
+		X/=-Camera.Z*Camera.FOV
+		Y/=-Camera.Z*Camera.FOV
 		X+=win.get_width()/2
 		Y+=win.get_height()/2
 		if win.get_width()>(int(X+self.XV*TT)>0 and win.get_height()>int(Y+self.YV*TT+TT**2))>0:
@@ -95,8 +99,8 @@ class InverseLineParticle:
 		T2=TT+self.Length*(self.Life-TT/10)
 		X=self.X-Camera.X
 		Y=self.Y-Camera.Y
-		X/=-Camera.Z/Camera.FOV
-		Y/=-Camera.Z/Camera.FOV
+		X/=-Camera.Z*Camera.FOV
+		Y/=-Camera.Z*Camera.FOV
 		X+=win.get_width()/2
 		Y+=win.get_height()/2
 		pygame.draw.line(win,self.Color,(X+self.XV*TT,Y+self.YV*TT+TT**2),(X+self.XV*T2,Y+self.YV*T2+T2**2),5)
@@ -116,8 +120,8 @@ class SpikeParticle:
 		T2=TT+self.Length*(self.Life-TT/10)
 		X=self.X-Camera.X
 		Y=self.Y-Camera.Y
-		X/=-Camera.Z/Camera.FOV
-		Y/=-Camera.Z/Camera.FOV
+		X/=-Camera.Z*Camera.FOV
+		Y/=-Camera.Z*Camera.FOV
 		X+=win.get_width()/2
 		Y+=win.get_height()/2
 		CornerValue=((Camera.Z/Camera.FOV)*(win.get_width()/2),(Camera.Z/Camera.FOV)*(win.get_height()/2))
@@ -140,8 +144,8 @@ class StarParticle:
 		T2=50*self.Length*(self.Life-TT/10)
 		X=self.X-Camera.X
 		Y=self.Y-Camera.Y
-		X/=-Camera.Z/Camera.FOV
-		Y/=-Camera.Z/Camera.FOV
+		X/=-Camera.Z*Camera.FOV
+		Y/=-Camera.Z*Camera.FOV
 		X+=win.get_width()/2
 		Y+=win.get_height()/2
 		L1=(X+self.XV*T2,Y+self.YV*T2)
@@ -169,8 +173,8 @@ class CircleParticle:
 		T2=self.Length*(self.Life-TT/10)
 		X=self.X-Camera.X
 		Y=self.Y-Camera.Y
-		X/=-Camera.Z/Camera.FOV
-		Y/=-Camera.Z/Camera.FOV
+		X/=-Camera.Z*Camera.FOV
+		Y/=-Camera.Z*Camera.FOV
 		X+=win.get_width()/2
 		Y+=win.get_height()/2
 		try:
@@ -188,6 +192,14 @@ class LoliCamera: #Defines the camera object.
 		self.FOV=FOV
 Camera=LoliCamera(0,-15,-1,1)
 def UpdateTrueWin():
+	global GlobalAlerts
+	GlobalAlerts=[i for i in GlobalAlerts if i.Time<i.LifeTime]
+	for i in GlobalAlerts:
+		S=i.Render()
+		if i.Side:
+			TrueWin.blit(S,(TrueWin.get_width()-S.get_width(),i.Y))
+		else:
+			TrueWin.blit(S,(0,i.Y))
 	pygame.display.flip()
 
 def ScaleWin():
@@ -204,10 +216,10 @@ def HandleMusic():
 		P.mixer.music.play()
 		P.mixer.music.queue(random.choice(SoundtrackList))
 
-def CreateOutline(Sprite,Position):
+def CreateOutline(Sprite,Position,Color=(0,0,0)):
 	Mask=pygame.mask.from_surface(Sprite)
-	Surface=Mask.to_surface(setcolor=(0,0,0),unsetcolor=(255,255,255))
-	Surface.set_colorkey((255,255,255))
+	Surface=Mask.to_surface(setcolor=Color,unsetcolor=(255,255,252))
+	Surface.set_colorkey((255,255,252))
 	return [
 	(Surface,(Position[0]+1,Position[1])),
 	(Surface,(Position[0]-1,Position[1])),
@@ -366,7 +378,7 @@ def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None
 def Sound(X):
 	return P.mixer.Sound(X)
 def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render function
-	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,HBR,SoundtrackList,FZ,Particles,Clock,ImpactGlitch
+	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,Clock,ImpactGlitch,LastOutlines
 	HandleMusic()
 	try:
 		for i in P1T["Sounds"]:
@@ -381,6 +393,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	#win.fill(0)
 	HF=0
 	CS=1.5
+	Camera.FOV=1.3
 	Camera.X-=int((P1.X+P2.X)/2)
 	Camera.X=int(Camera.X/CS)
 	Camera.X+=int((P1.X+P2.X)/2)
@@ -393,12 +406,13 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	RenderFrames=1
 	try:
 		if P1T["Hit Lag"]+P2T["Hit Lag"]>0:
-			Camera.Z=min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
-			RenderFrames+=(P1T["Hit Lag"]+P2T["Hit Lag"])
 			HF=1
-			EffectColor=[(255,0,255),(0,255,255)][P1T["Hit Lag"]>P2T["Hit Lag"]]
+			Camera.Z=min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
 			Camera.X=int((P1.X+P2.X)/2)
 			Camera.Y=int((P1.Y+P2.Y)/2+15/Camera.Z)
+			EffectColor=[(255,0,255),(0,255,255)][P1T["Hit Lag"]>P2T["Hit Lag"]]
+			RenderFrames+=(P1T["Hit Lag"]+P2T["Hit Lag"])
+			#RenderFrames+=2
 		#BlitBloom=1
 	except:
 		pass
@@ -429,9 +443,11 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 		Clock.tick(24)
 		#print(Clock.get_fps())
 		A=0
-		if HF and (Impact or RenderFrames>5):
+		if HF and (Impact or RenderFrames>2):
 			#win.fill((255,255*CurrentRenderFrame/RenderFrames,255*CurrentRenderFrame/RenderFrames))
-			win.fill((EffectColor[0]*CurrentRenderFrame/RenderFrames,EffectColor[1]*CurrentRenderFrame/RenderFrames,EffectColor[2]*CurrentRenderFrame/RenderFrames))
+			#win.fill((EffectColor[0]*CurrentRenderFrame/RenderFrames,EffectColor[1]*CurrentRenderFrame/RenderFrames,EffectColor[2]*CurrentRenderFrame/RenderFrames))
+			win.fill(EffectColor)
+		if HF and (Impact or RenderFrames>3):
 			Camera.X=PsudoX+random.randint(-RenderFrames,RenderFrames)
 			Camera.Y=PsudoY+random.randint(-RenderFrames,RenderFrames)
 		else:
@@ -468,8 +484,10 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 		win.blit(KO2Sprite,(W3-7,0))
 		P1RS=RenderSprite(pygame.transform.flip(P1.Sprite,P1.X>P2.X,0),(P1.X+P1.Offset[0],P1.Y+P1.Offset[1],0),P1.W,P1.H,Camera,Smooth=0,Blit=0)
 		P2RS=RenderSprite(pygame.transform.flip(P2.Sprite,P2.X>P1.X,0),(P2.X+P2.Offset[0],P2.Y+P2.Offset[1],0),P2.W,P2.H,Camera,Smooth=0,Blit=0)
-		BlitList.extend(CreateOutline(P1RS[0],P1RS[1]))
-		BlitList.extend(CreateOutline(P2RS[0],P2RS[1]))
+		#BlitList.extend(LastOutlines[0])
+		LastOutlines[0]=CreateOutline(P1RS[0],P1RS[1],(0,0,0))
+		LastOutlines[0].extend(CreateOutline(P2RS[0],P2RS[1],(0,0,0)))
+		BlitList.extend(LastOutlines[0])
 		BlitList.append(P1RS)
 		BlitList.append(P2RS)
 		if BlitBloom==1:
@@ -505,6 +523,13 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 				BlitList.append(RenderSprite(TriggerSprite,((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
 			for i in P2.Triggers:
 				BlitList.append(RenderSprite(TriggerSprite,((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
+		LocalAlerts=[i for i in LocalAlerts if i.Time<i.LifeTime]
+		for i in LocalAlerts:
+			S=i.Render()
+			if i.Side:
+				win.blit(S,(win.get_width()-S.get_width(),i.Y))
+			else:
+				win.blit(S,(0,i.Y))
 		win.blits(BlitList)
 		if not Countdown == 0:
 			win.blit(pygame.transform.scale(ReadyScreen,(W0,win.get_height())).convert_alpha(),(0,0))
@@ -536,7 +561,7 @@ def RenderSelect(P1,P2,I1,I2):
 	Camera.X=0
 	Camera.Y=-15
 	Camera.Z=-1
-	Camera.FOV=1
+	Camera.FOV=2
 	#win.fill(0)
 	#pygame.transform.smoothscale(CSBackground,(win.get_width(),win.get_height()),win)
 	K=pygame.Surface((2,2))
@@ -797,3 +822,34 @@ class GradientMenu:
 			UpdateTrueWin()
 			Clock.tick(24)
 		pass
+class AlertText:
+	Font=pygame.font.Font("Fonts/Kenney Future Narrow.ttf",25)
+	def __init__(self,Text,Color=(255,255,0),BackgroundColor=(0,0,0),Side=0):
+		self.Text=Text
+		self.Side=Side
+		self.Time=0
+		self.LifeTime=24
+		self.BackgroundColor=BackgroundColor
+		self.Color=Color
+		self.Y=30
+		self.Sprite=self.Font.render(self.Text,1,self.Color,BackgroundColor).convert_alpha()
+	def Render(self):
+		self.Time+=1
+		return self.Sprite
+class AlertCutIn:
+	def __init__(self,BackgroundColor=(255,255,0),Side=0,Sprite=None,Y=30,LifeTime=24):
+		self.Side=Side
+		self.Time=0
+		self.LifeTime=LifeTime
+		self.BackgroundColor=BackgroundColor
+		self.Y=Y
+		self.Sprite=Sprite
+	def Render(self):
+		self.Time+=1
+		S=pygame.Surface((TrueWin.get_width(),self.Sprite.get_height()))
+		S.fill(self.BackgroundColor)
+		if self.Side:
+			S.blit(self.Sprite,(S.get_width()-self.Sprite.get_width()+int(256/self.Time),0))
+		else:
+			S.blit(self.Sprite,(0-int(256/self.Time),0))
+		return S
