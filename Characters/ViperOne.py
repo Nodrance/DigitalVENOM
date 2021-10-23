@@ -25,9 +25,13 @@ class Move:
 		self.Character.SN=self.FrameData["Animation"][self.Character.StateFrame]
 		self.Character.Triggers=self.FrameData["Triggers"][self.Character.StateFrame]
 		if self.SSN=="Aerial":
+			#self.Character.YV+=5
+			#if self.Character.StateFrame==0:
+				#self.Character.YV=-20
 			#self.Character.YV+=3
 			self.Character.XV/=1.3
 			self.Character.YV/=1.3
+			#self.HitNudge()
 			if self.Character.Y>=0:
 				self.Character.State=self.Character.Idle
 				if self.PostMove!=None:
@@ -38,7 +42,6 @@ class Move:
 			if min([Tags["Controller"][Condition] in Cancel["Conditions"][Condition] for Condition in Cancel["Conditions"]]):
 				self.CancelState=Cancel["State"]
 			if Cancel["Effect"] and self.CancelState!=None:
-				print(self.CancelState)
 				#self.Character.State=self.Character.States[self.CancelState]
 				self.Character.CancelStates[self.CancelState]()
 				X=self.CancelState
@@ -49,7 +52,14 @@ class Move:
 		if self.PostFrame!=None:
 			self.PostFrame()
 		pass
-	pass
+	def HitNudge(self):
+		global TagsGlobal
+		#self.Panchira=0
+		if abs(self.Character.X-self.Character.Tags["Other Player"].X)+abs(self.Character.Y-self.Character.Tags["Other Player"].Y) < 200:
+			self.Character.XV+=(self.Character.Tags["Other Player"].X-self.Character.X)/20
+			self.Character.YV+=(self.Character.Tags["Other Player"].Y-self.Character.Y)/20
+		pass
+		pass
 class Default:
 	def __init__(self,Player,DIR,MaxHealth=500,Offset=(0,-64),Height=128,Width=128):
 		self.StartDistance=100

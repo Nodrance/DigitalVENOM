@@ -171,11 +171,61 @@
 	],
 	"Filename": "Characters/QuW/Attacks/Strong.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+		{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gk"
+			}
+		],
+		[
+		{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gk"
+			}
+		],
+		[
+		{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gk"
+			}
+		],
+		[
+		{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gk"
+			}
+		],
+		[
+		{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "gk"
+			}
+		],
 		[],
 		[],
 		[],

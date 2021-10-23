@@ -235,11 +235,106 @@
 	],
 	"Filename": "Characters/QuW/Attacks/ForwardAerial.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"Conditions": {
+					"Roundhouse": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			},
+			{
+				"Conditions": {
+					"Jab": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Roundhouse": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			},
+			{
+				"Conditions": {
+					"Jab": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Roundhouse": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			},
+			{
+				"Conditions": {
+					"Jab": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Roundhouse": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			},
+			{
+				"Conditions": {
+					"Jab": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Roundhouse": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			},
+			{
+				"Conditions": {
+					"Jab": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "ah"
+			}
+		],
 		[],
 		[],
 		[],

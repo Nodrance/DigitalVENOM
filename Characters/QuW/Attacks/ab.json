@@ -107,10 +107,49 @@
 	],
 	"Filename": "Characters/QuW/Attacks/ShortAerial.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"Conditions": {
+					"Forward": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "an"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Forward": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "an"
+			}],
+		[
+			{
+				"Conditions": {
+					"Forward": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "an"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Forward": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "an"
+			}
+		],
 		[]
 	]
 }

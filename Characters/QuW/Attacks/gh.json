@@ -2,13 +2,28 @@
 	"Format": "ViperZero",
 	"Frames": 4,
 	"Animation": [
-		"short1",
-		"short1",
-		"short2",
-		"short1",
-		"short1"
+		"jab1",
+		"jab1",
+		"jab1",
+		"jab2",
+		"jab2"
 	],
 	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
 		[
 			{
 				"Box": [
@@ -41,16 +56,16 @@
 			{
 				"Box": [
 					[
-						0,
-						64
+						-12,
+						62
 					],
 					[
-						-64,
-						0
+						-95,
+						-60
 					]
 				],
 				"Damage": 3,
-				"Chip Damage": 0,
+				"Chip Damage": 1,
 				"Type": "Hit",
 				"Stun": 5,
 				"Block Stun": 3,
@@ -88,59 +103,54 @@
 				],
 				"Type": "Hurt"
 			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/Short.json",
+	"Filename": "Characters/QuW/Attacks/Jab.json",
 	"Cancels": [
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"Strong": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "n"
+				"State": "gj"
 			}
 		],
 		[
-			{
+		{
 				"Conditions": {
-					"Forward": [
+					"Strong": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "n"
+				"State": "gj"
 			}
 		],
 		[
-			{
+		{
 				"Conditions": {
-					"Forward": [
+					"Strong": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gj"
+			}
+		],
+		[
+		{
+				"Conditions": {
+					"Strong": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "n"
+				"State": "gj"
 			}
 		],
-		[],
 		[]
 	]
 }

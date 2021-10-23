@@ -9,12 +9,12 @@ import sys,copy,json,pygame
 
 """
 -Todo-
-Add SFX back to moves
 Change Standardized State Names
 Add gattling again
 Add jump cancels and dash cancels again
 
 -Done-
+Add SFX back to moves
 Converted moves to ViperOne
 Fix panchira attacks
 

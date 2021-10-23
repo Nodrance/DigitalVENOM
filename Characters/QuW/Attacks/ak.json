@@ -1,27 +1,29 @@
 {
 	"Format": "ViperZero",
-	"Frames": 19,
+	"Frames": 21,
 	"Animation": [
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1",
-		"fierce1"
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1"
 	],
 	"Triggers": [
 		[
@@ -52,6 +54,36 @@
 					]
 				],
 				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
 			},
 			{
 				"Box": [
@@ -67,11 +99,11 @@
 				"Damage": 10,
 				"Chip Damage": 5,
 				"Type": "Hit",
-				"Stun": 10,
+				"Stun": 30,
 				"Block Stun": 5,
-				"Knockback": 50,
+				"Knockback": 100,
 				"Hit Lag": 3,
-				"Knockback2": 50
+				"Knockback2": -50
 			}
 		],
 		[
@@ -104,9 +136,9 @@
 				"Type": "Hit",
 				"Stun": 10,
 				"Block Stun": 5,
-				"Knockback": 50,
+				"Knockback": 100,
 				"Hit Lag": 3,
-				"Knockback2": 50
+				"Knockback2": -50
 			}
 		],
 		[
@@ -365,8 +397,10 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/Fierce.json",
+	"Filename": "Characters/QuW/Attacks/FierceAerial.json",
 	"Cancels": [
+		[],
+		[],
 		[],
 		[],
 		[],

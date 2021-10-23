@@ -10,7 +10,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "m"
+				"State": "gm"
 			},
 			{
 				"Conditions": {
@@ -19,7 +19,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "h"
+				"State": "gh"
 			}
 		],
 		[
@@ -30,7 +30,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "m"
+				"State": "gm"
 			},
 			{
 				"Conditions": {
@@ -39,7 +39,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "h"
+				"State": "gh"
 			}
 		],
 		[
@@ -50,7 +50,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "m"
+				"State": "gm"
 			},
 			{
 				"Conditions": {
@@ -59,7 +59,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "h"
+				"State": "gh"
 			}
 		],
 		[
@@ -70,7 +70,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "m"
+				"State": "gm"
 			},
 			{
 				"Conditions": {
@@ -79,7 +79,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "h"
+				"State": "gh"
 			}
 		],
 		[
@@ -90,7 +90,7 @@
 					]
 				},
 				"Effect": 0,
-				"State": "m"
+				"State": "gm"
 			},
 			{
 				"Conditions": {
@@ -99,7 +99,7 @@
 					]
 				},
 				"Effect": 1,
-				"State": "h"
+				"State": "gh"
 			}
 		],
 		[],

@@ -81,9 +81,6 @@ class Character:
 		self.TSN="idle1"
 		self.BackState=self.Idle
 		self.The48Frame=False
-		#self.JabData=self.ViperZero("Jab")
-		#self.StrongData=self.ViperZero("Strong")
-		#self.FierceData=self.ViperZero("Fierce")
 		self.The24FrameData=self.ViperZero("The24Frame")
 		#self.ShortData=self.ViperZero("Short")
 		#self.ForwardData=self.ViperZero("Forward")
@@ -95,28 +92,36 @@ class Character:
 		#self.ForwardAerialData=self.ViperZero("ForwardAerial")
 		#self.RoundhouseAerialData=self.ViperZero("RoundhouseAerial")
 		self.States={
-		"h":ViperOne.Move(self,self.ViperZero("h"),"Attack",PreMove=self.Nogeki),
-		"j":ViperOne.Move(self,self.ViperZero("j"),"Attack",PreMove=self.Nogeki),
-		"k":ViperOne.Move(self,self.ViperZero("k"),"Attack",PreMove=self.Nogeki),
-		"b":ViperOne.Move(self,self.ViperZero("b"),"Attack",PreMove=self.Pangeki),
-		"n":ViperOne.Move(self,self.ViperZero("n"),"Attack",PreMove=self.Pangeki),
-		"m":ViperOne.Move(self,self.ViperZero("m"),"Attack",PreMove=self.Pangeki),
-		"j.h":ViperOne.Move(self,self.ViperZero("j.h"),"Aerial",PreMove=self.Nogeki),
-		"j.j":ViperOne.Move(self,self.ViperZero("j.j"),"Aerial",PreMove=self.Pangeki),
-		"j.k":ViperOne.Move(self,self.ViperZero("j.k"),"Aerial",PreMove=self.Nogeki),
-		"j.b":ViperOne.Move(self,self.ViperZero("j.b"),"Aerial",PreMove=self.Pangeki),
-		"j.n":ViperOne.Move(self,self.ViperZero("j.n"),"Aerial",PreMove=self.Pangeki),
-		"j.m":ViperOne.Move(self,self.ViperZero("j.m"),"Aerial",PreMove=self.Pangeki),
+		"gh":ViperOne.Move(self,self.ViperZero("gh"),"Attack",PreMove=self.Nogeki),
+		"gj":ViperOne.Move(self,self.ViperZero("gj"),"Attack",PreMove=self.Nogeki),
+		"gk":ViperOne.Move(self,self.ViperZero("gk"),"Attack",PreMove=self.Nogeki),
+		"gb":ViperOne.Move(self,self.ViperZero("gb"),"Attack",PreMove=self.Pangeki),
+		"gn":ViperOne.Move(self,self.ViperZero("gn"),"Attack",PreMove=self.Pangeki),
+		"gm":ViperOne.Move(self,self.ViperZero("gm"),"Attack",PreMove=self.Pangeki),
+		"ah":ViperOne.Move(self,self.ViperZero("ah"),"Aerial",PreMove=self.Nogeki),
+		"aj":ViperOne.Move(self,self.ViperZero("aj"),"Aerial",PreMove=self.Pangeki),
+		"ak":ViperOne.Move(self,self.ViperZero("ak"),"Aerial",PreMove=self.Nogeki),
+		"ab":ViperOne.Move(self,self.ViperZero("ab"),"Aerial",PreMove=self.Pangeki),
+		"an":ViperOne.Move(self,self.ViperZero("an"),"Aerial",PreMove=self.Pangeki),
+		"am":ViperOne.Move(self,self.ViperZero("am"),"Aerial",PreMove=self.Pangeki),
 		"The24Frame":ViperOne.Move(self,self.ViperZero("The24Frame"),"Attack"),
 		}
 		self.CancelStates={
-		"h":ViperOne.Cancel(self,self.States["h"]),
-		"j":ViperOne.Cancel(self,self.States["j"]),
-		"k":ViperOne.Cancel(self,self.States["k"]),
-		"b":ViperOne.Cancel(self,self.States["b"]),
-		"n":ViperOne.Cancel(self,self.States["n"]),
-		"m":ViperOne.Cancel(self,self.States["m"]),
+		"gh":ViperOne.Cancel(self,self.States["gh"]),
+		"gj":ViperOne.Cancel(self,self.States["gj"]),
+		"gk":ViperOne.Cancel(self,self.States["gk"]),
+		"gb":ViperOne.Cancel(self,self.States["gb"]),
+		"gn":ViperOne.Cancel(self,self.States["gn"]),
+		"gm":ViperOne.Cancel(self,self.States["gm"]),
+		"ah":ViperOne.Cancel(self,self.States["ah"]),
+		"aj":ViperOne.Cancel(self,self.States["aj"]),
+		"ak":ViperOne.Cancel(self,self.States["ak"]),
+		"ab":ViperOne.Cancel(self,self.States["ab"]),
+		"an":ViperOne.Cancel(self,self.States["an"]),
+		"am":ViperOne.Cancel(self,self.States["am"]),
 		"PanchiraJumpCancel":self.PanchiraJumpCancel,
+		"NogekiJumpCancel":self.NogekiJumpCancel,
+		"JumpCancel":self.JumpCancel,
 		}
 		self.DashTimer=0
 		self.CancelBuffer=0
@@ -326,10 +331,9 @@ class Character:
 				if not self.DF:
 					self.Health-=Damage
 					self.StateFrame=-1
-					if Knockback>0:
-						self.YV=-Knockback2#*0.75
-						self.XV=Knockback*(Tags["Side"]-0.5)#*0.4
-						self.KV=0#Knockback*0.2
+					self.YV=-Knockback2#*0.75
+					self.XV=Knockback*(Tags["Side"]-0.5)#*0.4
+					self.KV=0#Knockback*0.2
 					self.State=self.HitStun
 					self.Stun=Stun
 			self.DF=1
@@ -338,15 +342,15 @@ class Character:
 		for i in Tags["Triggers"]:
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
 				self.HitLag+=i[0]["Hit Lag"]
-				if self.State in [self.Jab,self.Short,self.JabAerial,self.ShortAerial]:
+				if self.State in [self.States["gh"],self.States["gb"],self.States["ah"],self.States["ab"]]:
 					self.Sounds.append(random.choice(self.HitSounds["Light"]))
-				if self.State in [self.Strong,self.Forward,self.StrongAerial,self.ForwardAerial]:
+				if self.State in [self.States["gj"],self.States["gn"],self.States["aj"],self.States["an"]]:
 					self.Sounds.append(random.choice(self.HitSounds["Medium"]))
 				#if self.State==self.Fierce and not self.The48Frame:
 					#self.Sounds.append(self.HitSounds["The48Frame"])
 					#pygame.mixer.music.pause()
 					#self.The48Frame=True
-				if self.State in [self.Fierce,self.Roundhouse,self.FierceAerial,self.RoundhouseAerial]:# and not self.The48Frame:
+				if self.State in [self.States["gk"],self.States["gm"],self.States["ak"],self.States["am"]]:# and not self.The48Frame:
 					self.Sounds.append(random.choice(self.HitSounds["Heavy"]))
 				if Tags["Other Player"].SSN=="HitStun":
 					self.Combo+=1
@@ -402,27 +406,24 @@ class Character:
 			self.State=self.The24Frame
 		elif Tags["Controller"]["Roundhouse"]:
 			#self.Pangeki()
-			self.State=self.States["m"]
+			self.State=self.States["gm"]
 		elif Tags["Controller"]["Forward"]:
 			#self.Pangeki()
-			self.State=self.States["n"]
+			self.State=self.States["gn"]
 		elif Tags["Controller"]["Short"]:
 			#self.Pangeki()
-			self.State=self.States["b"]
+			self.State=self.States["gb"]
 		elif Tags["Controller"]["Fierce"]:
 			#self.Nogeki()
-			self.State=self.States["k"]
+			self.State=self.States["gk"]
 		elif Tags["Controller"]["Strong"]:
 			#self.Nogeki()
-			self.State=self.States["j"]
+			self.State=self.States["gj"]
 		elif Tags["Controller"]["Jab"]:
 			#self.Nogeki()
-			self.State=self.States["h"]
+			self.State=self.States["gh"]
 		elif Tags["Controller"]["Jump"]:
-			self.YV=-30
-			self.XV=Tags["Controller"]["X"]*10
-			self.AirDashable=1
-			self.State=self.Jump
+			self.JumpCancel()
 		elif not Tags["Controller"]["X"] == 0:
 			if self.DashTimer<2:
 				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
@@ -458,29 +459,26 @@ class Character:
 			self.State=self.The24Frame
 		elif Tags["Controller"]["Roundhouse"]:
 			#self.Pangeki()
-			self.State=self.States["m"]
+			self.State=self.States["gm"]
 		elif Tags["Controller"]["Forward"]:
 			#self.Pangeki()
-			self.State=self.States["n"]
+			self.State=self.States["gn"]
 		elif Tags["Controller"]["Short"]:
 			#self.Pangeki()
-			self.State=self.States["b"]
+			self.State=self.States["gb"]
 		elif Tags["Controller"]["Fierce"]:
 			#self.Nogeki()
-			self.State=self.States["k"]
+			self.State=self.States["gk"]
 		elif Tags["Controller"]["Strong"]:
 			#self.Nogeki()
-			self.State=self.States["j"]
+			self.State=self.States["gj"]
 		elif Tags["Controller"]["Jab"]:
 			#self.Nogeki()
-			self.State=self.States["h"]
+			self.State=self.States["gh"]
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		elif Tags["Controller"]["Jump"]:
-			self.YV=-30
-			self.XV=Tags["Controller"]["X"]*10
-			self.AirDashable=1
-			self.State=self.Jump
+			self.JumpCancel()
 		elif not Tags["Controller"]["X"] == Tags["Side"]*-2+1:
 			self.State=self.Idle
 		return {}
@@ -496,29 +494,26 @@ class Character:
 			self.XV=Tags["Controller"]["X"]*self.StateFrame*2
 		if Tags["Controller"]["Roundhouse"]:
 			#self.Pangeki()
-			self.State=self.States["m"]
+			self.State=self.States["gm"]
 		elif Tags["Controller"]["Forward"]:
 			#self.Pangeki()
-			self.State=self.States["n"]
+			self.State=self.States["gn"]
 		elif Tags["Controller"]["Short"]:
 			#self.Pangeki()
-			self.State=self.States["b"]
+			self.State=self.States["gb"]
 		elif Tags["Controller"]["Fierce"]:
 			#self.Nogeki()
-			self.State=self.States["k"]
+			self.State=self.States["gk"]
 		elif Tags["Controller"]["Strong"]:
 			#self.Nogeki()
-			self.State=self.States["j"]
+			self.State=self.States["gj"]
 		elif Tags["Controller"]["Jab"]:
 			#self.Nogeki()
-			self.State=self.States["h"]
+			self.State=self.States["gh"]
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		elif Tags["Controller"]["Jump"]:
-			self.YV=-30
-			self.XV=Tags["Controller"]["X"]*10
-			self.AirDashable=1
-			self.State=self.Jump
+			self.JumpCancel()
 		elif not Tags["Controller"]["X"] == Tags["Side"]*2-1:
 			self.State=self.Idle
 		return {}
@@ -529,27 +524,27 @@ class Character:
 		if Tags["Controller"]["Roundhouse"]:
 			#self.HitNudge()
 			#self.Pangeki()
-			self.State=self.States["j.m"]
+			self.State=self.States["am"]
 		elif Tags["Controller"]["Forward"]:
 			self.HitNudge()
 			#self.Pangeki()
-			self.State=self.States["j.n"]
+			self.State=self.States["an"]
 		elif Tags["Controller"]["Short"]:
 			self.HitNudge()
 			#self.Pangeki()
-			self.State=self.States["j.b"]
+			self.State=self.States["ab"]
 		elif Tags["Controller"]["Fierce"]:
 			#self.HitNudge()
 			#self.Nogeki()
-			self.State=self.States["j.k"]
+			self.State=self.States["ak"]
 		elif Tags["Controller"]["Strong"]:
 			self.HitNudge()
 			#self.Pangeki()
-			self.State=self.States["j.j"]
+			self.State=self.States["aj"]
 		elif Tags["Controller"]["Jab"]:
 			self.HitNudge()
 			#self.Nogeki()
-			self.State=self.States["j.h"]
+			self.State=self.States["ah"]
 		if Tags["Controller"]["X"]!=0:
 			if Tags["Side"]==1 and Tags["Controller"]["X"]>0:
 				self.SSN="Block"
@@ -567,7 +562,7 @@ class Character:
 					#self.Pangeki()
 			self.DashTimer=0
 		if self.Y<0 or self.YV<0:
-			self.YV+=3
+			self.YV+=5
 		else:
 			self.Y=0
 			self.YV=0
@@ -580,19 +575,24 @@ class Character:
 				else:
 					self.State=self.Walk
 		return {}
-	def JumpCancel(self):
+	def NogekiJumpCancel(self):
 		self.Sounds.append(self.MiscSounds["Jump Cancel"])
 		Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-		self.YV=-30
-		self.XV=self.Tags["Controller"]["X"]*10
+		self.YV=-40
+		self.XV=self.Tags["Controller"]["X"]*15
+		self.AirDashable=1
+		self.State=self.Jump
+	def JumpCancel(self):
+		self.YV=-40
+		self.XV=self.Tags["Controller"]["X"]*15
 		self.AirDashable=1
 		self.State=self.Jump
 	def PanchiraJumpCancel(self):
 		if self.Panchira>=5:
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-30
-			self.XV=self.Tags["Controller"]["X"]*10
+			self.YV=-40
+			self.XV=self.Tags["Controller"]["X"]*15
 			self.Panchira-=5
 			self.AirDashable=1
 			self.State=self.Jump
@@ -871,7 +871,9 @@ class Character:
 		return {}
 	def HitStun(self, Tags):
 		self.XV/=1.3
-		self.YV/=1.3
+		if self.YV<0:
+			self.YV/=1.3
+		#self.YV+=5
 		self.SSN="HitStun"
 		self.AirDashable=1
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
@@ -888,7 +890,7 @@ class Character:
 						"Knockback2":10,}]
 			self.State=self.Jump
 		if self.Y<0 or self.YV<0:
-			#self.YV+=3
+			#self.YV+=5
 			pass
 		elif self.YV>0:
 			self.State=self.Knockdown
@@ -900,6 +902,7 @@ class Character:
 			self.Stun=0
 			#self.XV=0
 			if self.Y<0:
+				#self.XV=Tags["Side"]*60-30
 				self.State=self.Jump
 			else:
 				self.State=self.Idle
@@ -920,7 +923,7 @@ class Character:
 		if Tags["Controller"]["Jump"]:
 			self.State=self.Jump
 			self.YV=-30
-		if self.StateFrame>24:
+		if self.StateFrame>48:
 			self.YV=0
 			self.Y=0
 			self.Stun=0
@@ -950,7 +953,7 @@ class Character:
 			self.XV=50*(-Tags["Side"]+0.5)
 		elif numpy.sign(self.XV) != numpy.sign(50*(-Tags["Side"]+0.5)):
 			self.State=self.BackDash
-		if self.StateFrame == 6:
+		if self.StateFrame > 5 and (-Tags["Side"]+0.5)*Tags["Controller"]["X"]<0.1:
 			self.XV=25*(-Tags["Side"]+0.5)
 			if self.Y==0:
 				self.State=self.Idle
@@ -968,7 +971,7 @@ class Character:
 			self.XV=30*(Tags["Side"]-0.5)
 		elif numpy.sign(self.XV) != numpy.sign(30*(Tags["Side"]-0.5)):
 			self.State=self.Dash
-		if self.StateFrame == 6:
+		if self.StateFrame > 5 and (Tags["Side"]-0.5)*Tags["Controller"]["X"]<0.1:
 			self.XV=15*(Tags["Side"]-0.5)
 			if self.Y==0:
 				self.State=self.Idle

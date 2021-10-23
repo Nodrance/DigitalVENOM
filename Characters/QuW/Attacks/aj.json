@@ -203,12 +203,71 @@
 	],
 	"Filename": "Characters/QuW/Attacks/StrongAerial.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "aj"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "aj"
+			}],
+		[
+			{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "aj"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "aj"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "aj"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Fierce": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "aj"
+			}
+		],
 		[],
 		[],
 		[],
