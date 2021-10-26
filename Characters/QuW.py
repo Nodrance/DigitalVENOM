@@ -10,6 +10,7 @@ class Character:
 			MaxHealth=500,
 			Height=128,
 			Width=128,
+			Character=self,
 			)
 		self.ViperOne.Reset(self)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
@@ -82,29 +83,20 @@ class Character:
 		self.BackState=self.Idle
 		self.The48Frame=False
 		self.The24FrameData=self.ViperZero("The24Frame")
-		#self.ShortData=self.ViperZero("Short")
-		#self.ForwardData=self.ViperZero("Forward")
-		#self.RoundhouseData=self.ViperZero("Roundhouse")
-		#self.JabAerialData=self.ViperZero("JabAerial")
-		#self.StrongAerialData=self.ViperZero("StrongAerial")
-		#self.FierceAerialData=self.ViperZero("FierceAerial")
-		#self.ShortAerialData=self.ViperZero("ShortAerial")
-		#self.ForwardAerialData=self.ViperZero("ForwardAerial")
-		#self.RoundhouseAerialData=self.ViperZero("RoundhouseAerial")
 		self.States={
-		"gh":ViperOne.Move(self,self.ViperZero("gh"),"Attack",PreMove=self.Nogeki),
-		"gj":ViperOne.Move(self,self.ViperZero("gj"),"Attack",PreMove=self.Nogeki),
-		"gk":ViperOne.Move(self,self.ViperZero("gk"),"Attack",PreMove=self.Nogeki),
-		"gb":ViperOne.Move(self,self.ViperZero("gb"),"Attack",PreMove=self.Pangeki),
-		"gn":ViperOne.Move(self,self.ViperZero("gn"),"Attack",PreMove=self.Pangeki),
-		"gm":ViperOne.Move(self,self.ViperZero("gm"),"Attack",PreMove=self.Pangeki),
-		"ah":ViperOne.Move(self,self.ViperZero("ah"),"Aerial",PreMove=self.Nogeki),
-		"aj":ViperOne.Move(self,self.ViperZero("aj"),"Aerial",PreMove=self.Pangeki),
-		"ak":ViperOne.Move(self,self.ViperZero("ak"),"Aerial",PreMove=self.Nogeki),
-		"ab":ViperOne.Move(self,self.ViperZero("ab"),"Aerial",PreMove=self.Pangeki),
-		"an":ViperOne.Move(self,self.ViperZero("an"),"Aerial",PreMove=self.Pangeki),
-		"am":ViperOne.Move(self,self.ViperZero("am"),"Aerial",PreMove=self.Pangeki),
-		"The24Frame":ViperOne.Move(self,self.ViperZero("The24Frame"),"Attack"),
+		"gh":ViperOne.Move(self,self.ViperZero("gh"),"gh",PreMove=self.Nogeki),
+		"gj":ViperOne.Move(self,self.ViperZero("gj"),"gj",PreMove=self.Nogeki),
+		"gk":ViperOne.Move(self,self.ViperZero("gk"),"gk",PreMove=self.Nogeki),
+		"gb":ViperOne.Move(self,self.ViperZero("gb"),"gb",PreMove=self.Pangeki),
+		"gn":ViperOne.Move(self,self.ViperZero("gn"),"gn",PreMove=self.Pangeki),
+		"gm":ViperOne.Move(self,self.ViperZero("gm"),"gm",PreMove=self.Pangeki),
+		"ah":ViperOne.Move(self,self.ViperZero("ah"),"ah",PreMove=self.Nogeki),
+		"aj":ViperOne.Move(self,self.ViperZero("aj"),"aj",PreMove=self.Pangeki),
+		"ak":ViperOne.Move(self,self.ViperZero("ak"),"ak",PreMove=self.Nogeki),
+		"ab":ViperOne.Move(self,self.ViperZero("ab"),"ab",PreMove=self.Pangeki),
+		"an":ViperOne.Move(self,self.ViperZero("an"),"an",PreMove=self.Pangeki),
+		"am":ViperOne.Move(self,self.ViperZero("am"),"am",PreMove=self.Pangeki),
+		"The24Frame":ViperOne.Move(self,self.ViperZero("The24Frame"),"gThe24Frame"),
 		}
 		self.CancelStates={
 		"gh":ViperOne.Cancel(self,self.States["gh"]),
@@ -125,10 +117,7 @@ class Character:
 		}
 		self.DashTimer=0
 		self.CancelBuffer=0
-		#self.AirDashTime=0
-		#self.AirDashable=1
 		self.DF=0
-		#self.Sounds=[]
 		self.RNGV=0
 		self.HitSound=0
 		self.HitSounds={
@@ -174,7 +163,6 @@ class Character:
 		"Gopan": pygame.mixer.Sound("Characters/QuW/Sounds/Gopan.wav"),
 		"Jump Cancel": pygame.mixer.Sound("Characters/QuW/Sounds/Jump Cancel.wav"),}
 		self.Panchira=0
-		#self.LTags={}
 		self.PanchiraGuage=[
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/0.png").convert_alpha(),
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/1.png").convert_alpha(),
@@ -183,9 +171,6 @@ class Character:
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/4.png").convert_alpha(),
 		pygame.image.load("Characters/QuW/Sprites/Panchira Guage/5.png").convert_alpha(),
 		]
-		"""if 1:
-			for i in self.Sprites.keys():
-				self.Sprites[i]=pygame.transform.scale2x(self.Sprites[i])"""
 		self.CutIns=[
 		pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Cut Ins/1.png").convert_alpha(),
 		pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Cut Ins/2.png").convert_alpha(),
@@ -201,43 +186,22 @@ class Character:
 		self.MegaCutIns=[
 		pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Cut Ins/Mega1.png").convert_alpha(),
 		]
-		#self.HitLag=0
 	def RNG(self):
 		self.RNGV+=1+self.StateFrame+pygame.time.get_ticks()
 		return self.RNGV
 		pass
 	def Reset(self,P,pygame):
 		self.ViperOne.Reset(self)
-		#self.X=200*P-100
-		#self.Y=0
-		#self.Offset=(0,-55)
-		#self.XV=0
-		#self.YV=0
-		#self.W=128
-		#self.H=128
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
-		self.CancelBuffer=0
-		#self.Health=1500
-		#self.MaxHealth=500
 		self.Sprite=self.Sprites["idle1"]
 		self.SN="idle1"
 		self.TSN="idle1"
-		#self.Stun=0
 		self.TS=[]
-		#self.State=self.Idle
-		#self.StateFrame=0
-		#self.BackState=self.Idle
-		#self.AirDashTime=0
-		#self.AirDashable=1
 		self.DF=0
-		#self.Sounds=[]
 		self.HitSound=0
-		#self.HitLag=0
 		self.Panchira=0
-		#self.LTags={}
 	def ViperZero(self,AN):
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
-		#X["Cancels"].append([])
 		X["Filename"]="Characters/QuW/Attacks/"+AN+".json"
 		return X
 	def HitFlip(self):
@@ -248,21 +212,14 @@ class Character:
 			T.append(H)
 		self.Triggers=T
 	def HitNudge(self):
-		global TagsGlobal
-		#self.Panchira=0
-		if abs(self.X-TagsGlobal["Other Player"].X)+abs(self.Y-TagsGlobal["Other Player"].Y) < 200:
-			self.XV+=(TagsGlobal["Other Player"].X-self.X)/10
-			self.YV+=(TagsGlobal["Other Player"].Y-self.Y)/10
+		if abs(self.X-self.Tags["Other Player"].X)+abs(self.Y-self.Tags["Other Player"].Y) < 200:
+			self.XV+=(self.Tags["Other Player"].X-self.X)/10
+			self.YV+=(self.Tags["Other Player"].Y-self.Y)/10
 		pass
 		pass
 	def Nogeki(self):
-		#if self.RNG()%3==0:
-			#self.Sounds.append(self.Voices["Attack"][self.RNG()%len(self.Voices["Attack"])])
-		#self.Sounds.append(self.HitSounds["Nogeki"][self.RNG()%len(self.HitSounds["Nogeki"])])
 		self.Panchira=0
 	def Pangeki(self):
-		#if self.RNG()%3==0:
-			#self.Sounds.append(self.Voices["Panchira"][self.RNG()%len(self.Voices["Panchira"])])
 		self.Sounds.append(self.HitSounds["Pangeki"][self.RNG()%len(self.HitSounds["Pangeki"])])
 		if self.Panchira==24:
 			self.Sounds.append(self.MiscSounds["Gopan"])
@@ -273,7 +230,24 @@ class Character:
 		self.Panchira+=1
 		pass
 	def Frame(self,Tags):
-		global TagsGlobal
+		R=self.ViperOne.Frame(Tags)
+		R["Hit Lag"]=self.HitLag
+		R["Sounds"]=self.Sounds
+		R["Sprites"]=self.TS
+		R["GUI"]=[
+		{"Sprite":self.PanchiraGuage[int(self.Panchira/5)],"X":5,"Y":37,"W":128,"H":32}
+		]
+		if self.Panchira>25:
+			self.Panchira=25
+		self.Triggers=copy.deepcopy(self.Triggers)
+		for i in self.Triggers:
+			if i["Type"]=="Hit":
+				i["Damage"]+=int(self.Panchira)+Tags["Fault"]
+				i["Chip Damage"]+=int(self.Panchira/2)+Tags["Fault"]
+				i["Stun"]+=Tags["Fault"]*2+2
+				i["Block Stun"]+=Tags["Fault"]*2+2
+		return R
+		"""global TagsGlobal
 		TagsGlobal=Tags
 		if self.LTags=={}:
 			self.LTags=Tags
@@ -302,8 +276,6 @@ class Character:
 				BlockStun+=i[1]["Block Stun"]
 				GrabX+=i[1]["Knockback"]
 				GrabY=i[1]["Knockback2"]
-			#if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt" and self.Y==0:
-				#self.XV=Tags["Side"]*10-5
 		if self.Grabbed:
 			self.State=self.Idle
 			self.X=GrabX
@@ -320,10 +292,6 @@ class Character:
 				if not self.DF:
 					self.Health-=Damage
 					self.StateFrame=-1
-					#if Knockback>0:
-						#self.YV=-Knockback2*0.75
-						#self.XV=Knockback*0.4*(Tags["Side"]-0.5)
-						#self.KV=0#Knockback*0.2
 					self.State=self.BlockStun
 					self.Stun=BlockStun
 				pass
@@ -331,9 +299,9 @@ class Character:
 				if not self.DF:
 					self.Health-=Damage
 					self.StateFrame=-1
-					self.YV=-Knockback2#*0.75
-					self.XV=Knockback*(Tags["Side"]-0.5)#*0.4
-					self.KV=0#Knockback*0.2
+					self.YV=-Knockback2
+					self.XV=Knockback*(Tags["Side"]-0.5)
+					self.KV=0
 					self.State=self.HitStun
 					self.Stun=Stun
 			self.DF=1
@@ -364,21 +332,6 @@ class Character:
 		self.Y+=self.YV
 		if R==None:
 			R={}
-		R["Hit Lag"]=self.HitLag
-		R["Sounds"]=self.Sounds
-		R["Sprites"]=self.TS
-		R["GUI"]=[
-		{"Sprite":self.PanchiraGuage[int(self.Panchira/5)],"X":5,"Y":37,"W":128,"H":32}
-		]
-		if self.Panchira>25:
-			self.Panchira=25
-		self.Triggers=copy.deepcopy(self.Triggers)
-		for i in self.Triggers:
-			if i["Type"]=="Hit":
-				i["Damage"]+=int(self.Panchira)+Tags["Fault"]
-				i["Chip Damage"]+=int(self.Panchira/2)+Tags["Fault"]
-				i["Stun"]+=Tags["Fault"]*2+2
-				i["Block Stun"]+=Tags["Fault"]*2+2
 		Tags["Side"]=self.X>Tags["Other Player"].X
 		if self.Y>0:
 			self.Y=0
@@ -388,7 +341,7 @@ class Character:
 		if Tags["Fault"]>self.LTags["Fault"]:
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[1],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 		self.LTags=Tags
-		return R
+		return R"""
 	def Idle(self,Tags):
 		self.XV=0
 		self.The48Frame=False
@@ -553,7 +506,7 @@ class Character:
 				self.SSN="Block"
 				pass
 		if Tags["Controller"]["X2"]!=0:
-			if self.DashTimer<2 and self.AirDashable:
+			if self.AirDashable:
 				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
 					self.State=self.BackDash
 					#self.Pangeki()

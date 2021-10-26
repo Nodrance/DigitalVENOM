@@ -8,12 +8,24 @@ from Tools import HitBoxer
 import sys,copy,json,pygame
 
 """
+Camera=Loli.LoliCamera(0,-15,-1,1)
+BlitzLogo=pygame.image.load("Sprites/BlitzLogoTransparent.png")
+for i in range(12):
+	Loli.win.fill(0)
+	Loli.RenderSprite(BlitzLogo,(0,0,(-3/(i*2+1))+3),500,500,Camera)
+	Loli.ScaleWin()
+	pygame.time.delay(50)
+	pass
+"""
+
+"""
 -Todo-
-Change Standardized State Names
-Add gattling again
-Add jump cancels and dash cancels again
 
 -Done-
+Change Standardized State Names
+Made airdashes only require one input
+Add gattling again
+Add jump cancels again
 Add SFX back to moves
 Converted moves to ViperOne
 Fix panchira attacks
@@ -21,8 +33,13 @@ Fix panchira attacks
 -Gattling Chain-
 GB>GN>GM
 GB>GN>GH>GJ>GK
-JB>JN>JM
-JB>JN>JH>JJ>JK
+AB>AN>AM
+AB>AN>AH>AJ>AK
+
+-QuW Bread and Butter-
+Pangeki:GB>GN>GM>PanchiraJumpCancel>AB>AN>AM
+Nogeki :GB>GN>GH>GJ>GK>JumpCancel>AB>AN>AH>AJ>AK
+
 """
 
 CSCharacters=[QuW.Character,QuW.Character]

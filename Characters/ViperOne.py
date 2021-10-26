@@ -1,3 +1,5 @@
+import copy,random,math,json,pygame,numpy
+from Renderers import Loli
 class Cancel:
 	def __init__(self,CHA,State):
 		self.CHA=CHA
@@ -24,7 +26,7 @@ class Move:
 		self.Character.SSN=self.SSN
 		self.Character.SN=self.FrameData["Animation"][self.Character.StateFrame]
 		self.Character.Triggers=self.FrameData["Triggers"][self.Character.StateFrame]
-		if self.SSN=="Aerial":
+		if self.SSN.lower().startswith("a"):
 			#self.Character.YV+=5
 			#if self.Character.StateFrame==0:
 				#self.Character.YV=-20
@@ -53,15 +55,13 @@ class Move:
 			self.PostFrame()
 		pass
 	def HitNudge(self):
-		global TagsGlobal
-		#self.Panchira=0
 		if abs(self.Character.X-self.Character.Tags["Other Player"].X)+abs(self.Character.Y-self.Character.Tags["Other Player"].Y) < 200:
 			self.Character.XV+=(self.Character.Tags["Other Player"].X-self.Character.X)/20
 			self.Character.YV+=(self.Character.Tags["Other Player"].Y-self.Character.Y)/20
 		pass
 		pass
 class Default:
-	def __init__(self,Player,DIR,MaxHealth=500,Offset=(0,-64),Height=128,Width=128):
+	def __init__(self,Player,DIR,Character,MaxHealth=500,Offset=(0,-64),Height=128,Width=128):
 		self.StartDistance=100
 		self.MaxHealth=MaxHealth
 		self.Player=Player
@@ -69,6 +69,7 @@ class Default:
 		self.Height=Height
 		self.Width=Width
 		self.DIR=DIR
+		self.Character=Character
 		pass
 	def Reset(self,CHA):
 		CHA.Health=self.MaxHealth
@@ -95,3 +96,92 @@ class Default:
 		CHA.HitLag=0
 		CHA.LTags={}
 		pass
+	def Frame(self,Tags):
+		self.Character.Tags=Tags
+		if self.Character.LTags=={}:
+			self.Character.LTags=Tags
+		self.Character.Tags=Tags
+		self.Character.HitLag=0
+		self.Character.TS=[]
+		self.Character.Sounds=[]
+		Damage=0
+		ChipDamage=0
+		Stun=0
+		BlockStun=0
+		Knockback=0
+		for i in Tags["Triggers"]:
+			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Hit":
+				Damage+=i[1]["Damage"]
+				ChipDamage+=i[1]["Chip Damage"]
+				Stun=i[1]["Stun"]
+				BlockStun+=i[1]["Block Stun"]
+				Knockback+=i[1]["Knockback"]
+				Knockback2=i[1]["Knockback2"]
+			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Grab":
+				self.Character.Grabbed=1
+				Damage+=i[1]["Damage"]
+				ChipDamage+=i[1]["Chip Damage"]
+				Stun=i[1]["Stun"]
+				BlockStun+=i[1]["Block Stun"]
+				GrabX+=i[1]["Knockback"]
+				GrabY=i[1]["Knockback2"]
+		if self.Character.Grabbed:
+			self.Character.State=self.Character.Idle
+			self.Character.X=GrabX
+			self.Character.Y=GrabY
+		if self.Character.State==self.Character.BackState:
+			self.Character.StateFrame+=1
+		else:
+			self.Character.StateFrame=0
+			self.Character.BackState=self.Character.State
+		self.Character.State(Tags)
+		R={}
+		if Damage>0:
+			if self.Character.SSN=="Block":
+				if not self.Character.DF:
+					self.Character.Health-=Damage
+					self.Character.StateFrame=-1
+					self.Character.State=self.Character.BlockStun
+					self.Character.Stun=BlockStun
+				pass
+			else:
+				if not self.Character.DF:
+					self.Character.Health-=Damage
+					self.Character.StateFrame=-1
+					self.Character.YV=-Knockback2
+					self.Character.XV=Knockback*(Tags["Side"]-0.5)
+					self.Character.KV=0
+					self.Character.State=self.Character.HitStun
+					self.Character.Stun=Stun
+			self.Character.DF=1
+		else:
+			self.Character.DF=0
+		for i in Tags["Triggers"]:
+			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
+				self.Character.HitLag+=i[0]["Hit Lag"]
+				if self.Character.State in [self.Character.States["gh"],self.Character.States["gb"],self.Character.States["ah"],self.Character.States["ab"]]:
+					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Light"]))
+				if self.Character.State in [self.Character.States["gj"],self.Character.States["gn"],self.Character.States["aj"],self.Character.States["an"]]:
+					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Medium"]))
+				if self.Character.State in [self.Character.States["gk"],self.Character.States["gm"],self.Character.States["ak"],self.Character.States["am"]]:# and not self.Character.The48Frame:
+					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Heavy"]))
+				if Tags["Other Player"].SSN=="HitStun":
+					self.Character.Combo+=1
+				else:
+					self.Character.Combo=1
+		if self.Character.SN!=self.Character.TSN:
+			self.Character.Sprite=self.Character.Sprites[self.Character.SN]
+			self.Character.TSN=self.Character.SN
+		self.Character.X+=self.Character.XV
+		self.Character.Y+=self.Character.YV
+		if R==None:
+			R={}
+		Tags["Side"]=self.Character.X>Tags["Other Player"].X
+		if self.Character.Y>0:
+			self.Character.Y=0
+		if Tags["Side"]==1:
+			self.Character.HitFlip()
+		if Tags["Fault"]>self.Character.LTags["Fault"]:
+			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.Character.ViperOne.Player,Sprite=self.Character.CutIns[1],BackgroundColor=[(0,255,255),(255,0,255)][self.Character.ViperOne.Player],Y=30))
+		self.Character.LTags=Tags
+		return R

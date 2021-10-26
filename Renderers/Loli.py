@@ -3,7 +3,9 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 import pygame,random,math,numpy
 import pygame.gfxdraw
 from os import walk
+from numba import njit,jit
 #Here we define some basic variables.
+RenderBenchmarking=0
 P=pygame
 pygame.mixer.pre_init()
 pygame.init()
@@ -14,13 +16,15 @@ Clock=pygame.time.Clock()
 #win=pygame.Surface((1366,768))
 #win=pygame.Surface((683,384))
 win=pygame.Surface((int(683/2),int(384/2)))
+#win=pygame.display.set_mode((int(683/2),int(384/2)),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
+#print(win.get_width()*2)
 FZ=-1
 BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
 LastOutlines=[[],[],[]]
 TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
-TrueWin.convert()
+#TrueWin=win
 ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
 CamCap=(win.get_width()*0.9)
 P1W=0
@@ -252,15 +256,15 @@ def PolygonPixelShader(Polygon,Shaded=0):
 	else:
 		pygame.draw.polygon(win,Polygon["Color"],PolygonVertexShader(Polygon["Points"],Camera))
 
-def RenderSprite(Sprite,Pos,Width,Height,Camera,Blending=None,Smooth=0,Blit=1): #Defines the sprite render function.
-	#X/(Z*FOV) - Reminder of the perspective projection equation.
-	Pos2=(Pos[0]-Camera.X,Pos[1]-Camera.Y,Pos[2]-Camera.Z) #Subtracts the camera position to find out where the sprite should be rendered relatively
-	DH=Height/(Pos2[2]*Camera.FOV) #Calculates the height according to distance
-	DW=Width/(Pos2[2]*Camera.FOV) #Calculates the width according to distance.
-	Pos3=(Pos2[0]/(Pos2[2]*Camera.FOV),Pos2[1]/(Pos2[2]*Camera.FOV)) #Uses the perspective projection equation to calculate the 2D position of the sprite.
-	X=(win.get_width()/2,win.get_height()/2) #Divides the screen size by two to find the center.
-	Y=(DW/2,DH/2) #Divides the sprite size by two to find the center.
-	Pos4=(Pos3[0]+X[0]-Y[0],Pos3[1]+X[1]-Y[1]) #Accounts for the centers of the sprite and screen to set the origin point at zero.
+def RenderSprite(Sprite,Pos,Width,Height,Camera,Blending=None,Smooth=0,Blit=1):#Defines the standard sprite render function.
+	#Once upon a time I understood this math.
+	#Then I compressed the shit out of it, but it still works.
+	Z=(Pos[2]-Camera.Z)*Camera.FOV
+	DH=Height/Z
+	DW=Width/Z
+	Pos4=(
+		(Pos[0]-Camera.X)/Z+(win.get_width()/2)-(DW/2),
+		(Pos[1]-Camera.Y)/Z+(win.get_height()/2)-(DH/2))
 	if Smooth==0:
 		Sprite2=P.transform.scale(Sprite,(int(DW),int(DH))) #Scales the sprite to the correct size.
 	else:
@@ -356,21 +360,21 @@ def RenderHugeSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None):
 		win.scroll(int(XO),int(YO))
 	pass
 def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None):
-	Pos2=(Pos[0]-Camera.X,Pos[1]-Camera.Y,Pos[2]-Camera.Z) #Subtracts the camera position to find out where the sprite should be rendered relatively
-	DH=Height/(Pos2[2]*Camera.FOV) #Calculates the height according to distance
-	DW=Width/(Pos2[2]*Camera.FOV) #Calculates the width according to distance.
-	Pos3=(Pos2[0]/(Pos2[2]*Camera.FOV),Pos2[1]/(Pos2[2]*Camera.FOV)) #Uses the perspective projection equation to calculate the 2D position of the sprite.
-	X=(win.get_width()/2,win.get_height()/2) #Divides the screen size by two to find the center.
-	Y=(DW/2,DH/2) #Divides the sprite size by two to find the center.
+	Z=(Pos[2]-Camera.Z)*Camera.FOV
+	DH=Height/Z
+	DW=Width/Z
 	W=Sprite.get_width()
 	H=Sprite.get_height()
 	WS=DW/W
 	HS=DH/H
-	Pos4=(Pos3[0]+X[0]-Y[0],Pos3[1]+X[1]-Y[1]) #Accounts for the centers of the sprite and screen to set the origin point at zero.
+	Pos4=(
+		(Pos[0]-Camera.X)/Z+win.get_width()/2-DW/2,
+		(Pos[1]-Camera.Y)/Z+win.get_height()/2-DH/2
+		)
+	#Blit Fuckery
 	SurfBoard=pygame.surfarray.array2d(Sprite)
 	for x in range(W):
 		for y in range(H):
-			#print([(Pos4[0]+x*(DW/Width),Pos4[1]+y*(DH/Height)),(Pos4[0]+(x+1)*(DW/Width),Pos4[1]+(y+1)*(DH/Height))])
 			if (win.get_width()>Pos4[0]+x*WS>-WS-2) and (win.get_height()>Pos4[1]+y*HS>-HS-2):
 				pygame.draw.rect(win,Sprite.unmap_rgb(SurfBoard[x][y]),[(Pos4[0]+x*WS,Pos4[1]+y*HS),(WS+2,HS+2)])
 			pass
@@ -378,7 +382,7 @@ def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None
 def Sound(X):
 	return P.mixer.Sound(X)
 def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render function
-	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,Clock,ImpactGlitch,LastOutlines
+	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,Clock,ImpactGlitch,LastOutlines,RenderBenchmarking
 	HandleMusic()
 	try:
 		for i in P1T["Sounds"]:
@@ -390,7 +394,6 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			i.play()
 	except:
 		pass
-	#win.fill(0)
 	HF=0
 	CS=1.5
 	Camera.FOV=1.3
@@ -440,7 +443,12 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	for CurrentRenderFrame in range(RenderFrames):
 		BlitList=[]
 		FakeTime+=42
-		Clock.tick(24)
+		if RenderBenchmarking:
+			Clock.tick()
+			if FakeTime%100==0:
+				print(Clock.get_fps())
+		else:
+			Clock.tick(24)
 		#print(Clock.get_fps())
 		A=0
 		if HF and (Impact or RenderFrames>2):
