@@ -1,11 +1,15 @@
+import os,sys
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 from Controllers import Owen,Eden,EdenJoystick,Replayer
 from Characters import InjectionCube,QuW
 from Renderers import Loli
 from Rulesets import Competitive,Warmup,Training
-from Engines import Alchemy
+from Engines import Alchemy,Combustion
 from Stages import VenomCompetitive,VenomWarmup,City
 from Tools import HitBoxer
-import sys,copy,json,pygame
+import sys,copy,json,pygame,dis,inspect,Debug
+sys.stdout = open("OutputLog.txt", "w")
+sys.stderr = open("ErrorLog.txt", "w")
 
 """
 Camera=Loli.LoliCamera(0,-15,-1,1)
@@ -30,7 +34,7 @@ Add SFX back to moves
 Converted moves to ViperOne
 Fix panchira attacks
 
--Gattling Chain-
+-QuW Gattling Chain-
 GB>GN>GM
 GB>GN>GH>GJ>GK
 AB>AN>AM
@@ -42,7 +46,7 @@ Nogeki :GB>GN>GH>GJ>GK>JumpCancel>AB>AN>AH>AJ>AK
 
 """
 
-CSCharacters=[QuW.Character,QuW.Character]
+CSCharacters=[ERic.Character,QuW.Character]
 TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert()
 P1WImage=pygame.image.load("Sprites/Win Screen/Player 1 Wins.png").convert()
 P2WImage=pygame.image.load("Sprites/Win Screen/Player 2 Wins.png").convert()
@@ -211,6 +215,7 @@ def MenuScreen():
 		Loli.MenuLabel("Training",Function=TrainingF),
 		Loli.MenuLabel("Casual",Function=CasualF),
 		Loli.MenuLabel("Replay",Function=ReplayF),
+		Loli.MenuLabel("Development Menu",Function=Debug.DebugMenu),
 		Loli.MenuLabel("Settings",Function=Settings.Menu),
 		Loli.MenuLabel("Quit",Function=QuitGame),
 		]).Open()

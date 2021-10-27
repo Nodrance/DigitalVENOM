@@ -3,9 +3,8 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 import pygame,random,math,numpy
 import pygame.gfxdraw
 from os import walk
-from numba import njit,jit
 #Here we define some basic variables.
-RenderBenchmarking=0
+RenderBenchmarking=1
 P=pygame
 pygame.mixer.pre_init()
 pygame.init()
@@ -283,6 +282,18 @@ def RenderSprite(Sprite,Pos,Width,Height,Camera,Blending=None,Smooth=0,Blit=1):#
 			return Sprite2,Pos4
 		else:
 			return Sprite2,Pos4,None,Blending
+
+def RenderSpriteQuick(Sprite,Pos,Width,Height,Camera):#Crushed bytecode
+	#Once upon a time I understood this math.
+	#Then I compressed the shit out of it, but it still works.
+	Z=(Pos[2]-Camera.Z)*Camera.FOV
+	DH=Height/Z
+	DW=Width/Z
+	Pos4=(
+		(Pos[0]-Camera.X)/Z+(win.get_width()/2)-(DW/2),
+		(Pos[1]-Camera.Y)/Z+(win.get_height()/2)-(DH/2))
+	Sprite2=P.transform.scale(Sprite,(int(DW),int(DH)))
+	return Sprite2,Pos4
 def RenderLargeSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None):
 	#X/(Z*FOV) - Reminder of the perspective projection equation.
 	if Transparent:
@@ -381,6 +392,7 @@ def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None
 	pass
 def Sound(X):
 	return P.mixer.Sound(X)
+
 def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render function
 	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,Clock,ImpactGlitch,LastOutlines,RenderBenchmarking
 	HandleMusic()
@@ -467,7 +479,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 						else:
 							RenderLargeSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,A>0,i["Blending"])
 					else:
-						BlitList.append(RenderSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,Blit=0))
+						BlitList.append(RenderSpriteQuick(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera))
 					A+=1
 			except:
 				pass
@@ -490,8 +502,8 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			win.blit(P2WSprite,(W0-15,15))
 			#pygame.draw.rect(win,(255,0,255),[W0-15,15,15,15])
 		win.blit(KO2Sprite,(W3-7,0))
-		P1RS=RenderSprite(pygame.transform.flip(P1.Sprite,P1.X>P2.X,0),(P1.X+P1.Offset[0],P1.Y+P1.Offset[1],0),P1.W,P1.H,Camera,Smooth=0,Blit=0)
-		P2RS=RenderSprite(pygame.transform.flip(P2.Sprite,P2.X>P1.X,0),(P2.X+P2.Offset[0],P2.Y+P2.Offset[1],0),P2.W,P2.H,Camera,Smooth=0,Blit=0)
+		P1RS=RenderSpriteQuick(pygame.transform.flip(P1.Sprite,P1.X>P2.X,0),(P1.X+P1.Offset[0],P1.Y+P1.Offset[1],0),P1.W,P1.H,Camera)
+		P2RS=RenderSpriteQuick(pygame.transform.flip(P2.Sprite,P2.X>P1.X,0),(P2.X+P2.Offset[0],P2.Y+P2.Offset[1],0),P2.W,P2.H,Camera)
 		#BlitList.extend(LastOutlines[0])
 		LastOutlines[0]=CreateOutline(P1RS[0],P1RS[1],(0,0,0))
 		LastOutlines[0].extend(CreateOutline(P2RS[0],P2RS[1],(0,0,0)))
@@ -502,12 +514,12 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_ADD)
 		try:
 			for i in P1T["Sprites"]:
-				BlitList.append(RenderSprite(pygame.transform.flip(i["Sprite"],P1.X>P2.X,0),(P1.X+i["X"]*((P1.X>P2.X)*-2+1),P1.Y+i["Y"],0),i["W"],i["H"],Camera,Blit=0))
+				BlitList.append(RenderSpriteQuick(pygame.transform.flip(i["Sprite"],P1.X>P2.X,0),(P1.X+i["X"]*((P1.X>P2.X)*-2+1),P1.Y+i["Y"],0),i["W"],i["H"],Camera))
 		except:
 			pass
 		try:
 			for i in P2T["Sprites"]:
-				BlitList.append(RenderSprite(pygame.transform.flip(i["Sprite"],P2.X>P1.X,0),(P2.X+i["X"]*((P2.X>P1.X)*-2+1),P2.Y+i["Y"],0),i["W"],i["H"],Camera,Blit=0))
+				BlitList.append(RenderSpriteQuick(pygame.transform.flip(i["Sprite"],P2.X>P1.X,0),(P2.X+i["X"]*((P2.X>P1.X)*-2+1),P2.Y+i["Y"],0),i["W"],i["H"],Camera))
 		except:
 			pass
 		C=0
@@ -699,6 +711,7 @@ class SlideMenu:
 				YLength+=X2.get_height()
 			UpdateTrueWin()
 			Clock.tick(24)
+		TotalYLength=YLength
 		Selected=0
 		while self.MenuList[Selected].Function==None:
 			Selected+=1
@@ -734,7 +747,7 @@ class SlideMenu:
 							if L!=None:
 								return L
 			TrueWin.fill(0)
-			YLength=0
+			YLength=min(0,-Selected*(TotalYLength-(TrueWin.get_height()-TotalYLength/len(self.MenuList)))/len(self.MenuList))
 			for MenuItemID in range(len(self.MenuList)):
 				MenuItem=self.MenuList[MenuItemID]
 				X=MenuItem.Render()
