@@ -4,7 +4,7 @@ import pygame,random,math,numpy
 import pygame.gfxdraw
 from os import walk
 #Here we define some basic variables.
-RenderBenchmarking=1
+RenderBenchmarking=0
 P=pygame
 pygame.mixer.pre_init()
 pygame.init()
@@ -12,6 +12,7 @@ FakeTime=0
 GlobalAlerts=[]
 LocalAlerts=[]
 Clock=pygame.time.Clock()
+TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 #win=pygame.Surface((1366,768))
 #win=pygame.Surface((683,384))
 win=pygame.Surface((int(683/2),int(384/2)))
@@ -22,7 +23,6 @@ BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
 LastOutlines=[[],[],[]]
-TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 #TrueWin=win
 ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
 CamCap=(win.get_width()*0.9)
@@ -457,8 +457,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 		FakeTime+=42
 		if RenderBenchmarking:
 			Clock.tick()
-			if FakeTime%100==0:
-				print(Clock.get_fps())
+			print(Clock.get_fps())
 		else:
 			Clock.tick(24)
 		#print(Clock.get_fps())

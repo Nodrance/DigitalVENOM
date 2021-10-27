@@ -1,5 +1,5 @@
 from Controllers import Owen,Eden,EdenJoystick,Replayer
-from Characters import InjectionCube,QuW,ERic
+from Characters import InjectionCube,QuW
 from Renderers import Loli
 from Rulesets import Competitive,Warmup,Training
 from Engines import Alchemy

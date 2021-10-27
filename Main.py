@@ -46,7 +46,7 @@ Nogeki :GB>GN>GH>GJ>GK>JumpCancel>AB>AN>AH>AJ>AK
 
 """
 
-CSCharacters=[ERic.Character,QuW.Character]
+CSCharacters=[QuW.Character,QuW.Character]
 TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert()
 P1WImage=pygame.image.load("Sprites/Win Screen/Player 1 Wins.png").convert()
 P2WImage=pygame.image.load("Sprites/Win Screen/Player 2 Wins.png").convert()
