@@ -930,7 +930,7 @@ class Character:
 			self.XV=30*(Tags["Side"]-0.5)
 		elif numpy.sign(self.XV) != numpy.sign(30*(Tags["Side"]-0.5)):
 			self.State=self.Dash
-		if self.StateFrame > 5 and (Tags["Side"]-0.5)*Tags["Controller"]["X"]<0.1:
+		if self.StateFrame > 5:# and (Tags["Side"]-0.5)*Tags["Controller"]["X"]<0.1:
 			self.XV=15*(Tags["Side"]-0.5)
 			if self.Y==0:
 				self.State=self.Idle
