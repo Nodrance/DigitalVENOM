@@ -3,6 +3,7 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 import pygame,random,math,numpy
 import pygame.gfxdraw
 from os import walk
+from Tools import ParticleGenerator
 #Here we define some basic variables.
 RenderBenchmarking=0
 P=pygame
@@ -19,6 +20,10 @@ win=pygame.Surface((int(683/2),int(384/2)))
 #win=pygame.display.set_mode((int(683/2),int(384/2)),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 #print(win.get_width()*2)
 FZ=-1
+HitFlashes=[]
+for i in range(16):
+	HitFlashes.append(ParticleGenerator.GenerateSpikes(256,10))
+	pass
 BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
@@ -87,6 +92,20 @@ class LineParticle:
 		if win.get_width()>(int(X+self.XV*TT)>0 and win.get_height()>int(Y+self.YV*TT+TT**2))>0:
 			pygame.draw.line(win,self.Color,(X+self.XV*TT,Y+self.YV*TT+TT**2),(X+self.XV*T2,Y+self.YV*T2+T2**2),5)
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
+class BlitParticle:
+	def __init__(self,Pos,Width,Height,Animation,Life,Blend=None):
+		self.StartTime=pygame.time.get_ticks()
+		self.Pos=(Pos[0],Pos[1],0)
+		self.Time=0
+		self.Life=Life
+		self.Width=Width
+		self.Height=Height
+		self.Blend=Blend
+		self.Animation=Animation
+	def Render(self,Camera):
+		RenderSprite(self.Animation[self.Time%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
+		self.Time+=1
+		return self.Time>self.Life
 class InverseLineParticle:
 	def __init__(self,Pos,Vel,Life,Length,Color):
 		self.StartTime=pygame.time.get_ticks()
@@ -394,7 +413,7 @@ def Sound(X):
 	return P.mixer.Sound(X)
 
 def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render function
-	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,Clock,ImpactGlitch,LastOutlines,RenderBenchmarking
+	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,HitFlashes,Clock,ImpactGlitch,LastOutlines,RenderBenchmarking
 	HandleMusic()
 	try:
 		for i in P1T["Sounds"]:
@@ -412,13 +431,22 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	Camera.X-=int((P1.X+P2.X)/2)
 	Camera.X=int(Camera.X/CS)
 	Camera.X+=int((P1.X+P2.X)/2)
-	Camera.Y-=int((P1.Y+P2.Y)/2+100*Camera.Z)
+	Camera.Y-=int((P1.Y+P2.Y)/2+125*Camera.Z)
 	Camera.Y=int(Camera.Y/CS)
-	Camera.Y+=int((P1.Y+P2.Y)/2+100*Camera.Z)
+	Camera.Y+=int((P1.Y+P2.Y)/2+125*Camera.Z)
 	Camera.Z+=min(max(0.5,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),5)
-	Camera.Z=(Camera.Z/CS)-0.075
+	Camera.Z=(Camera.Z/CS)#-0.075
 	Camera.Z-=min(max(0.5,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),5)
 	RenderFrames=1
+	for Collision in Collisions:
+		if Collision[0]["Type"]=="Hit" and Collision[1]["Type"]=="Hurt":
+			#Particles.append(SlashParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(P2.X-P1.X,P2.Y-P1.Y),2,1,(0,255,255)))
+			#Particles.append(BlitParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y+64)/2)-32),256,256,random.choice(HitFlashes),25,pygame.BLEND_RGB_ADD))
+			pass
+		if Collision[0]["Type"]=="Hurt" and Collision[1]["Type"]=="Hit":
+			#Particles.append(BlitParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y+64)/2)-32),256,256,random.choice(HitFlashes),25,Loli.pygame.BLEND_RGB_ADD))
+			#Particles.append(SlashParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(P1.X-P2.X,P1.Y-P2.Y),2,1,(255,0,255)))
+			pass
 	try:
 		if P1T["Hit Lag"]+P2T["Hit Lag"]>0:
 			HF=1
@@ -680,7 +708,48 @@ class MenuImage:
 		self.Function=Function
 	def Render(self):
 		return self.Sprite
-
+def MenuLoop(self):
+	global Clock
+	for Event in pygame.event.get():
+		if Event.type==pygame.KEYDOWN:
+			if Event.key==pygame.K_ESCAPE:
+				self.MenuOpen=0
+			if Event.key==pygame.K_UP:
+				SO=self.Selected
+				while self.MenuList[self.Selected].Function==None or SO==self.Selected:
+					self.Selected-=1
+					if self.Selected<0:
+						self.Selected=SO
+						break
+				self.SelectedTime=1
+			if Event.key==pygame.K_DOWN:
+				SO=self.Selected
+				while self.MenuList[self.Selected].Function==None or SO==self.Selected:
+					self.Selected+=1
+					if self.Selected==len(self.MenuList):
+						self.Selected=SO
+						break
+				self.SelectedTime=1
+			if Event.key==pygame.K_SPACE:
+				if self.MenuList[self.Selected].Function!=None:
+					L=self.MenuList[self.Selected].Function()
+					if L!=None:
+						return L
+	YLength=min(0,-self.Selected*(self.TotalYLength-(TrueWin.get_height()-self.TotalYLength/len(self.MenuList)))/len(self.MenuList))
+	for MenuItemID in range(len(self.MenuList)):
+		MenuItem=self.MenuList[MenuItemID]
+		X=MenuItem.Render()
+		TrueWin.blit(X,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
+		G=X.get_height()
+		if YLength+G>pygame.mouse.get_pos()[1]>YLength and MenuItemID!=self.Selected:
+			self.Selected=MenuItemID
+			self.SelectedTime=1
+		if MenuItemID==self.Selected:
+			pygame.draw.rect(TrueWin,self.Color,[(0,self.YMargin+self.YPadding+YLength),(self.XMargin+(TrueWin.get_width()/(self.SelectedTime**2)),G)])
+		YLength+=G
+	self.SelectedTime+=1
+	UpdateTrueWin()
+	Clock.tick(24)
 class SlideMenu:
 	def __init__(self,MenuList=[MenuTitle("DigitalVENOM")],Color=(255,255,0),XMargin=10,YMargin=10,XPadding=10,YPadding=10):
 		self.MenuList=MenuList
@@ -694,85 +763,32 @@ class SlideMenu:
 		TrueWinScreenshot=TrueWin.copy()
 		Y=TrueWin.get_height()
 		X=TrueWin.get_width()
-		GTime=10
-		G=GTime
+		self.GTime=10
+		G=self.GTime
 		YLength=0
 		for i in range(G):
 			pygame.draw.rect(TrueWin,self.Color,[(0,0),(X+(X/(G*G))-(X/((i*i)+1)),Y)])
 			UpdateTrueWin()
 			Clock.tick(24)
-		for i in range(G):
-			pygame.draw.rect(TrueWin,(0,0,0),[(0,0),(X+(X/(G*G))-(X/((i*i)+1)),Y)])
-			YLength=0
-			for MenuItem in self.MenuList:
-				X2=MenuItem.Render()
-				TrueWin.blit(X2,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
-				YLength+=X2.get_height()
-			UpdateTrueWin()
-			Clock.tick(24)
-		TotalYLength=YLength
-		Selected=0
-		while self.MenuList[Selected].Function==None:
-			Selected+=1
-			if Selected==len(self.MenuList):
-				Selected=0
+		for MenuItem in self.MenuList:
+			X2=MenuItem.Render()
+			TrueWin.blit(X2,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
+			YLength+=X2.get_height()
+		self.TotalYLength=YLength
+		TrueWinScreenshot=TrueWin.copy()
+		self.Selected=0
+		while self.MenuList[self.Selected].Function==None:
+			self.Selected+=1
+			if self.Selected==len(self.MenuList):
+				self.Selected=0
 				break
-		SelectedTime=1
-		MenuOpen=1
-		while MenuOpen:
-			for Event in pygame.event.get():
-				if Event.type==pygame.KEYDOWN:
-					if Event.key==pygame.K_ESCAPE:
-						MenuOpen=0
-					if Event.key==pygame.K_UP:
-						SO=Selected
-						while self.MenuList[Selected].Function==None or SO==Selected:
-							Selected-=1
-							if Selected<0:
-								Selected=SO
-								break
-						SelectedTime=1
-					if Event.key==pygame.K_DOWN:
-						SO=Selected
-						while self.MenuList[Selected].Function==None or SO==Selected:
-							Selected+=1
-							if Selected==len(self.MenuList):
-								Selected=SO
-								break
-						SelectedTime=1
-					if Event.key==pygame.K_SPACE:
-						if self.MenuList[Selected].Function!=None:
-							L=self.MenuList[Selected].Function()
-							if L!=None:
-								return L
+		self.SelectedTime=1
+		self.MenuOpen=1
+		while self.MenuOpen:
 			TrueWin.fill(0)
-			YLength=min(0,-Selected*(TotalYLength-(TrueWin.get_height()-TotalYLength/len(self.MenuList)))/len(self.MenuList))
-			for MenuItemID in range(len(self.MenuList)):
-				MenuItem=self.MenuList[MenuItemID]
-				X=MenuItem.Render()
-				TrueWin.blit(X,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
-				G=X.get_height()
-				if MenuItemID==Selected:
-					pygame.draw.rect(TrueWin,self.Color,[(0,self.YMargin+self.YPadding+YLength),(self.XMargin+(TrueWin.get_width()/(SelectedTime*SelectedTime)),G)])
-				YLength+=G
-			SelectedTime+=1
-			UpdateTrueWin()
-			Clock.tick(24)
-		Y=TrueWin.get_height()
-		X=TrueWin.get_width()
-		YLength=0
-		G=GTime
-		for c in range(G):
-			TrueWin.fill(self.Color)
-			i=G-c
-			pygame.draw.rect(TrueWin,(0,0,0),[(0,0),(X+(X/(G*G))-(X/((i*i)+1)),Y)])
-			YLength=0
-			for MenuItem in self.MenuList:
-				X2=MenuItem.Render()
-				TrueWin.blit(X2,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
-				YLength+=X2.get_height()
-			UpdateTrueWin()
-			Clock.tick(24)
+			L=MenuLoop(self)
+			if L!=None:
+				return L
 		for c in range(G):
 			TrueWin.blit(TrueWinScreenshot,(0,0))
 			i=G-c
@@ -790,57 +806,29 @@ class GradientMenu:
 		self.Color=Color
 	def Open(self):
 		global Clock
+		YLength=0
+		for MenuItem in self.MenuList:
+			X2=MenuItem.Render()
+			TrueWin.blit(X2,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
+			YLength+=X2.get_height()
+		self.TotalYLength=YLength
 		TrueWinScreenshot=TrueWin.copy()
-		Selected=0
-		while self.MenuList[Selected].Function==None:
-			Selected+=1
-			if Selected==len(self.MenuList):
-				Selected=0
+		self.Selected=0
+		while self.MenuList[self.Selected].Function==None:
+			self.Selected+=1
+			if self.Selected==len(self.MenuList):
+				self.Selected=0
 				break
-		SelectedTime=1
-		MenuOpen=1
-		while MenuOpen:
-			for Event in pygame.event.get():
-				if Event.type==pygame.KEYDOWN:
-					if Event.key==pygame.K_ESCAPE:
-						MenuOpen=0
-					if Event.key==pygame.K_UP:
-						SO=Selected
-						while self.MenuList[Selected].Function==None or SO==Selected:
-							Selected-=1
-							if Selected<0:
-								Selected=SO
-								break
-						SelectedTime=1
-					if Event.key==pygame.K_DOWN:
-						SO=Selected
-						while self.MenuList[Selected].Function==None or SO==Selected:
-							Selected+=1
-							if Selected==len(self.MenuList):
-								Selected=SO
-								break
-						SelectedTime=1
-					if Event.key==pygame.K_SPACE:
-						if self.MenuList[Selected].Function!=None:
-							L=self.MenuList[Selected].Function()
-							if L!=None:
-								return L
+		self.SelectedTime=1
+		self.MenuOpen=1
+		while self.MenuOpen:
 			K=pygame.Surface((2,2))
 			K.set_at((0,0),(127,0,127))
 			K.set_at((1,1),(0,127,127))
 			pygame.transform.smoothscale(K,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
-			YLength=0
-			for MenuItemID in range(len(self.MenuList)):
-				MenuItem=self.MenuList[MenuItemID]
-				X=MenuItem.Render()
-				TrueWin.blit(X,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))
-				G=X.get_height()
-				if MenuItemID==Selected:
-					pygame.draw.rect(TrueWin,self.Color,[(0,self.YMargin+self.YPadding+YLength),(self.XMargin+(TrueWin.get_width()/(SelectedTime*SelectedTime)),G)])
-				YLength+=G
-			SelectedTime+=1
-			UpdateTrueWin()
-			Clock.tick(24)
+			L=MenuLoop(self)
+			if L!=None:
+				return L
 		pass
 class AlertText:
 	Font=pygame.font.Font("Fonts/Kenney Future Narrow.ttf",25)

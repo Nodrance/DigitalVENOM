@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\barry sheppard\Desktop\owen\Python\DigitalVENOM\DigitalVENOM\Main.py", line 49, in <module>
-    CSCharacters=[ERic.Character,QuW.Character]
-NameError: name 'ERic' is not defined

@@ -164,6 +164,10 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 		P1.X=P2.X=(P2.X+P1.X)/2
 		P1.X-=16
 		P2.X+=16
+	if P1.X+400<P2.X:
+		P1.X=P2.X=(P2.X+P1.X)/2
+		P1.X-=200
+		P2.X+=200
 	if P1.X<BG.Bounds[0]:
 		if WallDurability1<0:
 			WallDurability1=MaxWallDurability

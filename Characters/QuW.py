@@ -498,6 +498,8 @@ class Character:
 			self.HitNudge()
 			#self.Nogeki()
 			self.State=self.States["ah"]
+		elif Tags["Controller"]["Jump2"] and self.AirDashable:
+			self.NogekiJumpCancel()
 		if Tags["Controller"]["X"]!=0:
 			if Tags["Side"]==1 and Tags["Controller"]["X"]>0:
 				self.SSN="Block"
@@ -506,7 +508,7 @@ class Character:
 				self.SSN="Block"
 				pass
 		if Tags["Controller"]["X2"]!=0:
-			if self.AirDashable:
+			if self.AirDashable and self.DashTimer<2:
 				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
 					self.State=self.BackDash
 					#self.Pangeki()
@@ -533,10 +535,10 @@ class Character:
 		Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 		self.YV=-40
 		self.XV=self.Tags["Controller"]["X"]*15
-		self.AirDashable=1
+		self.AirDashable=0
 		self.State=self.Jump
 	def JumpCancel(self):
-		self.YV=-40
+		self.YV=-30
 		self.XV=self.Tags["Controller"]["X"]*15
 		self.AirDashable=1
 		self.State=self.Jump
@@ -902,6 +904,8 @@ class Character:
 		self.AirDashable=0
 		self.DashTimer=5
 		self.YV=0
+		if Tags["Controller"]["Jump2"]:
+			self.NogekiJumpCancel()
 		if self.StateFrame==0:
 			self.XV=50*(-Tags["Side"]+0.5)
 		elif numpy.sign(self.XV) != numpy.sign(50*(-Tags["Side"]+0.5)):
@@ -920,6 +924,8 @@ class Character:
 		self.AirDashable=0
 		self.DashTimer=5
 		self.YV=0
+		if Tags["Controller"]["Jump2"]:
+			self.NogekiJumpCancel()
 		if self.StateFrame==0:
 			self.XV=30*(Tags["Side"]-0.5)
 		elif numpy.sign(self.XV) != numpy.sign(30*(Tags["Side"]-0.5)):
