@@ -28,8 +28,8 @@ def TrainingResetGame():
 def TrainingFillMeters():
 	global GlobalPlayer1,GlobalPlayer2
 	try:
-		GlobalPlayer1.Panchira=25
-		GlobalPlayer2.Panchira=25
+		GlobalPlayer1.Meter=GlobalPlayer1.MaxMeter
+		GlobalPlayer2.Meter=GlobalPlayer2.MaxMeter
 	except:
 		pass
 	pass

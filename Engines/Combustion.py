@@ -239,12 +239,14 @@ def GameplayThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rende
 			return X,Y
 	pass
 def RenderThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global Rendering2,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
 	while 1:
 		if Rendering2:
-			keys=pygame.key.get_pressed()
-			PygameEvents.extend(pygame.event.get())
-			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1)
+			RenderThing(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)
+def RenderThing(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
+	global Rendering2,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
+	keys=pygame.key.get_pressed()
+	PygameEvents.extend(pygame.event.get())
+	Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1)
 	pass
 def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
 	global MaxWallDurability,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData

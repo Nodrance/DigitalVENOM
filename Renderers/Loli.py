@@ -21,9 +21,9 @@ win=pygame.Surface((int(683/2),int(384/2)))
 #print(win.get_width()*2)
 FZ=-1
 HitFlashes=[]
-for i in range(16):
+"""for i in range(16):
 	HitFlashes.append(ParticleGenerator.GenerateSpikes(256,10))
-	pass
+	pass"""
 BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
@@ -434,9 +434,9 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	Camera.Y-=int((P1.Y+P2.Y)/2+125*Camera.Z)
 	Camera.Y=int(Camera.Y/CS)
 	Camera.Y+=int((P1.Y+P2.Y)/2+125*Camera.Z)
-	Camera.Z+=min(max(0.5,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),5)
+	Camera.Z+=min(max(0.75,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),1)
 	Camera.Z=(Camera.Z/CS)#-0.075
-	Camera.Z-=min(max(0.5,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),5)
+	Camera.Z-=min(max(0.75,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),1)
 	RenderFrames=1
 	for Collision in Collisions:
 		if Collision[0]["Type"]=="Hit" and Collision[1]["Type"]=="Hurt":
@@ -517,11 +517,15 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			except Exception as e:
 				pass
 		W0=win.get_width()
-		W1=int(P1.Health*W0/P1.MaxHealth/2)
-		W2=int(P2.Health*W0/P2.MaxHealth/2)
 		W3=int(W0/2)
+		W1=int(P1.Health*W3/P1.MaxHealth)
+		W2=int(P2.Health*W3/P2.MaxHealth)
+		W12=int(P1.Meter*W3/P1.MaxMeter)
+		W22=int(P2.Meter*W3/P2.MaxMeter)
 		pygame.draw.rect(win,(0,255,255),[W3-W1,0,W1,15])
 		pygame.draw.rect(win,(255,0,255),[W3,0,W2,15])
+		pygame.draw.rect(win,(255,255,0),[0,15,W12,15])
+		pygame.draw.rect(win,(255,255,0),[W0-W22,15,W22,15])
 		if P1W:
 			win.blit(P1WSprite,(0,15))
 			#pygame.draw.rect(win,(255,0,255),[0,15,15,15])
