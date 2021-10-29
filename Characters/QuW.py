@@ -230,7 +230,7 @@ class Character:
 			#Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[[6,2,9,8][int(self.Meter/5)]],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 		self.Meter+=20
 		pass
-	def Frame(self,Tags):
+	def __call__(self,Tags):
 		R=self.ViperOne.Frame(Tags)
 		R["Hit Lag"]=self.HitLag
 		R["Sounds"]=self.Sounds
@@ -351,7 +351,7 @@ class Character:
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.YV=0
-		if Tags["Controller"]["Fierce"] and Tags["Controller"]["Strong"] and Tags["Controller"]["Jab"] and self.Meter==self.MaxMeter and Tags["Controller"]["Y2"]==-1:
+		if Tags["Controller"]["Fierce"] and Tags["Controller"]["Strong"] and Tags["Controller"]["Jab"] and self.Meter>=self.MaxMeter and Tags["Controller"]["Y2"]==-1:
 			#Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
 			##self.Nogeki()
@@ -833,6 +833,7 @@ class Character:
 		return {}
 	def HitStun(self, Tags):
 		self.XV/=1.3
+		self.Meter+=5
 		if self.YV<0:
 			self.YV/=1.3
 		#self.YV+=5
@@ -840,11 +841,11 @@ class Character:
 		self.AirDashable=1
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="hitstun1"
-		if Tags["Controller"]["Fierce"] and self.Meter==25:
+		if Tags["Controller"]["Fierce"] and self.Meter>=self.MaxMeter:
 			#self.Nogeki()
 			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
-						"Damage":20,
-						"Chip Damage":20,
+						"Damage":250,
+						"Chip Damage":0,
 						"Stun":10,
 						"Block Stun":10,
 						"Knockback":10,

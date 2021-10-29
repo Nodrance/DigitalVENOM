@@ -169,8 +169,8 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	LFC1=P1C1
 	LFC2=P2C1
 	ReplayData.append([P1C1,P2C1])
-	P1T=P1.Frame({"Side":0,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C2,"Other Player":P2})
-	P2T=P2.Frame({"Side":1,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C2,"Other Player":P1})
+	P1T=P1({"Side":0,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C2,"Other Player":P2})
+	P2T=P2({"Side":1,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C2,"Other Player":P1})
 	if P1.X+32>P2.X:
 		P1.X=P2.X=(P2.X+P1.X)/2
 		P1.X-=16
