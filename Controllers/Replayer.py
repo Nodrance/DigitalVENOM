@@ -9,6 +9,7 @@ class Controller:
 			self.Frame+=1
 			return self.ReplayData[self.Frame][self.Player]
 		except:
-			return self.ReplayData[self.Frame-1][self.Player]
+			self.Frame-=1
+			return self.ReplayData[self.Frame][self.Player]
 		pass
 	pass

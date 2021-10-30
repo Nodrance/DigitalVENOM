@@ -1,6 +1,6 @@
 import os,sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
-from Controllers import Owen,OwenJoystick,Eden,EdenJoystick,Replayer
+from Controllers import Owen,OwenJoystick,Eden,EdenJoystick,Replayer,EdenJoystick2
 from Characters import InjectionCube,QuW
 from Renderers import Loli
 from Rulesets import Competitive,Warmup,Training
@@ -57,7 +57,7 @@ pygame.mixer.Sound("Sounds/Menu Screen/Select.wav"),
 
 try:
 	P1C=OwenJoystick.Controller(pygame)
-	P2C=EdenJoystick.Controller(pygame)
+	P2C=EdenJoystick2.Controller(pygame)
 except:
 	try:
 		P1C=OwenJoystick.Controller(pygame)
@@ -198,7 +198,7 @@ def ReplayF():
 	P1.Reset(0,pygame)
 	P2.Reset(1,pygame)
 	BG=sys.modules[ReplayData[0]["Stage Module Name"]].Stage(pygame)
-	Replayer1=Replayer.Controlleur(pygame,Player=0,ReplayData=ReplayData)
+	Replayer1=Replayer.Controller(pygame,Player=0,ReplayData=ReplayData)
 	Replayer2=Replayer.Controller(pygame,Player=1,ReplayData=ReplayData)
 	if ReplayData[0]["Engine Module Name"]=="Engines.Alchemy":
 		#return Warmup.Match(pygame,Loli,Alchemy,Replayer1,Replayer2,P1,P2,BG)
