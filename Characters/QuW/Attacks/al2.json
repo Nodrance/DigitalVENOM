@@ -238,101 +238,101 @@
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
 						1
 					]
 				},
 				"Effect": 0,
 				"State": "am"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "ah"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
 						1
 					]
 				},
 				"Effect": 0,
 				"State": "am"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "ah"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
 						1
 					]
 				},
 				"Effect": 0,
 				"State": "am"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "ah"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
 						1
 					]
 				},
 				"Effect": 0,
 				"State": "am"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "ah"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "am"
-			},
-			{
-				"Conditions": {
-					"Jab": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "ah"
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "am"
 			}
 		],
 		[],

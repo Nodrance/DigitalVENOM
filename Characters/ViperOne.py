@@ -159,12 +159,12 @@ class Default:
 		for i in Tags["Triggers"]:
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
 				self.Character.HitLag+=i[0]["Hit Lag"]
-				if self.Character.State in [self.Character.States["gh"],self.Character.States["gb"],self.Character.States["ah"],self.Character.States["ab"]]:
+				"""if self.Character.State in [self.Character.States["gh"],self.Character.States["gb"],self.Character.States["ah"],self.Character.States["ab"]]:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Light"]))
 				if self.Character.State in [self.Character.States["gj"],self.Character.States["gn"],self.Character.States["aj"],self.Character.States["an"]]:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Medium"]))
 				if self.Character.State in [self.Character.States["gk"],self.Character.States["gm"],self.Character.States["ak"],self.Character.States["am"]]:# and not self.Character.The48Frame:
-					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Heavy"]))
+					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Heavy"]))"""
 				if Tags["Other Player"].SSN=="HitStun":
 					self.Character.Combo+=1
 				else:

@@ -85,33 +85,33 @@ class Character:
 		self.The48Frame=False
 		self.The24FrameData=self.ViperZero("The24Frame")
 		self.States={
+		"gl":ViperOne.Move(self,self.ViperZero("gl"),"gl",PreMove=self.Pangeki),
+		"gl2":ViperOne.Move(self,self.ViperZero("gl2"),"gl2",PreMove=self.Pangeki),
+		"gl3":ViperOne.Move(self,self.ViperZero("gl3"),"gl3",PreMove=self.Pangeki),
+		"gm":ViperOne.Move(self,self.ViperZero("gm"),"gm",PreMove=self.Nogeki),
+		"gm2":ViperOne.Move(self,self.ViperZero("gm2"),"gm2",PreMove=self.Nogeki),
 		"gh":ViperOne.Move(self,self.ViperZero("gh"),"gh",PreMove=self.Nogeki),
-		"gj":ViperOne.Move(self,self.ViperZero("gj"),"gj",PreMove=self.Nogeki),
-		"gk":ViperOne.Move(self,self.ViperZero("gk"),"gk",PreMove=self.Nogeki),
-		"gb":ViperOne.Move(self,self.ViperZero("gb"),"gb",PreMove=self.Pangeki),
-		"gn":ViperOne.Move(self,self.ViperZero("gn"),"gn",PreMove=self.Pangeki),
-		"gm":ViperOne.Move(self,self.ViperZero("gm"),"gm",PreMove=self.Pangeki),
+		"al":ViperOne.Move(self,self.ViperZero("al"),"al",PreMove=self.Pangeki),
+		"al2":ViperOne.Move(self,self.ViperZero("al2"),"al2",PreMove=self.Pangeki),
+		"al3":ViperOne.Move(self,self.ViperZero("al3"),"al3",PreMove=self.Pangeki),
+		"am":ViperOne.Move(self,self.ViperZero("am"),"am",PreMove=self.Nogeki),
+		"am2":ViperOne.Move(self,self.ViperZero("am2"),"am2",PreMove=self.Pangeki),
 		"ah":ViperOne.Move(self,self.ViperZero("ah"),"ah",PreMove=self.Nogeki),
-		"aj":ViperOne.Move(self,self.ViperZero("aj"),"aj",PreMove=self.Pangeki),
-		"ak":ViperOne.Move(self,self.ViperZero("ak"),"ak",PreMove=self.Nogeki),
-		"ab":ViperOne.Move(self,self.ViperZero("ab"),"ab",PreMove=self.Pangeki),
-		"an":ViperOne.Move(self,self.ViperZero("an"),"an",PreMove=self.Pangeki),
-		"am":ViperOne.Move(self,self.ViperZero("am"),"am",PreMove=self.Pangeki),
 		"The24Frame":ViperOne.Move(self,self.ViperZero("The24Frame"),"gThe24Frame"),
 		}
 		self.CancelStates={
-		"gh":ViperOne.Cancel(self,self.States["gh"]),
-		"gj":ViperOne.Cancel(self,self.States["gj"]),
-		"gk":ViperOne.Cancel(self,self.States["gk"]),
-		"gb":ViperOne.Cancel(self,self.States["gb"]),
-		"gn":ViperOne.Cancel(self,self.States["gn"]),
+		"gl":ViperOne.Cancel(self,self.States["gl"]),
+		"gl2":ViperOne.Cancel(self,self.States["gl2"]),
+		"gl3":ViperOne.Cancel(self,self.States["gl3"]),
 		"gm":ViperOne.Cancel(self,self.States["gm"]),
-		"ah":ViperOne.Cancel(self,self.States["ah"]),
-		"aj":ViperOne.Cancel(self,self.States["aj"]),
-		"ak":ViperOne.Cancel(self,self.States["ak"]),
-		"ab":ViperOne.Cancel(self,self.States["ab"]),
-		"an":ViperOne.Cancel(self,self.States["an"]),
+		"gm2":ViperOne.Cancel(self,self.States["gm2"]),
+		"gh":ViperOne.Cancel(self,self.States["gh"]),
+		"al":ViperOne.Cancel(self,self.States["al"]),
+		"al2":ViperOne.Cancel(self,self.States["al2"]),
+		"al3":ViperOne.Cancel(self,self.States["al3"]),
 		"am":ViperOne.Cancel(self,self.States["am"]),
+		"am2":ViperOne.Cancel(self,self.States["am2"]),
+		"ah":ViperOne.Cancel(self,self.States["ah"]),
 		"PanchiraJumpCancel":self.PanchiraJumpCancel,
 		"NogekiJumpCancel":self.NogekiJumpCancel,
 		"JumpCancel":self.JumpCancel,
@@ -222,12 +222,12 @@ class Character:
 		self.Meter=0
 	def Pangeki(self):
 		self.Sounds.append(self.HitSounds["Pangeki"][self.RNG()%len(self.HitSounds["Pangeki"])])
-		if self.Meter==24:
+		"""if self.Meter==24:
 			self.Sounds.append(self.MiscSounds["Gopan"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[random.choice([2,5,6])],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 		elif self.Meter%5==4:
 			self.Sounds.append(self.MiscSounds["Panchira Increase"])
-			#Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[[6,2,9,8][int(self.Meter/5)]],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
+			#Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[[6,2,9,8][int(self.Meter/5)]],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))"""
 		self.Meter+=20
 		pass
 	def __call__(self,Tags):
@@ -248,101 +248,6 @@ class Character:
 				i["Stun"]+=Tags["Fault"]*2+2
 				i["Block Stun"]+=Tags["Fault"]*2+2
 		return R
-		"""global TagsGlobal
-		TagsGlobal=Tags
-		if self.LTags=={}:
-			self.LTags=Tags
-		self.Tags=Tags
-		self.HitLag=0
-		self.TS=[]
-		self.Sounds=[]
-		Damage=0
-		ChipDamage=0
-		Stun=0
-		BlockStun=0
-		Knockback=0
-		for i in Tags["Triggers"]:
-			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Hit":
-				Damage+=i[1]["Damage"]
-				ChipDamage+=i[1]["Chip Damage"]
-				Stun=i[1]["Stun"]
-				BlockStun+=i[1]["Block Stun"]
-				Knockback+=i[1]["Knockback"]
-				Knockback2=i[1]["Knockback2"]
-			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Grab":
-				self.Grabbed=1
-				Damage+=i[1]["Damage"]
-				ChipDamage+=i[1]["Chip Damage"]
-				Stun=i[1]["Stun"]
-				BlockStun+=i[1]["Block Stun"]
-				GrabX+=i[1]["Knockback"]
-				GrabY=i[1]["Knockback2"]
-		if self.Grabbed:
-			self.State=self.Idle
-			self.X=GrabX
-			self.Y=GrabY
-		if self.State==self.BackState:
-			self.StateFrame+=1
-		else:
-			self.StateFrame=0
-			self.BackState=self.State
-		self.State(Tags)
-		R={}
-		if Damage>0:
-			if self.SSN=="Block":
-				if not self.DF:
-					self.Health-=Damage
-					self.StateFrame=-1
-					self.State=self.BlockStun
-					self.Stun=BlockStun
-				pass
-			else:
-				if not self.DF:
-					self.Health-=Damage
-					self.StateFrame=-1
-					self.YV=-Knockback2
-					self.XV=Knockback*(Tags["Side"]-0.5)
-					self.KV=0
-					self.State=self.HitStun
-					self.Stun=Stun
-			self.DF=1
-		else:
-			self.DF=0
-		for i in Tags["Triggers"]:
-			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
-				self.HitLag+=i[0]["Hit Lag"]
-				if self.State in [self.States["gh"],self.States["gb"],self.States["ah"],self.States["ab"]]:
-					self.Sounds.append(random.choice(self.HitSounds["Light"]))
-				if self.State in [self.States["gj"],self.States["gn"],self.States["aj"],self.States["an"]]:
-					self.Sounds.append(random.choice(self.HitSounds["Medium"]))
-				#if self.State==self.Fierce and not self.The48Frame:
-					#self.Sounds.append(self.HitSounds["The48Frame"])
-					#pygame.mixer.music.pause()
-					#self.The48Frame=True
-				if self.State in [self.States["gk"],self.States["gm"],self.States["ak"],self.States["am"]]:# and not self.The48Frame:
-					self.Sounds.append(random.choice(self.HitSounds["Heavy"]))
-				if Tags["Other Player"].SSN=="HitStun":
-					self.Combo+=1
-					#Loli.LocalAlerts.append(Loli.AlertText(str(self.Combo)+" Shot Combo",Side=self.ViperOne.Player))
-				else:
-					self.Combo=1
-		if self.SN!=self.TSN:
-			self.Sprite=self.Sprites[self.SN]
-			self.TSN=self.SN
-		self.X+=self.XV
-		self.Y+=self.YV
-		if R==None:
-			R={}
-		Tags["Side"]=self.X>Tags["Other Player"].X
-		if self.Y>0:
-			self.Y=0
-		if Tags["Side"]==1:
-			#self.Sprite=self.Sprites["blank"]
-			self.HitFlip()
-		if Tags["Fault"]>self.LTags["Fault"]:
-			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[1],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-		self.LTags=Tags
-		return R"""
 	def Idle(self,Tags):
 		self.XV=0
 		self.The48Frame=False
@@ -351,31 +256,19 @@ class Character:
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.YV=0
-		if Tags["Controller"]["Fierce"] and Tags["Controller"]["Strong"] and Tags["Controller"]["Jab"] and self.Meter>=self.MaxMeter and Tags["Controller"]["Y2"]==-1:
+		"""if Tags["Controller"]["Fierce"] and Tags["Controller"]["Strong"] and Tags["Controller"]["Jab"] and self.Meter>=self.MaxMeter and Tags["Controller"]["Y2"]==-1:
 			#Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
 			##self.Nogeki()
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
-			self.State=self.The24Frame
-		elif Tags["Controller"]["Roundhouse"]:
-			#self.Pangeki()
-			self.State=self.States["gm"]
-		elif Tags["Controller"]["Forward"]:
-			#self.Pangeki()
-			self.State=self.States["gn"]
-		elif Tags["Controller"]["Short"]:
-			#self.Pangeki()
-			self.State=self.States["gb"]
-		elif Tags["Controller"]["Fierce"]:
-			#self.Nogeki()
-			self.State=self.States["gk"]
-		elif Tags["Controller"]["Strong"]:
-			#self.Nogeki()
-			self.State=self.States["gj"]
-		elif Tags["Controller"]["Jab"]:
-			#self.Nogeki()
-			self.State=self.States["gh"]
+			self.State=self.The24Frame"""
+		if Tags["Controller"]["l"]:
+			self.CancelStates["gl"]()
+		elif Tags["Controller"]["h"]:
+			self.CancelStates["gh"]()
+		elif Tags["Controller"]["m"]:
+			self.CancelStates["gm"]()
 		elif Tags["Controller"]["Jump"]:
 			self.JumpCancel()
 		elif not Tags["Controller"]["X"] == 0:
@@ -412,24 +305,12 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame"""
-		if Tags["Controller"]["Roundhouse"]:
-			#self.Pangeki()
-			self.State=self.States["gm"]
-		elif Tags["Controller"]["Forward"]:
-			#self.Pangeki()
-			self.State=self.States["gn"]
-		elif Tags["Controller"]["Short"]:
-			#self.Pangeki()
-			self.State=self.States["gb"]
-		elif Tags["Controller"]["Fierce"]:
-			#self.Nogeki()
-			self.State=self.States["gk"]
-		elif Tags["Controller"]["Strong"]:
-			#self.Nogeki()
-			self.State=self.States["gj"]
-		elif Tags["Controller"]["Jab"]:
-			#self.Nogeki()
-			self.State=self.States["gh"]
+		if Tags["Controller"]["l"]:
+			self.CancelStates["gl"]()
+		elif Tags["Controller"]["h"]:
+			self.CancelStates["gh"]()
+		elif Tags["Controller"]["m"]:
+			self.CancelStates["gm"]()
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		elif Tags["Controller"]["Jump"]:
@@ -447,24 +328,12 @@ class Character:
 			self.XV=Tags["Controller"]["X"]*6
 		else:
 			self.XV=Tags["Controller"]["X"]*self.StateFrame*2
-		if Tags["Controller"]["Roundhouse"]:
-			#self.Pangeki()
-			self.State=self.States["gm"]
-		elif Tags["Controller"]["Forward"]:
-			#self.Pangeki()
-			self.State=self.States["gn"]
-		elif Tags["Controller"]["Short"]:
-			#self.Pangeki()
-			self.State=self.States["gb"]
-		elif Tags["Controller"]["Fierce"]:
-			#self.Nogeki()
-			self.State=self.States["gk"]
-		elif Tags["Controller"]["Strong"]:
-			#self.Nogeki()
-			self.State=self.States["gj"]
-		elif Tags["Controller"]["Jab"]:
-			#self.Nogeki()
-			self.State=self.States["gh"]
+		if Tags["Controller"]["l"]:
+			self.CancelStates["gl"]()
+		elif Tags["Controller"]["h"]:
+			self.CancelStates["gh"]()
+		elif Tags["Controller"]["m"]:
+			self.CancelStates["gm"]()
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		elif Tags["Controller"]["Jump"]:
@@ -476,30 +345,14 @@ class Character:
 		self.SSN="Jump"
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="jump"
-		if Tags["Controller"]["Roundhouse"]:
-			#self.HitNudge()
-			#self.Pangeki()
-			self.State=self.States["am"]
-		elif Tags["Controller"]["Forward"]:
+		if Tags["Controller"]["l"]:
 			self.HitNudge()
-			#self.Pangeki()
-			self.State=self.States["an"]
-		elif Tags["Controller"]["Short"]:
+			self.CancelStates["al"]()
+		elif Tags["Controller"]["m"]:
 			self.HitNudge()
-			#self.Pangeki()
-			self.State=self.States["ab"]
-		elif Tags["Controller"]["Fierce"]:
-			#self.HitNudge()
-			#self.Nogeki()
-			self.State=self.States["ak"]
-		elif Tags["Controller"]["Strong"]:
-			self.HitNudge()
-			#self.Pangeki()
-			self.State=self.States["aj"]
-		elif Tags["Controller"]["Jab"]:
-			self.HitNudge()
-			#self.Nogeki()
-			self.State=self.States["ah"]
+			self.CancelStates["am"]()
+		elif Tags["Controller"]["h"]:
+			self.CancelStates["ah"]()
 		elif Tags["Controller"]["Jump2"] and self.AirDashable:
 			self.NogekiJumpCancel()
 		if Tags["Controller"]["X"]!=0:
@@ -558,67 +411,6 @@ class Character:
 			self.Meter-=100
 			self.AirDashable=1
 			self.State=self.Jump
-	def Jab(self,Tags):
-		self.HitBoxerFrameData=self.JabData
-		self.SSN="Attack"
-		self.YV=0
-		self.SN=self.JabData["Animation"][self.StateFrame]
-		self.Triggers=self.JabData["Triggers"][self.StateFrame]
-		if 4>self.StateFrame>0 and Tags["Controller"]["Strong"]:
-			#self.Nogeki()
-			self.State=self.Strong
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["jab swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["jab swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.JabData["Frames"]:
-			self.State=self.Idle
-		return {}
-	def Strong(self,Tags):
-		self.HitBoxerFrameData=self.StrongData
-		self.SSN="Attack"
-		self.YV=0
-		self.SN=self.StrongData["Animation"][self.StateFrame]
-		self.Triggers=self.StrongData["Triggers"][self.StateFrame]
-		if 4>self.StateFrame>1 and Tags["Controller"]["Fierce"]:
-			#self.Nogeki()
-			self.State=self.Fierce
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["strong swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["strong swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.StrongData["Frames"]:
-			self.State=self.Idle
-		return {}
-	def Fierce(self,Tags):
-		self.HitBoxerFrameData=self.FierceData
-		self.SSN="Attack"
-		self.YV=0
-		self.SN=self.FierceData["Animation"][self.StateFrame]
-		self.Triggers=self.FierceData["Triggers"][self.StateFrame]
-		if Tags["Controller"]["Jump"] and self.StateFrame==4:
-			self.Sounds.append(self.MiscSounds["Jump Cancel"])
-			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-30
-			self.XV=Tags["Controller"]["X"]*10
-			self.AirDashable=1
-			self.State=self.Jump
-		elif Tags["Controller"]["X"]!=0 and self.StateFrame==4:
-			if (-Tags["Side"]+0.5>0)==(Tags["Controller"]["X"]>0):
-				#self.Sounds.append(self.MiscSounds["Jump Cancel"])
-				self.AirDashable=1
-				self.State=self.Dash
-			else:
-				#self.Sounds.append(self.MiscSounds["Jump Cancel"])
-				self.AirDashable=1
-				self.State=self.BackDash
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["fierce swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["fierce swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.FierceData["Frames"]:
-			self.State=self.Idle
-		return {}
 	def The24Frame(self,Tags):
 		self.HitBoxerFrameData=self.The24FrameData
 		self.SSN="Attack"
@@ -633,204 +425,6 @@ class Character:
 			pygame.mixer.music.set_volume(1)
 			self.State=self.Idle
 		return {}
-	def Short(self,Tags):
-		self.HitBoxerFrameData=self.ShortData
-		self.SSN="Attack"
-		self.YV=0
-		self.SN=self.ShortData["Animation"][self.StateFrame]
-		self.Triggers=self.ShortData["Triggers"][self.StateFrame]
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["short swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["short swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if 4>self.StateFrame and Tags["Controller"]["Forward"]:
-			#self.Pangeki()
-			self.State=self.Forward
-		if self.StateFrame == self.ShortData["Frames"]:
-			self.State=self.Idle
-		return {}
-	def Forward(self,Tags):
-		self.HitBoxerFrameData=self.ForwardData
-		self.SSN="Attack"
-		self.YV=0
-		self.SN=self.ForwardData["Animation"][self.StateFrame]
-		self.Triggers=self.ForwardData["Triggers"][self.StateFrame]
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["forward swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["forward swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if 5>self.StateFrame>1 and Tags["Controller"]["Roundhouse"]:
-			#self.Pangeki()
-			self.State=self.Roundhouse
-		if self.StateFrame == self.ForwardData["Frames"]:
-			self.State=self.Idle
-		return {}
-	def Roundhouse(self,Tags):
-		self.HitBoxerFrameData=self.RoundhouseData
-		self.SSN="Attack"
-		self.YV=0
-		self.SN=self.RoundhouseData["Animation"][self.StateFrame]
-		self.Triggers=self.RoundhouseData["Triggers"][self.StateFrame]
-		if Tags["Controller"]["Jump"] and self.Meter>=5 and self.StateFrame==6:
-			self.Sounds.append(self.MiscSounds["Jump Cancel"])
-			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-30
-			self.XV=Tags["Controller"]["X"]*10
-			self.Meter-=5
-			self.AirDashable=1
-			self.State=self.Jump
-		elif Tags["Controller"]["X"]!=0 and self.Meter>=5 and self.StateFrame==6:
-			if (-Tags["Side"]+0.5>0)==(Tags["Controller"]["X"]>0):
-				#self.Sounds.append(self.MiscSounds["Jump Cancel"])
-				self.Meter-=5
-				self.AirDashable=1
-				self.State=self.Dash
-			else:
-				#self.Sounds.append(self.MiscSounds["Jump Cancel"])
-				self.Meter-=5
-				self.AirDashable=1
-				self.State=self.BackDash
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["roundhouse swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["roundhouse swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.RoundhouseData["Frames"]:
-			self.State=self.Idle
-		return {}
-	def JabAerial(self,Tags):
-		self.HitBoxerFrameData=self.JabAerialData
-		self.SSN="Aerial"
-		self.XV/=1.3
-		self.YV/=1.3
-		#self.YV+=3
-		self.SN=self.JabAerialData["Animation"][self.StateFrame]
-		self.Triggers=self.JabAerialData["Triggers"][self.StateFrame]
-		if 4>self.StateFrame>1 and Tags["Controller"]["Strong"]:
-			#self.Pangeki()
-			self.State=self.StrongAerial
-		if self.Y>=0:
-			self.State=self.Idle
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["jab aerial swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["jab aerial swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.JabAerialData["Frames"]:
-			self.State=self.Jump
-		return {}
-	def StrongAerial(self,Tags):
-		self.HitBoxerFrameData=self.StrongAerialData
-		self.SSN="Aerial"
-		self.XV/=1.3
-		self.YV/=1.3
-		#self.YV+=3
-		self.SN=self.StrongAerialData["Animation"][self.StateFrame]
-		self.Triggers=self.StrongAerialData["Triggers"][self.StateFrame]
-		if 0<self.StateFrame<6 and Tags["Controller"]["Fierce"]:
-			self.CancelBuffer="FierceAerial"
-		elif self.StateFrame==6 and self.CancelBuffer=="FierceAerial":
-			#self.Nogeki()
-			self.State=self.FierceAerial
-		if self.Y>=0:
-			self.State=self.Idle
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["strong aerial swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["strong aerial swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.StrongAerialData["Frames"]:
-			self.State=self.Jump
-		return {}
-	def FierceAerial(self,Tags):
-		self.HitBoxerFrameData=self.FierceAerialData
-		self.SSN="Aerial"
-		self.YV+=3
-		self.SN=self.FierceAerialData["Animation"][self.StateFrame]
-		self.Triggers=self.FierceAerialData["Triggers"][self.StateFrame]
-		if Tags["Controller"]["Jump"] and self.StateFrame==4 and self.AirDashable:
-			self.Sounds.append(self.MiscSounds["Jump Cancel"])
-			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-30
-			self.XV=Tags["Controller"]["X"]*10
-			self.AirDashable=0
-			self.State=self.Jump
-		if self.Y>=0:
-			self.State=self.Idle
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["fierce aerial swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["fierce aerial swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.FierceAerialData["Frames"]:
-			self.State=self.Jump
-		return {}
-	def ShortAerial(self,Tags):
-		self.HitBoxerFrameData=self.ShortAerialData
-		self.SSN="Aerial"
-		self.XV/=1.3
-		self.YV/=1.3
-		#self.YV+=3
-		self.SN=self.ShortAerialData["Animation"][self.StateFrame]
-		self.Triggers=self.ShortAerialData["Triggers"][self.StateFrame]
-		if self.Y>=0:
-			self.State=self.Idle
-		if 4>self.StateFrame>1 and Tags["Controller"]["Forward"]:
-			#self.Pangeki()
-			self.State=self.ForwardAerial
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["short aerial swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["short aerial swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.ShortAerialData["Frames"]:
-			self.State=self.Jump
-		return {}
-	def ForwardAerial(self,Tags):
-		self.HitBoxerFrameData=self.ForwardAerialData
-		self.SSN="Aerial"
-		#self.YV+=3
-		self.XV/=1.3
-		self.YV/=1.3
-		self.SN=self.ForwardAerialData["Animation"][self.StateFrame]
-		self.Triggers=self.ForwardAerialData["Triggers"][self.StateFrame]
-		if self.Y>=0:
-			self.State=self.Idle
-		if 0<self.StateFrame<6 and Tags["Controller"]["Roundhouse"]:
-			self.CancelBuffer="Roundhouse"
-		elif self.StateFrame==6 and self.CancelBuffer=="RoundhouseAerial":
-			#self.Pangeki()
-			self.State=self.RoundhouseAerial
-		if 0<self.StateFrame<6 and Tags["Controller"]["Jab"]:
-			self.CancelBuffer="JabAerial"
-		elif self.StateFrame==6 and self.CancelBuffer=="JabAerial":
-			#self.Nogeki()
-			self.State=self.JabAerial
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["forward aerial swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["forward aerial swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.ForwardAerialData["Frames"]:
-			self.State=self.Jump
-		return {}
-	def RoundhouseAerial(self,Tags):
-		self.HitBoxerFrameData=self.RoundhouseAerialData
-		self.SSN="Aerial"
-		self.YV+=3
-		self.SN=self.RoundhouseAerialData["Animation"][self.StateFrame]
-		self.Triggers=self.RoundhouseAerialData["Triggers"][self.StateFrame]
-		if Tags["Controller"]["Jump"] and self.Meter>=5 and self.StateFrame==4:
-			self.Sounds.append(self.MiscSounds["Jump Cancel"])
-			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-30
-			self.XV=Tags["Controller"]["X"]*10
-			self.Meter-=5
-			self.AirDashable=1
-			self.State=self.Jump
-		if self.Y>=0:
-			self.State=self.Idle
-		if self.StateFrame == 0 or self.StateFrame == 1:
-			self.TS.append({"Sprite":self.Sprites["roundhouse aerial swoosh 1"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == 2:
-			self.TS.append({"Sprite":self.Sprites["roundhouse aerial swoosh 2"],"X":0,"Y":-55,"W":128,"H":128})
-		if self.StateFrame == self.RoundhouseAerialData["Frames"]:
-			self.State=self.Jump
-		return {}
 	def HitStun(self, Tags):
 		self.XV/=1.3
 		self.Meter+=5
@@ -841,7 +435,7 @@ class Character:
 		self.AirDashable=1
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="hitstun1"
-		if Tags["Controller"]["Fierce"] and self.Meter>=self.MaxMeter:
+		if Tags["Controller"]["h"] and self.Meter>=self.MaxMeter:
 			#self.Nogeki()
 			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
 						"Damage":250,

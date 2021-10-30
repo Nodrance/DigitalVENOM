@@ -1,29 +1,24 @@
 {
 	"Format": "ViperZero",
-	"Frames": 21,
+	"Frames": 16,
 	"Animation": [
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1",
-		"fierce aerial 1"
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse1",
+		"roundhouse1",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2"
 	],
 	"Triggers": [
 		[
@@ -88,117 +83,22 @@
 			{
 				"Box": [
 					[
-						-12,
-						62
+						-16,
+						75
 					],
 					[
-						-95,
-						-60
+						-128,
+						0
 					]
 				],
 				"Damage": 10,
-				"Chip Damage": 5,
+				"Chip Damage": 0,
 				"Type": "Hit",
 				"Stun": 30,
-				"Block Stun": 5,
-				"Knockback": 100,
+				"Block Stun": 10,
+				"Knockback": 50,
 				"Hit Lag": 3,
-				"Knockback2": -50
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			},
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 10,
-				"Chip Damage": 5,
-				"Type": "Hit",
-				"Stun": 10,
-				"Block Stun": 5,
-				"Knockback": 100,
-				"Hit Lag": 3,
-				"Knockback2": -50
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
+				"Knockback2": 50
 			}
 		],
 		[
@@ -397,20 +297,85 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/FierceAerial.json",
+	"Filename": "Characters/QuW/Attacks/Roundhouse.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "PanchiraJumpCancel"
+			}
+		],
 		[],
 		[],
 		[],

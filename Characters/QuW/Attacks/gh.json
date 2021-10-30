@@ -1,29 +1,29 @@
 {
 	"Format": "ViperZero",
-	"Frames": 4,
+	"Frames": 19,
 	"Animation": [
-		"jab1",
-		"jab1",
-		"jab1",
-		"jab2",
-		"jab2"
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1"
 	],
 	"Triggers": [
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
 		[
 			{
 				"Box": [
@@ -64,14 +64,274 @@
 						-60
 					]
 				],
-				"Damage": 3,
-				"Chip Damage": 1,
+				"Damage": 10,
+				"Chip Damage": 5,
 				"Type": "Hit",
-				"Stun": 5,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 1,
-				"Knockback2": 0
+				"Stun": 30,
+				"Block Stun": 5,
+				"Knockback": 50,
+				"Hit Lag": 3,
+				"Knockback2": 50
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 10,
+				"Chip Damage": 5,
+				"Type": "Hit",
+				"Stun": 30,
+				"Block Stun": 5,
+				"Knockback": 50,
+				"Hit Lag": 3,
+				"Knockback2": 50
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
 			}
 		],
 		[
@@ -105,52 +365,77 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/Jab.json",
+	"Filename": "Characters/QuW/Attacks/Fierce.json",
 	"Cancels": [
 		[
-			{
+		{
 				"Conditions": {
-					"Strong": [
-						1
+					"Y": [
+						-1
 					]
 				},
 				"Effect": 0,
-				"State": "gj"
+				"State": "NogekiJumpCancel"
 			}
 		],
 		[
 		{
 				"Conditions": {
-					"Strong": [
-						1
+					"Y": [
+						-1
 					]
 				},
 				"Effect": 0,
-				"State": "gj"
+				"State": "NogekiJumpCancel"
 			}
 		],
 		[
 		{
 				"Conditions": {
-					"Strong": [
-						1
+					"Y": [
+						-1
 					]
 				},
 				"Effect": 0,
-				"State": "gj"
+				"State": "NogekiJumpCancel"
 			}
 		],
 		[
 		{
 				"Conditions": {
-					"Strong": [
-						1
+					"Y": [
+						-1
+					]
+				},
+				"Effect": 0,
+				"State": "NogekiJumpCancel"
+			}
+		],
+		[
+		{
+				"Conditions": {
+					"Y": [
+						-1
 					]
 				},
 				"Effect": 1,
-				"State": "gj"
+				"State": "NogekiJumpCancel"
 			}
 		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
 		[]
 	]
 }

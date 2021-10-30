@@ -1,12 +1,76 @@
 {
 	"Format": "ViperZero",
-	"Frames": 2,
+	"Frames": 21,
 	"Animation": [
-		"jab aerial 1",
-		"jab aerial 1",
-		"jab aerial 1"
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1"
 	],
 	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
 		[
 			{
 				"Box": [
@@ -32,14 +96,274 @@
 						-60
 					]
 				],
-				"Damage": 3,
-				"Chip Damage": 1,
+				"Damage": 10,
+				"Chip Damage": 5,
+				"Type": "Hit",
+				"Stun": 30,
+				"Block Stun": 5,
+				"Knockback": 100,
+				"Hit Lag": 3,
+				"Knockback2": -50
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 10,
+				"Chip Damage": 5,
 				"Type": "Hit",
 				"Stun": 10,
-				"Block Stun": 3,
-				"Knockback": 10,
-				"Hit Lag": 1,
-				"Knockback2": -10
+				"Block Stun": 5,
+				"Knockback": 100,
+				"Hit Lag": 3,
+				"Knockback2": -50
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
 			}
 		],
 		[
@@ -73,30 +397,29 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/JabAerial.json",
+	"Filename": "Characters/QuW/Attacks/FierceAerial.json",
 	"Cancels": [
-		[
-			{
-				"Conditions": {
-					"Strong": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "aj"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"Strong": [
-						1
-					]
-				},
-				"Effect": 1,
-				"State": "aj"
-			}
-		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
 		[]
 	]
 }

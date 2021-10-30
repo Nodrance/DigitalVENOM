@@ -1,33 +1,13 @@
 {
 	"Format": "ViperZero",
-	"Frames": 25,
+	"Frames": 5,
 	"Animation": [
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1",
-		"roundhouse aerial 1"
+		"jab aerial 1",
+		"jab aerial 1",
+		"jab aerial 1",
+		"jab aerial 1",
+		"jab aerial 1",
+		"jab aerial 1"
 	],
 	"Triggers": [
 		[
@@ -79,320 +59,22 @@
 			{
 				"Box": [
 					[
-						-25,
-						30
+						-12,
+						62
 					],
 					[
-						-105,
-						0
+						-95,
+						-60
 					]
 				],
-				"Type": "Hurt"
-			},
-			{
-				"Box": [
-					[
-						-16,
-						80
-					],
-					[
-						-128,
-						0
-					]
-				],
-				"Damage": 10,
-				"Chip Damage": 0,
+				"Damage": 3,
+				"Chip Damage": 1,
 				"Type": "Hit",
-				"Stun": 30,
-				"Block Stun": 5,
-				"Knockback": 50,
-				"Hit Lag": 3,
-				"Knockback2": -50
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
+				"Stun": 10,
+				"Block Stun": 3,
+				"Knockback": 10,
+				"Hit Lag": 1,
+				"Knockback2": 0
 			}
 		],
 		[
@@ -441,32 +123,52 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/RoundhouseAerial.json",
+	"Filename": "Characters/QuW/Attacks/JabAerial.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "am2"
+			}
+		],
 		[],
 		[]
 	]

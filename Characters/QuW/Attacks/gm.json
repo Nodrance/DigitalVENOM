@@ -1,41 +1,14 @@
 {
 	"Format": "ViperZero",
-	"Frames": 16,
+	"Frames": 4,
 	"Animation": [
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse1",
-		"roundhouse1",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2",
-		"roundhouse2"
+		"jab1",
+		"jab1",
+		"jab1",
+		"jab2",
+		"jab2"
 	],
 	"Triggers": [
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
 		[
 			{
 				"Box": [
@@ -83,187 +56,22 @@
 			{
 				"Box": [
 					[
-						-16,
-						75
+						-12,
+						62
 					],
 					[
-						-128,
-						0
+						-95,
+						-60
 					]
 				],
-				"Damage": 10,
-				"Chip Damage": 0,
+				"Damage": 3,
+				"Chip Damage": 1,
 				"Type": "Hit",
-				"Stun": 30,
-				"Block Stun": 10,
-				"Knockback": 50,
-				"Hit Lag": 3,
-				"Knockback2": 50
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
+				"Stun": 5,
+				"Block Stun": 3,
+				"Knockback": 0,
+				"Hit Lag": 1,
+				"Knockback2": 0
 			}
 		],
 		[
@@ -297,94 +105,52 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/Roundhouse.json",
+	"Filename": "Characters/QuW/Attacks/Jab.json",
 	"Cancels": [
 		[
 			{
 				"Conditions": {
-					"Jump": [
+					"m": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "PanchiraJumpCancel"
+				"State": "gm2"
 			}
 		],
 		[
-			{
+		{
 				"Conditions": {
-					"Jump": [
+					"m": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "PanchiraJumpCancel"
+				"State": "gm2"
 			}
 		],
 		[
-			{
+		{
 				"Conditions": {
-					"Jump": [
+					"m": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "PanchiraJumpCancel"
+				"State": "gm2"
 			}
 		],
 		[
-			{
+		{
 				"Conditions": {
-					"Jump": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "PanchiraJumpCancel"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"Jump": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "PanchiraJumpCancel"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"Jump": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "PanchiraJumpCancel"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"Jump": [
+					"m": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "PanchiraJumpCancel"
+				"State": "gm2"
 			}
 		],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
 		[]
 	]
 }

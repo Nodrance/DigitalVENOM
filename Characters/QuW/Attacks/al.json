@@ -110,44 +110,44 @@
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "an"
+				"State": "al2"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "an"
+				"State": "al2"
 			}],
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "an"
+				"State": "al2"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "an"
+				"State": "al2"
 			}
 		],
 		[]

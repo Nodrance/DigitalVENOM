@@ -5,101 +5,56 @@
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "gm"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "gh"
+				"State": "gl3"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "gm"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "gh"
+				"State": "gl3"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "gm"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "gh"
+				"State": "gl3"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "gm"
-			},
-			{
-				"Conditions": {
-					"Jab": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "gh"
+				"State": "gl3"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Roundhouse": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "gm"
-			},
-			{
-				"Conditions": {
-					"Jab": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "gh"
+				"State": "gl3"
 			}
 		],
 		[],

@@ -1,7 +1,9 @@
 {
 	"Format": "ViperZero",
-	"Frames": 4,
+	"Frames": 6,
 	"Animation": [
+		"short1",
+		"short1",
 		"short1",
 		"short1",
 		"short2",
@@ -9,6 +11,36 @@
 		"short1"
 	],
 	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
 		[
 			{
 				"Box": [
@@ -110,34 +142,56 @@
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "gn"
+				"State": "gl2"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"l": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "gn"
+				"State": "gl2"
 			}
 		],
 		[
 			{
 				"Conditions": {
-					"Forward": [
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gl2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gl2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"l": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "gn"
+				"State": "gl2"
 			}
 		],
 		[],

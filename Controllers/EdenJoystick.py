@@ -1,6 +1,6 @@
 class Controller:
 	def __init__(self,pygame):
-		self.Joystick=pygame.joystick.Joystick(0)
+		self.Joystick=pygame.joystick.Joystick(1)
 		self.Joystick.init()
 		self.current = False
 		pass

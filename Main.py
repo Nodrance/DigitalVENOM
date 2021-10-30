@@ -1,15 +1,15 @@
 import os,sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
-from Controllers import Owen,Eden,EdenJoystick,Replayer
+from Controllers import Owen,OwenJoystick,Eden,EdenJoystick,Replayer
 from Characters import InjectionCube,QuW
 from Renderers import Loli
 from Rulesets import Competitive,Warmup,Training
 from Engines import Alchemy,Combustion
 from Stages import VenomCompetitive,VenomWarmup,City
-from Tools import HitBoxer
+from Tools import HitBoxer,ControllerDebug
 import sys,copy,json,pygame,dis,inspect,Debug
-sys.stdout = open("OutputLog.txt", "w")
-sys.stderr = open("ErrorLog.txt", "w")
+# sys.stdout = open("OutputLog.txt", "w")
+#sys.stderr = open("ErrorLog.txt", "w")
 
 """
 Camera=Loli.LoliCamera(0,-15,-1,1)
@@ -55,11 +55,17 @@ pygame.mixer.Sound("Sounds/Menu Screen/Switch.wav"),
 pygame.mixer.Sound("Sounds/Menu Screen/Select.wav"),
 ]
 
-P1C=Owen.Controller(pygame)
 try:
+	P1C=OwenJoystick.Controller(pygame)
 	P2C=EdenJoystick.Controller(pygame)
 except:
-	P2C=Eden.Controller(pygame)
+	try:
+		P1C=OwenJoystick.Controller(pygame)
+		P2C=Eden.Controller(pygame)
+	except:
+		P1C=Owen.Controller(pygame)
+		P2C=Eden.Controller(pygame)
+#ControllerDebug.Main()
 P1=QuW.Character#(0,pygame)
 P2=QuW.Character#(1,pygame)
 
@@ -128,7 +134,7 @@ def CharacterSelect():
 			X=P1C.Character(pygame)
 			Y=P2C.Character(pygame)
 			if X!=X2 and not P1R:
-				if X["Jab"]:
+				if X["l"]:
 					MenuSounds[1].play()
 					P1=CSCharacters[Index1](0,pygame)
 					P1R=1
@@ -140,7 +146,7 @@ def CharacterSelect():
 				X2=X
 				G=0
 			if Y!=Y2 and not P2R:
-				if Y["Jab"]:
+				if Y["l"]:
 					MenuSounds[1].play()
 					P2=CSCharacters[Index2](1,pygame)
 					P2R=1
@@ -192,7 +198,7 @@ def ReplayF():
 	P1.Reset(0,pygame)
 	P2.Reset(1,pygame)
 	BG=sys.modules[ReplayData[0]["Stage Module Name"]].Stage(pygame)
-	Replayer1=Replayer.Controller(pygame,Player=0,ReplayData=ReplayData)
+	Replayer1=Replayer.Controlleur(pygame,Player=0,ReplayData=ReplayData)
 	Replayer2=Replayer.Controller(pygame,Player=1,ReplayData=ReplayData)
 	if ReplayData[0]["Engine Module Name"]=="Engines.Alchemy":
 		#return Warmup.Match(pygame,Loli,Alchemy,Replayer1,Replayer2,P1,P2,BG)
