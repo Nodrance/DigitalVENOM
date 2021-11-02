@@ -1,7 +1,20 @@
 {
 	"Format": "ViperZero",
-	"Frames": 11,
+	"Frames": 22,
 	"Animation": [
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
+		"forward aerial 1",
 		"forward aerial 1",
 		"forward aerial 1",
 		"forward aerial 1",
@@ -17,6 +30,51 @@
 		"forward aerial 1"
 	],
 	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
 		[
 			{
 				"Box": [
@@ -93,8 +151,158 @@
 				"Stun": 20,
 				"Block Stun": 3,
 				"Knockback": 0,
-				"Hit Lag": 2,
+				"Hit Lag": 10,
 				"Knockback2": 0
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-52,
+						12
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Type": "Hurt"
 			}
 		],
 		[
@@ -233,7 +441,7 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/ForwardAerial.json",
+	"Filename": "Characters/QuW/Attacks/al2.json",
 	"Cancels": [
 		[
 			{
@@ -322,6 +530,86 @@
 						1
 					]
 				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
 				"Effect": 1,
 				"State": "al3"
 			},
@@ -335,6 +623,33 @@
 				"State": "am"
 			}
 		],
+		[
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "am"
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
 		[],
 		[],
 		[],

@@ -1,22 +1,13 @@
 {
 	"Format": "ViperZero",
-	"Frames": 16,
+	"Frames": 8,
 	"Animation": [
 		"strong2",
 		"strong2",
 		"strong2",
 		"strong2",
 		"strong2",
-		"strong2",
-		"strong2",
-		"strong2",
-		"strong2",
-		"strong2",
 		"strong1",
-		"strong1",
-		"strong2",
-		"strong2",
-		"strong2",
 		"strong2",
 		"strong2",
 		"strong2"
@@ -50,21 +41,6 @@
 					]
 				],
 				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
 			},
 			{
 				"Box": [
@@ -85,146 +61,6 @@
 				"Knockback": 0,
 				"Hit Lag": 2,
 				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			},
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 3,
-				"Chip Damage": 1,
-				"Type": "Hit",
-				"Stun": 5,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
 			}
 		],
 		[
@@ -333,17 +169,8 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/gm2.json",
+	"Filename": "Characters/QuW/Attacks/Strong.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
 		[],
 		[],
 		[],

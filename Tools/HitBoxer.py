@@ -62,6 +62,27 @@ def ConvertToHurtBox():
 	global AttackData,Frame,SelectedTrigger
 	AttackData["Triggers"][Frame][SelectedTrigger]["Type"]="Hurt"
 
+def DoubleFrames():
+	global AttackData,Frame,SelectedTrigger
+	AttackData["Triggers"][Frame][SelectedTrigger]["Type"]="Hurt"
+	at=AttackData.copy()
+	TR=[]
+	for F in range(len(AttackData["Triggers"])):
+		TR.append(AttackData["Triggers"][F])
+		TR.append(AttackData["Triggers"][F])
+	AN=[]
+	for F in range(len(AttackData["Animation"])):
+		AN.append(AttackData["Animation"][F])
+		AN.append(AttackData["Animation"][F])
+	CA=[]
+	for F in range(len(AttackData["Cancels"])):
+		CA.append(AttackData["Cancels"][F])
+		CA.append(AttackData["Cancels"][F])
+	AttackData["Triggers"]=TR
+	AttackData["Animation"]=AN
+	AttackData["Cancels"]=CA
+	AttackData["Frames"]*=2
+
 def ConvertToHitBox():
 	global AttackData,Frame,SelectedTrigger
 	AttackData["Triggers"][Frame][SelectedTrigger]["Type"]="Hit"
@@ -136,6 +157,7 @@ def Menu():
 		Loli.MenuLabel("Change Trigger Type",Function=ChangeTriggerType),
 		Loli.MenuLabel("Hit Box Attributes",Function=HitBoxAttributes),
 		Loli.MenuLabel("Export JSON",Function=ExportJSONFile),
+		Loli.MenuLabel("Double Frames",Function=DoubleFrames),
 		Loli.MenuLabel("Implement (Requires match restart)",Function=Implement),
 		Loli.MenuLabel("Exit",Function=ExitHitBoxer),
 		]).Open()

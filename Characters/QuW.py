@@ -1,6 +1,7 @@
 import copy,random,math,json,pygame,numpy
 from Renderers import Loli
 from Characters import ViperOne
+from Tools import HitBoxer
 class Character:
 	def __init__(self,P,pygame):
 		self.ViperOne=ViperOne.Default(
@@ -99,6 +100,12 @@ class Character:
 		"ah":ViperOne.Move(self,self.ViperZero("ah"),"ah",PreMove=self.Nogeki),
 		"The24Frame":ViperOne.Move(self,self.ViperZero("The24Frame"),"gThe24Frame"),
 		}
+		"""if P==0:
+			for i in self.States:
+				HitBoxer.AttackData=self.States[i].FrameData
+				HitBoxer.DoubleFrames()
+				HitBoxer.Implement()
+				pass"""
 		self.CancelStates={
 		"gl":ViperOne.Cancel(self,self.States["gl"]),
 		"gl2":ViperOne.Cancel(self,self.States["gl2"]),
@@ -114,7 +121,7 @@ class Character:
 		"ah":ViperOne.Cancel(self,self.States["ah"]),
 		"PanchiraJumpCancel":self.PanchiraJumpCancel,
 		"NogekiJumpCancel":self.NogekiJumpCancel,
-		"JumpCancel":self.JumpCancel,
+		"Jump":self.JumpCancel,
 		}
 		self.DashTimer=0
 		self.CancelBuffer=0
@@ -202,6 +209,7 @@ class Character:
 		self.HitSound=0
 		self.Meter=0
 	def ViperZero(self,AN):
+		print(AN)
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
 		X["Filename"]="Characters/QuW/Attacks/"+AN+".json"
 		return X
@@ -263,6 +271,10 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame
+		elif Tags["Controller"]["l"] and Tags["Controller"]["m"] and self.Meter>=int(self.MaxMeter/2):# and Tags["Controller"]["Y2"]==-1:
+			Tags["Other Player"].HalfTime+=50
+			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
+			self.Meter-=int(self.MaxMeter/2)
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
@@ -270,20 +282,12 @@ class Character:
 		elif Tags["Controller"]["m"]:
 			self.CancelStates["gm"]()
 		elif Tags["Controller"]["Jump"]:
-			self.JumpCancel()
+			self.CancelStates["Jump"]()
 		elif not Tags["Controller"]["X"] == 0:
 			if self.DashTimer<2:
-				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
-					self.State=self.BackDash
-					#self.Pangeki()
-				else:
-					self.State=self.Dash
-					#self.Pangeki()
+				self.State=[self.Dash,self.BackDash][Tags["Controller"]["X"] == Tags["Side"]*2-1]
 			else:
-				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
-					self.State=self.BackWalk
-				else:
-					self.State=self.Walk
+				self.State=[self.Walk,self.BackWalk][Tags["Controller"]["X"] == Tags["Side"]*2-1]
 			self.DashTimer=0
 		self.DashTimer+=1
 		return {}
@@ -372,7 +376,7 @@ class Character:
 					#self.Pangeki()
 			self.DashTimer=0
 		if self.Y<0 or self.YV<0:
-			self.YV+=5
+			self.YV+=1
 		else:
 			self.Y=0
 			self.YV=0
@@ -388,17 +392,12 @@ class Character:
 	def NogekiJumpCancel(self):
 		self.Sounds.append(self.MiscSounds["Jump Cancel"])
 		Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-		self.YV=-40
+		self.YV=-15
 		self.XV=self.Tags["Controller"]["X"]*15
 		self.AirDashable=0
 		self.State=self.Jump
 	def JumpCancel(self):
-		self.YV=-30
-		self.XV=self.Tags["Controller"]["X"]*15
-		self.AirDashable=1
-		self.State=self.Jump
-	def SuperJumpCancel(self):
-		self.YV=-50
+		self.YV=-15
 		self.XV=self.Tags["Controller"]["X"]*15
 		self.AirDashable=1
 		self.State=self.Jump
@@ -406,7 +405,7 @@ class Character:
 		if self.Meter>=100:
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-40
+			self.YV=-15
 			self.XV=self.Tags["Controller"]["X"]*15
 			self.Meter-=100
 			self.AirDashable=1
@@ -428,8 +427,9 @@ class Character:
 	def HitStun(self, Tags):
 		self.XV/=1.3
 		self.Meter+=5
-		if self.YV<0:
-			self.YV/=1.3
+		if self.Y<0:
+			#self.YV/=1.3
+			self.YV+=1
 		#self.YV+=5
 		self.SSN="HitStun"
 		self.AirDashable=1
@@ -438,7 +438,7 @@ class Character:
 		if Tags["Controller"]["h"] and self.Meter>=self.MaxMeter:
 			#self.Nogeki()
 			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
-						"Damage":250,
+						"Damage":0,
 						"Chip Damage":0,
 						"Stun":10,
 						"Block Stun":10,
@@ -453,7 +453,7 @@ class Character:
 			self.State=self.Knockdown
 		elif self.StateFrame==0:
 			self.XV=Tags["Side"]*10-5
-			self.YV=0
+			self.YV=-5*(self.Y<0)
 			self.Y=0
 		if self.StateFrame>self.Stun:
 			self.Stun=0
@@ -473,7 +473,7 @@ class Character:
 		else:
 			self.Triggers=[]
 		self.SN="knockdown"
-		self.YV+=3
+		self.YV+=1
 		if self.Y>-1:
 			self.YV/=-5
 			self.Y=-1
@@ -491,7 +491,7 @@ class Character:
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="jump"
 		if self.Y<0 or self.YV<0:
-			self.YV+=3
+			self.YV+=1
 			if self.StateFrame>self.Stun:
 				self.State=self.Jump
 		else:
@@ -507,8 +507,14 @@ class Character:
 		self.AirDashable=0
 		self.DashTimer=5
 		self.YV=0
-		if Tags["Controller"]["Jump2"]:
-			self.NogekiJumpCancel()
+		if Tags["Controller"]["l"]:
+			self.CancelStates["gl"]()
+		elif Tags["Controller"]["h"]:
+			self.CancelStates["gh"]()
+		elif Tags["Controller"]["m"]:
+			self.CancelStates["gm"]()
+		elif Tags["Controller"]["Jump2"]:
+			self.CancelStates["Jump"]()
 		if self.StateFrame==0:
 			self.XV=50*(-Tags["Side"]+0.5)
 		elif numpy.sign(self.XV) != numpy.sign(50*(-Tags["Side"]+0.5)):
@@ -527,8 +533,14 @@ class Character:
 		self.AirDashable=0
 		self.DashTimer=5
 		self.YV=0
-		if Tags["Controller"]["Jump2"]:
-			self.NogekiJumpCancel()
+		if Tags["Controller"]["l"]:
+			self.CancelStates["gl"]()
+		elif Tags["Controller"]["h"]:
+			self.CancelStates["gh"]()
+		elif Tags["Controller"]["m"]:
+			self.CancelStates["gm"]()
+		elif Tags["Controller"]["Jump2"]:
+			self.CancelStates["Jump"]()
 		if self.StateFrame==0:
 			self.XV=30*(Tags["Side"]-0.5)
 		elif numpy.sign(self.XV) != numpy.sign(30*(Tags["Side"]-0.5)):

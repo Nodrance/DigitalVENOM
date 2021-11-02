@@ -1,29 +1,33 @@
 {
 	"Format": "ViperZero",
-	"Frames": 20,
+	"Frames": 25,
 	"Animation": [
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1"
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1",
+		"roundhouse aerial 1"
 	],
 	"Triggers": [
 		[
@@ -84,101 +88,26 @@
 					]
 				],
 				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
 			},
 			{
 				"Box": [
 					[
-						-12,
-						62
+						-16,
+						80
 					],
 					[
-						-95,
-						-60
+						-128,
+						0
 					]
 				],
-				"Damage": 3,
-				"Chip Damage": 1,
+				"Damage": 10,
+				"Chip Damage": 0,
 				"Type": "Hit",
-				"Stun": 20,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
+				"Stun": 30,
+				"Block Stun": 5,
+				"Knockback": 50,
+				"Hit Lag": 3,
+				"Knockback2": -50
 			}
 		],
 		[
@@ -194,26 +123,141 @@
 					]
 				],
 				"Type": "Hurt"
-			},
+			}
+		],
+		[
 			{
 				"Box": [
 					[
-						-12,
-						62
+						-25,
+						30
 					],
 					[
-						-95,
-						-60
+						-105,
+						0
 					]
 				],
-				"Damage": 3,
-				"Chip Damage": 1,
-				"Type": "Hit",
-				"Stun": 20,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
 			}
 		],
 		[
@@ -397,8 +441,12 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/am2.json",
+	"Filename": "Characters/QuW/Attacks/RoundhouseAerial.json",
 	"Cancels": [
+		[],
+		[],
+		[],
+		[],
 		[],
 		[],
 		[],

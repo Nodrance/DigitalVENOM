@@ -1,12 +1,33 @@
 {
 	"Format": "ViperZero",
-	"Frames": 16,
+	"Frames": 36,
 	"Animation": [
 		"roundhouse2",
 		"roundhouse2",
 		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
 		"roundhouse1",
 		"roundhouse1",
+		"roundhouse1",
+		"roundhouse1",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
+		"roundhouse2",
 		"roundhouse2",
 		"roundhouse2",
 		"roundhouse2",
@@ -21,6 +42,111 @@
 		"roundhouse2"
 	],
 	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
 		[
 			{
 				"Box": [
@@ -96,9 +222,219 @@
 				"Type": "Hit",
 				"Stun": 30,
 				"Block Stun": 10,
-				"Knockback": 50,
-				"Hit Lag": 3,
-				"Knockback2": 50
+				"Knockback": 0,
+				"Hit Lag": 25,
+				"Knockback2": 17
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
 			}
 		],
 		[
@@ -297,8 +633,118 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/Roundhouse.json",
+	"Filename": "Characters/QuW/Attacks/gl3.json",
 	"Cancels": [
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			}
+		],
 		[
 			{
 				"Conditions": {
@@ -376,6 +822,27 @@
 				"State": "PanchiraJumpCancel"
 			}
 		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "PanchiraJumpCancel"
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
 		[],
 		[],
 		[],

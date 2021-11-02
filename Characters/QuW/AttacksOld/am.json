@@ -1,13 +1,7 @@
 {
 	"Format": "ViperZero",
-	"Frames": 10,
+	"Frames": 5,
 	"Animation": [
-		"jab aerial 1",
-		"jab aerial 1",
-		"jab aerial 1",
-		"jab aerial 1",
-		"jab aerial 1",
-		"jab aerial 1",
 		"jab aerial 1",
 		"jab aerial 1",
 		"jab aerial 1",
@@ -65,51 +59,6 @@
 			{
 				"Box": [
 					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
 						-12,
 						62
 					],
@@ -126,73 +75,6 @@
 				"Knockback": 10,
 				"Hit Lag": 1,
 				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 3,
-				"Chip Damage": 1,
-				"Type": "Hit",
-				"Stun": 10,
-				"Block Stun": 3,
-				"Knockback": 10,
-				"Hit Lag": 1,
-				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
 			}
 		],
 		[
@@ -241,7 +123,7 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/am.json",
+	"Filename": "Characters/QuW/Attacks/JabAerial.json",
 	"Cancels": [
 		[
 			{
@@ -283,56 +165,10 @@
 						1
 					]
 				},
-				"Effect": 0,
-				"State": "am2"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "am2"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "am2"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
 				"Effect": 1,
 				"State": "am2"
 			}
 		],
-		[
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 1,
-				"State": "am2"
-			}
-		],
-		[],
-		[],
 		[],
 		[]
 	]

@@ -1,29 +1,29 @@
 {
 	"Format": "ViperZero",
-	"Frames": 20,
+	"Frames": 21,
 	"Animation": [
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1"
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1",
+		"fierce aerial 1"
 	],
 	"Triggers": [
 		[
@@ -84,66 +84,26 @@
 					]
 				],
 				"Type": "Hurt"
-			}
-		],
-		[
+			},
 			{
 				"Box": [
 					[
-						-25,
-						30
+						-12,
+						62
 					],
 					[
-						-105,
-						0
+						-95,
+						-60
 					]
 				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
+				"Damage": 10,
+				"Chip Damage": 5,
+				"Type": "Hit",
+				"Stun": 30,
+				"Block Stun": 5,
+				"Knockback": 100,
+				"Hit Lag": 3,
+				"Knockback2": -50
 			}
 		],
 		[
@@ -171,14 +131,14 @@
 						-60
 					]
 				],
-				"Damage": 3,
-				"Chip Damage": 1,
+				"Damage": 10,
+				"Chip Damage": 5,
 				"Type": "Hit",
-				"Stun": 20,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
+				"Stun": 10,
+				"Block Stun": 5,
+				"Knockback": 100,
+				"Hit Lag": 3,
+				"Knockback2": -50
 			}
 		],
 		[
@@ -194,26 +154,66 @@
 					]
 				],
 				"Type": "Hurt"
-			},
+			}
+		],
+		[
 			{
 				"Box": [
 					[
-						-12,
-						62
+						-25,
+						30
 					],
 					[
-						-95,
-						-60
+						-105,
+						0
 					]
 				],
-				"Damage": 3,
-				"Chip Damage": 1,
-				"Type": "Hit",
-				"Stun": 20,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
 			}
 		],
 		[
@@ -397,7 +397,7 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/am2.json",
+	"Filename": "Characters/QuW/Attacks/FierceAerial.json",
 	"Cancels": [
 		[],
 		[],

@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#DigitalVENOM files to be ignored
+Replays/
+Replay.json
+OutputLog.txt

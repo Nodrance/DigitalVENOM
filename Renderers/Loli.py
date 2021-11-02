@@ -30,6 +30,10 @@ ImpactGlitch=1
 LastOutlines=[[],[],[]]
 #TrueWin=win
 ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
+MenuSounds=[
+pygame.mixer.Sound("Sounds/Menu Screen/Switch.wav"),
+pygame.mixer.Sound("Sounds/Menu Screen/Select.wav"),
+]
 CamCap=(win.get_width()*0.9)
 P1W=0
 P2W=0
@@ -412,21 +416,13 @@ def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None
 def Sound(X):
 	return P.mixer.Sound(X)
 
-def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render function
+def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZoom=0,EffectColor=(255,255,0)): #The render function
 	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,HitFlashes,Clock,ImpactGlitch,LastOutlines,RenderBenchmarking
-	HandleMusic()
-	try:
-		for i in P1T["Sounds"]:
-			i.play()
-	except:
-		pass
-	try:
-		for i in P2T["Sounds"]:
-			i.play()
-	except:
-		pass
-	HF=0
-	CS=1.5
+	try:HandleMusic()
+	except:pass
+	#HF=0
+	try:CS=1+15/Clock.get_fps()
+	except:CS=1.1
 	Camera.FOV=1.3
 	Camera.X-=int((P1.X+P2.X)/2)
 	Camera.X=int(Camera.X/CS)
@@ -449,12 +445,12 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 			pass
 	try:
 		if P1T["Hit Lag"]+P2T["Hit Lag"]>0:
-			HF=1
-			Camera.Z=min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
+			#HF=1
+			"""Camera.Z=min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
 			Camera.X=int((P1.X+P2.X)/2)
-			Camera.Y=int((P1.Y+P2.Y)/2+15/Camera.Z)
+			Camera.Y=int((P1.Y+P2.Y)/2+15/Camera.Z)"""
 			EffectColor=[(255,0,255),(0,255,255)][P1T["Hit Lag"]>P2T["Hit Lag"]]
-			RenderFrames+=(P1T["Hit Lag"]+P2T["Hit Lag"])
+			#RenderFrames+=(P1T["Hit Lag"]+P2T["Hit Lag"])
 			#RenderFrames+=2
 		#BlitBloom=1
 	except:
@@ -483,21 +479,32 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0): #The render
 	for CurrentRenderFrame in range(RenderFrames):
 		BlitList=[]
 		FakeTime+=42
-		if RenderBenchmarking:
+		Clock.tick()
+		"""if RenderBenchmarking:
 			Clock.tick()
 			print(Clock.get_fps())
 		else:
-			Clock.tick(24)
+			Clock.tick(24)"""
 		#print(Clock.get_fps())
 		A=0
-		if HF and (Impact or RenderFrames>2):
+		if CameraZoom:
 			#win.fill((255,255*CurrentRenderFrame/RenderFrames,255*CurrentRenderFrame/RenderFrames))
 			#win.fill((EffectColor[0]*CurrentRenderFrame/RenderFrames,EffectColor[1]*CurrentRenderFrame/RenderFrames,EffectColor[2]*CurrentRenderFrame/RenderFrames))
-			win.fill(EffectColor)
-		if HF and (Impact or RenderFrames>3):
+			#Camera.X-=int((P1.X+P2.X)/2)
+			#Camera.Y-=int((P1.Y+P2.Y)/2)
+			Camera.Z+=0.1#min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
+			#Camera.X=0
+			#Camera.Y=0
+			Camera.Z/=2
+			#Camera.X+=int((P1.X+P2.X)/2)
+			#Camera.Y+=int((P1.Y+P2.Y)/2)
+			Camera.Z-=0.1#min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
+		if HF:
 			Camera.X=PsudoX+random.randint(-RenderFrames,RenderFrames)
 			Camera.Y=PsudoY+random.randint(-RenderFrames,RenderFrames)
-		else:
+			#win.fill(EffectColor)
+			#win.fill(0)
+		if 1:
 			try:
 				for i in BG.Sprites:
 					if i["Large"]:
@@ -627,6 +634,68 @@ def RenderSelect(P1,P2,I1,I2):
 	RenderSprite(CSP2Image,(P2[0],P2[1],0),64,64,Camera,Smooth=0)
 	ScaleWin()
 	pass
+def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
+	P1S=0
+	P2S=0
+	R=0
+	P1T=[-32,0]
+	P2T=[-32,0]
+	P1R=0
+	P2R=0
+	Index1=0
+	Index2=0
+	OI1=Index1
+	OI2=Index2
+	while True:
+		Events=pygame.event.get()
+		if P1R and P2R:
+			return CSCharacters[Index1](0,pygame),CSCharacters[Index2](1,pygame)
+		P1T=[64*(Index1%2)-32,0]
+		P2T=[64*(Index2%2)-32,0]
+		Index1=Index1%len(CSCharacters)
+		Index2=Index2%len(CSCharacters)
+		G=1
+		X=P1C.Character(pygame,Events)
+		Y=P2C.Character(pygame,Events)
+		X2=X
+		Y2=Y
+		while G:
+			Events=pygame.event.get()
+			RenderSelect(P1T,P2T,Index1,Index2)
+			for Event in Events:
+				if Event.type == pygame.QUIT:
+					pygame.quit()
+					sys.exit()
+				if Event.type == pygame.KEYDOWN:
+					if Event.key==pygame.K_ESCAPE:
+						pygame.quit()
+						sys.exit()
+			X=P1C.Character(pygame,Events)
+			Y=P2C.Character(pygame,Events)
+			if X!=X2 and not P1R:
+				if X["l"]:
+					MenuSounds[1].play()
+					P1R=1
+				else:
+					Index1+=X["X"]
+					if OI1!=Index1:
+						MenuSounds[0].play()
+						OI1=Index1
+				X2=X
+				G=0
+			if Y!=Y2 and not P2R:
+				if Y["l"]:
+					MenuSounds[1].play()
+					P2R=1
+				else:
+					Index2+=Y["X"]
+					if OI2!=Index2:
+						MenuSounds[0].play()
+						OI2=Index2
+				Y2=Y
+				G=0
+			pass
+		pass
 
 def TextInputBox(OldText=""):
 	Text=OldText

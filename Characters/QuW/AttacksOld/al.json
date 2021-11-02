@@ -1,12 +1,7 @@
 {
 	"Format": "ViperZero",
-	"Frames": 8,
+	"Frames": 4,
 	"Animation": [
-		"short aerial 1",
-		"short aerial 1",
-		"short aerial 1",
-		"short aerial 1",
-		"short aerial 1",
 		"short aerial 1",
 		"short aerial 1",
 		"short aerial 1",
@@ -14,36 +9,6 @@
 		"short aerial 1"
 	],
 	"Triggers": [
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
 		[
 			{
 				"Box": [
@@ -105,53 +70,8 @@
 				"Stun": 10,
 				"Block Stun": 3,
 				"Knockback": 0,
-				"Hit Lag": 10,
+				"Hit Lag": 1,
 				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
 			}
 		],
 		[
@@ -185,7 +105,7 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/al.json",
+	"Filename": "Characters/QuW/Attacks/ShortAerial.json",
 	"Cancels": [
 		[
 			{
@@ -207,41 +127,7 @@
 				},
 				"Effect": 0,
 				"State": "al2"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "al2"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "al2"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "al2"
-			}
-		],
+			}],
 		[
 			{
 				"Conditions": {
@@ -264,18 +150,6 @@
 				"State": "al2"
 			}
 		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 1,
-				"State": "al2"
-			}
-		],
-		[],
 		[]
 	]
 }

@@ -1,6 +1,6 @@
 {
 	"Format": "ViperZero",
-	"Frames": 15,
+	"Frames": 8,
 	"Cancels": [
 		[
 			{
@@ -53,58 +53,10 @@
 						1
 					]
 				},
-				"Effect": 0,
-				"State": "gl3"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "gl3"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "gl3"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
 				"Effect": 1,
 				"State": "gl3"
 			}
 		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 1,
-				"State": "gl3"
-			}
-		],
-		[],
-		[],
-		[],
-		[],
 		[],
 		[],
 		[],
@@ -114,14 +66,6 @@
 		"forward1",
 		"forward1",
 		"forward1",
-		"forward1",
-		"forward1",
-		"forward2",
-		"forward2",
-		"forward2",
-		"forward2",
-		"forward2",
-		"forward2",
 		"forward2",
 		"forward2",
 		"forward2",
@@ -130,36 +74,6 @@
 		"forward2"
 	],
 	"Triggers": [
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
 		[
 			{
 				"Box": [
@@ -233,101 +147,11 @@
 				"Damage": 10,
 				"Chip Damage": 0,
 				"Type": "Hit",
-				"Stun": 15,
+				"Stun": 5,
 				"Block Stun": 3,
 				"Knockback": 0,
-				"Hit Lag": 10,
+				"Hit Lag": 2,
 				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-52,
-						12
-					],
-					[
-						-64,
-						0
-					]
-				],
-				"Type": "Hurt"
 			}
 		],
 		[
@@ -406,5 +230,5 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/gl2.json"
+	"Filename": "Characters/QuW/Attacks/Forward.json"
 }

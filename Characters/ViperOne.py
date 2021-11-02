@@ -38,6 +38,8 @@ class Move:
 				self.Character.State=self.Character.Idle
 				if self.PostMove!=None:
 					self.PostMove()
+		else:
+			self.Character.XV=0
 		if self.Character.StateFrame == self.FrameData["Frames"]:
 			self.Character.State=self.Character.Jump
 		for Cancel in self.FrameData["Cancels"][self.Character.StateFrame]:
@@ -79,6 +81,7 @@ class Default:
 		CHA.XV=0
 		CHA.YV=0
 		CHA.KV=0
+		CHA.HalfTime=0
 		CHA.Grabbed=False
 		CHA.Offset=self.Offset
 		CHA.W=self.Width

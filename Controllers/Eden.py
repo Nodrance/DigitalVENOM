@@ -1,8 +1,26 @@
 class Controller:
 	def __init__(self,pygame):
 		pass
-	def Character(self,pygame):
+	def Character(self,pygame,PygameEvents):
 		keys=pygame.key.get_pressed()
+		R={
+		"l":0,
+		"m":0,
+		"h":0,
+		}
+		R["X"]=keys[pygame.K_d]-keys[pygame.K_a]
+		R["Y"]=keys[pygame.K_s]-keys[pygame.K_w]
+		R["Jump"]=keys[pygame.K_s]-keys[pygame.K_w]==-1
+		for Event in PygameEvents:
+			if Event.type==pygame.KEYDOWN:
+				if Event.key==pygame.K_u:
+					R["l"]=1
+				if Event.key==pygame.K_i:
+					R["m"]=1
+				if Event.key==pygame.K_o:
+					R["h"]=1
+		return R
+		"""keys=pygame.key.get_pressed()
 		return {
 		"X":keys[pygame.K_d]-keys[pygame.K_a],
 		"Y":keys[pygame.K_s]-keys[pygame.K_w],
@@ -16,4 +34,4 @@ class Controller:
 		"l":keys[pygame.K_u],
 		"m":keys[pygame.K_i],
 		"h":keys[pygame.K_o],
-		}
+		}"""

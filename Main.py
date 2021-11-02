@@ -8,7 +8,7 @@ from Engines import Alchemy,Combustion
 from Stages import VenomCompetitive,VenomWarmup,City
 from Tools import HitBoxer,ControllerDebug
 import sys,copy,json,pygame,dis,inspect,Debug
-# sys.stdout = open("OutputLog.txt", "w")
+#sys.stdout = open("OutputLog.txt", "w")
 #sys.stderr = open("ErrorLog.txt", "w")
 
 """
@@ -50,10 +50,6 @@ CSCharacters=[QuW.Character,QuW.Character]
 TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert()
 P1WImage=pygame.image.load("Sprites/Win Screen/Player 1 Wins.png").convert()
 P2WImage=pygame.image.load("Sprites/Win Screen/Player 2 Wins.png").convert()
-MenuSounds=[
-pygame.mixer.Sound("Sounds/Menu Screen/Switch.wav"),
-pygame.mixer.Sound("Sounds/Menu Screen/Select.wav"),
-]
 
 try:
 	P1C=OwenJoystick.Controller(pygame)
@@ -96,95 +92,34 @@ def WinScreen(Index):
 		for Event in pygame.event.get():
 			if Event.type==pygame.KEYDOWN:
 				G=0
-def CharacterSelect():
-	global P1C,P2C,P1,P2,CSCharacters
-	P1S=0
-	P2S=0
-	R=0
-	P1T=[-32,0]
-	P2T=[-32,0]
-	P1R=0
-	P2R=0
-	Index1=0
-	Index2=0
-	OI1=Index1
-	OI2=Index2
-	while True:
-		if P1R and P2R:
-			return Index1,Index2
-		P1T=[64*(Index1%2)-32,0]
-		P2T=[64*(Index2%2)-32,0]
-		Index1=Index1%len(CSCharacters)
-		Index2=Index2%len(CSCharacters)
-		Loli.RenderSelect(P1T,P2T,Index1,Index2)
-		G=1
-		X=P1C.Character(pygame)
-		Y=P2C.Character(pygame)
-		X2=X
-		Y2=Y
-		while G:
-			for Event in pygame.event.get():
-				if Event.type == pygame.QUIT:
-					pygame.quit()
-					sys.exit()
-				if Event.type == pygame.KEYDOWN:
-					if Event.key==pygame.K_ESCAPE:
-						pygame.quit()
-						sys.exit()
-			X=P1C.Character(pygame)
-			Y=P2C.Character(pygame)
-			if X!=X2 and not P1R:
-				if X["l"]:
-					MenuSounds[1].play()
-					P1=CSCharacters[Index1](0,pygame)
-					P1R=1
-				else:
-					Index1+=X["X"]
-					if OI1!=Index1:
-						MenuSounds[0].play()
-						OI1=Index1
-				X2=X
-				G=0
-			if Y!=Y2 and not P2R:
-				if Y["l"]:
-					MenuSounds[1].play()
-					P2=CSCharacters[Index2](1,pygame)
-					P2R=1
-				else:
-					Index2+=Y["X"]
-					if OI2!=Index2:
-						MenuSounds[0].play()
-						OI2=Index2
-				Y2=Y
-				G=0
-			pass
-		pass
-	pass
 def CompetitiveF():
-	CharacterSelect()
+	global P1C,P2C,P1,P2,CSCharacters
+	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
 	Loli.HBR=0
 	Loli.P1W=0
 	Loli.P2W=0
 	#Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
-	return Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)
+	return Competitive.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG2)
 def TrainingF():
-	CharacterSelect()
+	global P1C,P2C,P1,P2,CSCharacters
+	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
 	Loli.HBR=1
 	Loli.P1W=0
 	Loli.P2W=0
 	while True:
 		#X=Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
-		X=Training.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
+		X=Training.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG)
 		if X==(0,0):
 			return X
 	#X=Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)
 	#print(WinIndex[X[0]*2+X[1]])
 def CasualF():
-	CharacterSelect()
+	global P1C,P2C,P1,P2,CSCharacters
+	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
 	Loli.HBR=0
 	Loli.P1W=0
 	Loli.P2W=0
-	return Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
+	return Warmup.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG)
 	#X=Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)
 	#print(WinIndex[X[0]*2+X[1]])
 def ReplayF():

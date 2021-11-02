@@ -1,14 +1,49 @@
 {
 	"Format": "ViperZero",
-	"Frames": 4,
+	"Frames": 8,
 	"Animation": [
 		"jab1",
 		"jab1",
 		"jab1",
+		"jab1",
+		"jab1",
+		"jab1",
+		"jab2",
+		"jab2",
 		"jab2",
 		"jab2"
 	],
 	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
 		[
 			{
 				"Box": [
@@ -87,6 +122,71 @@
 					]
 				],
 				"Type": "Hurt"
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 3,
+				"Chip Damage": 1,
+				"Type": "Hit",
+				"Stun": 5,
+				"Block Stun": 3,
+				"Knockback": 0,
+				"Hit Lag": 1,
+				"Knockback2": 0
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt"
 			}
 		],
 		[
@@ -105,7 +205,7 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/Jab.json",
+	"Filename": "Characters/QuW/Attacks/gm.json",
 	"Cancels": [
 		[
 			{
@@ -119,7 +219,7 @@
 			}
 		],
 		[
-		{
+			{
 				"Conditions": {
 					"m": [
 						1
@@ -130,7 +230,7 @@
 			}
 		],
 		[
-		{
+			{
 				"Conditions": {
 					"m": [
 						1
@@ -141,7 +241,40 @@
 			}
 		],
 		[
-		{
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gm2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gm2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gm2"
+			}
+		],
+		[
+			{
 				"Conditions": {
 					"m": [
 						1
@@ -151,6 +284,18 @@
 				"State": "gm2"
 			}
 		],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "gm2"
+			}
+		],
+		[],
 		[]
 	]
 }

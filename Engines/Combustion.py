@@ -9,8 +9,15 @@ ReplayData=[]
 MaxWallDurability=24
 WallDurability1=MaxWallDurability
 WallDurability2=MaxWallDurability
+HF=0
+CameraZoom=0
+Rendering3=0
 InputList=[]
 Rendering2=1
+P1T=[]
+P2T=[]
+T1=[]
+T2=[]
 def EndGame():
 	return "End Game"
 def SetupHitBoxer():
@@ -81,11 +88,11 @@ def CheckCollisions(P1,P2): #Check all hurtboxes to find any collisions and retu
 	pass
 PygameEvents=[]
 def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one frame of gameplay.
-	global Rendering2,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
+	global Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
 	i=0
+	PygameEvents=pygame.event.get()
 	for Event in PygameEvents:
 		i+=1
-		print("Y")
 		if Event.type == pygame.QUIT:
 			pygame.quit()
 			sys.exit()
@@ -93,18 +100,17 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			if Event.key==pygame.K_ESCAPE:
 				if Training:
 					Rendering2=0
+					pygame.time.delay(100)
 					L=TrainingMenu(Renderer)
-					Rendering2=1
 				else:
 					Rendering2=0
+					pygame.time.delay(100)
 					L=PauseMenu(Renderer)
-					Rendering2=1
 				if L=="End Game":
 					return 2,"End Game"
+				Rendering2=1
 				#pygame.quit()
 				#sys.exit()
-	for j in range(i):
-		PygameEvents.pop(0)
 	GlobalPlayer1=P1
 	GlobalPlayer2=P2
 	Fault=[0,numpy.sign(P2.X-P1.X)*numpy.sign(P1.X)][numpy.sign(P1.X)==numpy.sign(P2.X)]
@@ -128,12 +134,11 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 					Renderer.Particles.append(Renderer.LineParticle((0,0),(random.randint(-8,8),random.randint(-64,0)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))"""
 			PreFault=Fault
 	except Exception as e:
-		#print(e)
 		PreFault=Fault
 	T1,T2 = CheckCollisions(P1,P2)
-	P1C1=P1C.Character(pygame)
-	P2C1=P2C.Character(pygame)
-	try:
+	P1C1=P1C.Character(pygame,PygameEvents)
+	P2C1=P2C.Character(pygame,PygameEvents)
+	"""try:
 		LFC1
 		LFC2
 	except:
@@ -167,10 +172,10 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	#P1C2={P1C1[i] and not LFC1[i] for i in P1C1.keys()}
 	#P2C2={P2C1[i] and not LFC2[i] for i in P2C1.keys()}
 	LFC1=P1C1
-	LFC2=P2C1
+	LFC2=P2C1"""
 	ReplayData.append([P1C1,P2C1])
-	P1T=P1({"Side":0,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C2,"Other Player":P2})
-	P2T=P2({"Side":1,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C2,"Other Player":P1})
+	P1T=P1({"Side":0,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C1,"Other Player":P2})
+	P2T=P2({"Side":1,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C1,"Other Player":P1})
 	if P1.X+32>P2.X:
 		P1.X=P2.X=(P2.X+P1.X)/2
 		P1.X-=16
@@ -209,12 +214,15 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	if P2.Y<BG.Bounds[2]:
 		P2.Y=BG.Bounds[2]
 		P2.YV=-P2.YV
+	HFF=0
 	try:
 		SimulatedFrames+=P1T["Hit Lag"]
+		HFF+=P1T["Hit Lag"]
 	except Exception as e:
 		pass
 	try:
 		SimulatedFrames+=P2T["Hit Lag"]
+		HFF+=P2T["Hit Lag"]
 	except Exception as e:
 		pass
 	SimulatedFrames+=1
@@ -223,33 +231,86 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	#while ((pygame.time.get_ticks()-StartTime)/SimulatedFrames)+100<1000/SimulatedFramerate:
 		#pygame.time.delay(1)
 		#pygame.time.delay(int(((pygame.time.get_ticks()-StartTime)-SimulatedFrames*(1000/SimulatedFramerate))/2))"""
-	Clock.tick(60)
+	try:
+		for i in P1T["Sounds"]:
+			i.play()
+	except:
+		pass
+	try:
+		for i in P2T["Sounds"]:
+			i.play()
+	except:
+		pass
+	ET=SimulatedFrames*1000/60
+	if HFF>0:
+		if HFF>15:
+			CameraZoom=1
+		else:
+			CameraZoom=0
+		HF=1
+		for F in range(HFF):
+			#print((pygame.time.get_ticks()-StartTime)/SimulatedFrames)
+			ET2=(pygame.time.get_ticks()-StartTime)
+			if ET>ET2:
+				if ET-ET2<10000:
+					time.sleep(max(0,ET-ET2)/1000)
+				else:
+					SimulatedFrames=0
+			#Clock.tick(46)
+	else:
+		CameraZoom=0
+		HF=0
+	ET2=(pygame.time.get_ticks()-StartTime)
+	if ET>ET2:
+		if ET-ET2<10000:
+			time.sleep(max(0,ET-ET2)/1000)
+		else:
+			SimulatedFrames=0
+	#Clock.tick(46)
 	return P1.Health<1, P2.Health<1
 	pass
 def GameplayThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global MaxWallDurability,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
+	global MaxWallDurability,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData,Rendering2
 	while 1:
 		X,Y = Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=Training)
+		#Clock.tick(24)
 		if X==2:
 			if Y=="End Game":
+				Rendering2=0
 				return (0,0)
 		if X or Y:
 			if SaveReplay:
 				json.dump(ReplayData,open("Replays/"+str(time.time())+".json","w"))
+			Rendering2=0
 			return X,Y
 	pass
-def RenderThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
+def RenderSetup(a,b,c,d,e,f,g,h,i,j,k):
+	global Rendering2,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData,P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training
+	P1=a
+	P2=b
+	Renderer=c
+	pygame=d
+	P1C=e
+	P2C=f
+	BG=g
+	GameStart=h
+	SaveReplay=i
+	Rendering=j
+	Training=k
+	pass
+def GetCurrentList(L):
+	X=L.copy()
+	for i in range(len(X)):
+		L.pop(0)
+	pass
+def RenderThread():
+	global HF,Rendering2,CameraZoom,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData,P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training
 	while 1:
 		if Rendering2:
-			RenderThing(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)
-def RenderThing(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global Rendering2,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
-	keys=pygame.key.get_pressed()
-	PygameEvents.extend(pygame.event.get())
-	Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1)
-	pass
+			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom)
+			time.sleep(0)
 def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global MaxWallDurability,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
+	global MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
 	WallDurability1=MaxWallDurability
 	WallDurability2=MaxWallDurability
 	pygame.mixer.music.set_volume(100)
@@ -270,9 +331,9 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 	DuelFault=0
 	FrameRenderList=[]
 	Clock=pygame.time.Clock()
-	#if Rendering:
-		#Renderer.Render(P1,P2,BG.Fault[BG.FaultOffset],1,{"Sounds":[GameStart]})
-	#pygame.time.wait(2000)
+	if Rendering:
+		Renderer.Render(P1,P2,BG.Fault[BG.FaultOffset],1,{"Sounds":[GameStart]})
+	pygame.time.wait(2000)
 	StartTime=pygame.time.get_ticks()
 	try:
 		del LFC1
@@ -281,5 +342,10 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 		pass
 	#threading.Thread(target=RenderThread,args=(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)).start()
 	Rendering2=1
-	threading.Thread(target=GameplayThread,args=(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)).start()
-	RenderThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)
+	RenderSetup(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)
+	if not Rendering3:
+		Rendering3=1
+		RTT=threading.Thread(target=RenderThread)
+		RTT.daemon=True
+		RTT.start()#,args=(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)).start()
+	return GameplayThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)

@@ -1,18 +1,7 @@
 {
 	"Format": "ViperZero",
-	"Frames": 20,
+	"Frames": 10,
 	"Animation": [
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
-		"strong aerial 1",
 		"strong aerial 1",
 		"strong aerial 1",
 		"strong aerial 1",
@@ -99,66 +88,6 @@
 					]
 				],
 				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
 			},
 			{
 				"Box": [
@@ -179,131 +108,6 @@
 				"Knockback": 0,
 				"Hit Lag": 2,
 				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			},
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 3,
-				"Chip Damage": 1,
-				"Type": "Hit",
-				"Stun": 20,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
 			}
 		],
 		[
@@ -397,19 +201,8 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/am2.json",
+	"Filename": "Characters/QuW/Attacks/StrongAerial.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
 		[],
 		[],
 		[],
