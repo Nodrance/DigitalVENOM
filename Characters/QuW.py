@@ -209,7 +209,7 @@ class Character:
 		self.HitSound=0
 		self.Meter=0
 	def ViperZero(self,AN):
-		print(AN)
+		#print(AN)
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
 		X["Filename"]="Characters/QuW/Attacks/"+AN+".json"
 		return X

@@ -37,8 +37,8 @@ def TrainingResetGame():
 def TrainingFillMeters():
 	global GlobalPlayer1,GlobalPlayer2
 	try:
-		GlobalPlayer1.Panchira=25
-		GlobalPlayer2.Panchira=25
+		GlobalPlayer1.Meter=GlobalPlayer1.MaxMeter
+		GlobalPlayer2.Meter=GlobalPlayer2.MaxMeter
 	except:
 		pass
 	pass
@@ -241,7 +241,7 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			i.play()
 	except:
 		pass
-	ET=SimulatedFrames*1000/60
+	ET=SimulatedFrames/60
 	if HFF>0:
 		if HFF>15:
 			CameraZoom=1
@@ -250,22 +250,26 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 		HF=1
 		for F in range(HFF):
 			#print((pygame.time.get_ticks()-StartTime)/SimulatedFrames)
-			ET2=(pygame.time.get_ticks()-StartTime)
+			ET2=(time.time()-StartTime)
 			if ET>ET2:
 				if ET-ET2<10000:
+					#print(SimulatedFrames/(time.time()-StartTime))
 					time.sleep(max(0,ET-ET2)/1000)
+					pass
 				else:
 					SimulatedFrames=0
 			#Clock.tick(46)
 	else:
 		CameraZoom=0
 		HF=0
-	ET2=(pygame.time.get_ticks()-StartTime)
+	ET2=(time.time()-StartTime)
 	if ET>ET2:
 		if ET-ET2<10000:
 			time.sleep(max(0,ET-ET2)/1000)
+			pass
 		else:
 			SimulatedFrames=0
+	#time.sleep(0.1)
 	#Clock.tick(46)
 	return P1.Health<1, P2.Health<1
 	pass
@@ -334,7 +338,7 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 	if Rendering:
 		Renderer.Render(P1,P2,BG.Fault[BG.FaultOffset],1,{"Sounds":[GameStart]})
 	pygame.time.wait(2000)
-	StartTime=pygame.time.get_ticks()
+	StartTime=time.time()
 	try:
 		del LFC1
 		del LFC2

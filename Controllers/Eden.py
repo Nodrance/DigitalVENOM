@@ -10,6 +10,9 @@ class Controller:
 		}
 		R["X"]=keys[pygame.K_d]-keys[pygame.K_a]
 		R["Y"]=keys[pygame.K_s]-keys[pygame.K_w]
+		R["X2"]=0
+		R["Y2"]=0
+		R["Jump2"]=0
 		R["Jump"]=keys[pygame.K_s]-keys[pygame.K_w]==-1
 		for Event in PygameEvents:
 			if Event.type==pygame.KEYDOWN:
@@ -19,6 +22,11 @@ class Controller:
 					R["m"]=1
 				if Event.key==pygame.K_o:
 					R["h"]=1
+				if Event.key in [pygame.K_d or pygame.K_a]:
+					R["X2"]=R["X"]
+				if Event.key in [pygame.K_w or pygame.K_s]:
+					R["Y2"]=R["Y"]
+					R["Jump2"]=max(-R["Y2"],0)
 		return R
 		"""keys=pygame.key.get_pressed()
 		return {
