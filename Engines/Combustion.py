@@ -114,8 +114,8 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	GlobalPlayer1=P1
 	GlobalPlayer2=P2
 	Fault=[0,numpy.sign(P2.X-P1.X)*numpy.sign(P1.X)][numpy.sign(P1.X)==numpy.sign(P2.X)]
-	#Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-	#Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+	Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+	Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 	try:
 		if Fault != PreFault:
 			if Fault==0:
@@ -243,6 +243,15 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	except:
 		pass
 	SimulatedFrames+=1+HFF
+	if HFF>0:
+		#Renderer.Particles.append(Renderer.StarParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-8,8),random.randint(32,64)),random.randint(1,5)/10,0.6,(255,255,255)))
+		for i in range(min(HFF*5,50)):
+			Renderer.Particles.append(Renderer.LineParticle((int((P1.X+P2.X)/2)+random.randint(-64,64),int((P1.Y+P2.Y)/2)-32+random.randint(-64,64)),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,(255,255,0)))
+		for i in range(min(HFF*5,50)):
+			Renderer.Particles.append(Renderer.CircleParticle((int((P1.X+P2.X)/2)+random.randint(-64,64),int((P1.Y+P2.Y)/2)-32+random.randint(-64,64)),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,(255,255,0)))
+		#for i in range(min(RenderFrames,10)):
+		#	Particles.append(SpikeParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-5,5),random.randint(-5,5)),random.randint(1,5)/10,random.randint(1,3)*1000,EffectColor))
+		#"""
 	ET=SimulatedFrames/60
 	if HFF>0:
 		if HFF>15:
@@ -257,7 +266,6 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 				#print(SimulatedFrames/(time.time()-StartTime))
 				#print(ET-ET2)
 				time.sleep(max(0,ET-ET2))
-			#Clock.tick(46)
 	else:
 		CameraZoom=0
 		HF=0
@@ -269,8 +277,6 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 		else:
 			StartTime=time.time()
 			SimulatedFrames=0
-	#time.sleep(0.1)
-	#Clock.tick(46)
 	return P1.Health<1, P2.Health<1
 	pass
 def GameplayThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):

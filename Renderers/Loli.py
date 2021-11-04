@@ -72,7 +72,7 @@ def FakeTimeFunction():
 	global FakeTime
 	return FakeTime
 
-pygame.time.get_ticks=FakeTimeFunction
+#pygame.time.get_ticks=FakeTimeFunction
 
 class LineParticle:
 	def __init__(self,Pos,Vel,Life,Length,Color):
@@ -455,15 +455,6 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		#BlitBloom=1
 	except:
 		pass
-	if HF:
-		Particles.append(StarParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-8,8),random.randint(32,64)),random.randint(1,5)/10,0.6,(255,255,255)))
-		for i in range(min(RenderFrames*5,50)):
-			Particles.append(LineParticle((int((P1.X+P2.X)/2)+random.randint(-64,64),int((P1.Y+P2.Y)/2)-32+random.randint(-64,64)),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,EffectColor))
-		for i in range(min(RenderFrames*5,50)):
-			Particles.append(CircleParticle((int((P1.X+P2.X)/2)+random.randint(-64,64),int((P1.Y+P2.Y)/2)-32+random.randint(-64,64)),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,EffectColor))
-		#for i in range(min(RenderFrames,10)):
-		#	Particles.append(SpikeParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-5,5),random.randint(-5,5)),random.randint(1,5)/10,random.randint(1,3)*1000,EffectColor))
-		#"""
 	#FZ+=min(max(0.75,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),5)
 	#FZ=(FZ/CS)
 	#FZ-=min(max(0.75,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),5)
@@ -495,7 +486,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			Camera.Z+=0.1#min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
 			#Camera.X=0
 			#Camera.Y=0
-			Camera.Z/=2
+			Camera.Z/=CS
 			#Camera.X+=int((P1.X+P2.X)/2)
 			#Camera.Y+=int((P1.Y+P2.Y)/2)
 			Camera.Z-=0.1#min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)

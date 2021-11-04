@@ -25,6 +25,7 @@ for i in range(12):
 """
 -Todo-
 Implement trigger attributes
+Add cancels for medium and heavy attacks
 
 -Done-
 Change Standardized State Names
@@ -132,6 +133,7 @@ def CasualF():
 	Loli.P1W=0
 	Loli.P2W=0
 	WinScreen(Warmup.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG))
+	#Warmup.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG)
 	#X=Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)
 	#print(WinIndex[X[0]*2+X[1]])
 def ReplayF():
