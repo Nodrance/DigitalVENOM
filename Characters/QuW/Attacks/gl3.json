@@ -54,7 +54,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -69,7 +70,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -84,7 +86,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -99,7 +102,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -114,7 +118,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -129,7 +134,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -144,7 +150,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -159,7 +166,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -174,7 +182,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -189,7 +198,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -204,7 +214,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			},
 			{
 				"Box": [
@@ -217,14 +228,15 @@
 						0
 					]
 				],
-				"Damage": 10,
+				"Damage": 3,
 				"Chip Damage": 0,
 				"Type": "Hit",
 				"Stun": 30,
 				"Block Stun": 10,
 				"Knockback": 0,
-				"Hit Lag": 25,
-				"Knockback2": 17
+				"Hit Lag": 30,
+				"Knockback2": 15,
+				"Attributes": []
 			}
 		],
 		[
@@ -239,7 +251,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -254,7 +267,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -269,7 +283,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -284,7 +299,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -299,7 +315,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -314,7 +331,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -329,7 +347,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -344,7 +363,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -359,7 +379,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -374,7 +395,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -389,7 +411,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -404,7 +427,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -419,7 +443,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -434,7 +459,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -449,7 +475,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -464,7 +491,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -479,7 +507,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -494,7 +523,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -509,7 +539,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -524,7 +555,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -539,7 +571,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -554,7 +587,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -569,7 +603,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -584,7 +619,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -599,7 +635,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -614,7 +651,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -629,7 +667,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		]
 	],
@@ -644,6 +683,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -655,6 +703,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -666,6 +723,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -677,6 +743,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -688,6 +763,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -699,6 +783,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -710,6 +803,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -721,6 +823,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -732,6 +843,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -743,6 +863,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -754,6 +883,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -765,6 +903,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -776,6 +923,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -787,6 +943,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -798,6 +963,15 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
@@ -809,28 +983,55 @@
 				},
 				"Effect": 0,
 				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[
 			{
 				"Conditions": {
 					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "PanchiraJumpCancel"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"Jump": [
-						1
-					]
-				},
-				"Effect": 1,
-				"State": "PanchiraJumpCancel"
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[],

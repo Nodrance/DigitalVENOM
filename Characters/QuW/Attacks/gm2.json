@@ -34,7 +34,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -49,7 +50,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -64,7 +66,24 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
 			},
 			{
 				"Box": [
@@ -83,8 +102,9 @@
 				"Stun": 5,
 				"Block Stun": 3,
 				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
+				"Hit Lag": 10,
+				"Knockback2": 0,
+				"Attributes": []
 			}
 		],
 		[
@@ -99,27 +119,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
-			},
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 3,
-				"Chip Damage": 1,
-				"Type": "Hit",
-				"Stun": 5,
-				"Block Stun": 3,
-				"Knockback": 0,
-				"Hit Lag": 2,
-				"Knockback2": 0
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -134,7 +135,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -149,7 +151,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -164,7 +167,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -179,7 +183,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -194,7 +199,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -209,7 +215,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -224,7 +231,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -239,7 +247,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -254,7 +263,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -269,7 +279,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -284,7 +295,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -299,7 +311,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -314,22 +327,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		]
 	],

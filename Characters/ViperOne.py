@@ -26,13 +26,15 @@ class Move:
 		self.Character.SSN=self.SSN
 		self.Character.SN=self.FrameData["Animation"][self.Character.StateFrame]
 		self.Character.Triggers=self.FrameData["Triggers"][self.Character.StateFrame]
+		if self.Character.Y<0:
+			self.Character.YV+=1
 		if self.SSN.lower().startswith("a"):
 			#self.Character.YV+=5
 			#if self.Character.StateFrame==0:
 				#self.Character.YV=-20
 			#self.Character.YV+=3
-			self.Character.XV/=1.3
-			self.Character.YV/=1.3
+			#self.Character.XV/=1.3
+			#self.Character.YV/=1.3
 			#self.HitNudge()
 			if self.Character.Y>=0:
 				self.Character.State=self.Character.Idle
@@ -57,9 +59,9 @@ class Move:
 			self.PostFrame()
 		pass
 	def HitNudge(self):
-		if abs(self.Character.X-self.Character.Tags["Other Player"].X)+abs(self.Character.Y-self.Character.Tags["Other Player"].Y) < 200:
+		"""if abs(self.Character.X-self.Character.Tags["Other Player"].X)+abs(self.Character.Y-self.Character.Tags["Other Player"].Y) < 200:
 			self.Character.XV+=(self.Character.Tags["Other Player"].X-self.Character.X)/20
-			self.Character.YV+=(self.Character.Tags["Other Player"].Y-self.Character.Y)/20
+			self.Character.YV+=(self.Character.Tags["Other Player"].Y-self.Character.Y)/20"""
 		pass
 		pass
 class Default:

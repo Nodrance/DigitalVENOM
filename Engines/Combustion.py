@@ -180,6 +180,10 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 		P1.X=P2.X=(P2.X+P1.X)/2
 		P1.X-=16
 		P2.X+=16
+	if P1.X+400<P2.X:
+		P1.X=P2.X=(P2.X+P1.X)/2
+		P1.X-=200
+		P2.X+=200
 	if P1.X<BG.Bounds[0]:
 		if WallDurability1<0:
 			WallDurability1=MaxWallDurability
@@ -216,16 +220,13 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 		P2.YV=-P2.YV
 	HFF=0
 	try:
-		SimulatedFrames+=P1T["Hit Lag"]
 		HFF+=P1T["Hit Lag"]
 	except Exception as e:
 		pass
 	try:
-		SimulatedFrames+=P2T["Hit Lag"]
 		HFF+=P2T["Hit Lag"]
 	except Exception as e:
 		pass
-	SimulatedFrames+=1
 	#print(SimulatedFrames/((pygame.time.get_ticks()-StartTime)/1000))
 	#if (pygame.time.get_ticks()-StartTime)/SimulatedFrames<1000/SimulatedFramerate:
 	#while ((pygame.time.get_ticks()-StartTime)/SimulatedFrames)+100<1000/SimulatedFramerate:
@@ -241,6 +242,7 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			i.play()
 	except:
 		pass
+	SimulatedFrames+=1+HFF
 	ET=SimulatedFrames/60
 	if HFF>0:
 		if HFF>15:
@@ -252,22 +254,20 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			#print((pygame.time.get_ticks()-StartTime)/SimulatedFrames)
 			ET2=(time.time()-StartTime)
 			if ET>ET2:
-				if ET-ET2<10000:
-					#print(SimulatedFrames/(time.time()-StartTime))
-					time.sleep(max(0,ET-ET2)/1000)
-					pass
-				else:
-					SimulatedFrames=0
+				#print(SimulatedFrames/(time.time()-StartTime))
+				#print(ET-ET2)
+				time.sleep(max(0,ET-ET2))
 			#Clock.tick(46)
 	else:
 		CameraZoom=0
 		HF=0
 	ET2=(time.time()-StartTime)
 	if ET>ET2:
-		if ET-ET2<10000:
-			time.sleep(max(0,ET-ET2)/1000)
+		if ET-ET2<0.1:
+			time.sleep(max(0,ET-ET2))
 			pass
 		else:
+			StartTime=time.time()
 			SimulatedFrames=0
 	#time.sleep(0.1)
 	#Clock.tick(46)
@@ -281,11 +281,13 @@ def GameplayThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rende
 		if X==2:
 			if Y=="End Game":
 				Rendering2=0
+				time.sleep(0.5)
 				return (0,0)
 		if X or Y:
 			if SaveReplay:
 				json.dump(ReplayData,open("Replays/"+str(time.time())+".json","w"))
 			Rendering2=0
+			time.sleep(0.5)
 			return X,Y
 	pass
 def RenderSetup(a,b,c,d,e,f,g,h,i,j,k):
@@ -314,7 +316,7 @@ def RenderThread():
 			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom)
 			time.sleep(0)
 def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData
+	global MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
 	WallDurability1=MaxWallDurability
 	WallDurability2=MaxWallDurability
 	pygame.mixer.music.set_volume(100)
@@ -339,6 +341,7 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 		Renderer.Render(P1,P2,BG.Fault[BG.FaultOffset],1,{"Sounds":[GameStart]})
 	pygame.time.wait(2000)
 	StartTime=time.time()
+	SimulatedFrames=0
 	try:
 		del LFC1
 		del LFC2

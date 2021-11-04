@@ -1,6 +1,5 @@
 class Controller:
 	def __init__(self,pygame):
-		self.Frame=0
 		pass
 	def Character(self,pygame,PygameEvents):
 		keys=pygame.key.get_pressed()

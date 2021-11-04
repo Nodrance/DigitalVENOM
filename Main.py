@@ -24,6 +24,7 @@ for i in range(12):
 
 """
 -Todo-
+Implement trigger attributes
 
 -Done-
 Change Standardized State Names
@@ -33,18 +34,11 @@ Add jump cancels again
 Add SFX back to moves
 Converted moves to ViperOne
 Fix panchira attacks
-
--QuW Gattling Chain-
-GB>GN>GM
-GB>GN>GH>GJ>GK
-AB>AN>AM
-AB>AN>AH>AJ>AK
-
--QuW Bread and Butter-
-Pangeki:GB>GN>GM>PanchiraJumpCancel>AB>AN>AM
-Nogeki :GB>GN>GH>GJ>GK>JumpCancel>AB>AN>AH>AJ>AK
-
-"""
+Fix the length of hitlag (hitstop)
+Fix Crashes
+Add Auto Combo
+Add win screen
+""" 
 
 CSCharacters=[QuW.Character,QuW.Character]
 TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert()
@@ -75,6 +69,24 @@ WinIndex=[
 "It was a tie?",
 ]
 
+def WinScreen(X):
+	Y=int(X[0])-int(X[1])
+	G=0
+	if Y==1:
+		pygame.transform.smoothscale(P2WImage,(Loli.TrueWin.get_width(),Loli.TrueWin.get_height()),Loli.TrueWin)
+		Loli.UpdateTrueWin()
+		pygame.time.delay(2000)
+		G=1
+	if Y==-1:
+		pygame.transform.smoothscale(P1WImage,(Loli.TrueWin.get_width(),Loli.TrueWin.get_height()),Loli.TrueWin)
+		Loli.UpdateTrueWin()
+		pygame.time.delay(2000)
+		G=1
+	while G:
+		for Event in pygame.event.get():
+			if Event.type==pygame.KEYDOWN:
+				G=0
+	pass
 def TitleScreen():
 	pygame.transform.smoothscale(TitleScreenImage,(Loli.TrueWin.get_width(),Loli.TrueWin.get_height()),Loli.TrueWin)
 	pygame.display.update()
@@ -83,7 +95,7 @@ def TitleScreen():
 		for Event in pygame.event.get():
 			if Event.type==pygame.KEYDOWN:
 				G=0
-def WinScreen(Index):
+"""def WinScreen(Index):
 	pygame.transform.smoothscale([P1WImage,P2WImage][Index],(Loli.TrueWin.get_width(),Loli.TrueWin.get_height()),Loli.TrueWin)
 	pygame.display.update()
 	G=1
@@ -91,7 +103,7 @@ def WinScreen(Index):
 	while G:
 		for Event in pygame.event.get():
 			if Event.type==pygame.KEYDOWN:
-				G=0
+				G=0"""
 def CompetitiveF():
 	global P1C,P2C,P1,P2,CSCharacters
 	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
@@ -99,7 +111,7 @@ def CompetitiveF():
 	Loli.P1W=0
 	Loli.P2W=0
 	#Warmup.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG)
-	return Competitive.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG2)
+	WinScreen(Competitive.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG2))
 def TrainingF():
 	global P1C,P2C,P1,P2,CSCharacters
 	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
@@ -119,7 +131,7 @@ def CasualF():
 	Loli.HBR=0
 	Loli.P1W=0
 	Loli.P2W=0
-	return Warmup.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG)
+	WinScreen(Warmup.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG))
 	#X=Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)
 	#print(WinIndex[X[0]*2+X[1]])
 def ReplayF():
@@ -137,7 +149,7 @@ def ReplayF():
 	Replayer2=Replayer.Controller(pygame,Player=1,ReplayData=ReplayData)
 	if ReplayData[0]["Engine Module Name"]=="Engines.Alchemy":
 		#return Warmup.Match(pygame,Loli,Alchemy,Replayer1,Replayer2,P1,P2,BG)
-		return Alchemy.Game(P1,P2,Loli,pygame,Replayer1,Replayer2,BG,pygame.mixer.Sound("Sounds/GameStart0.wav"),SaveReplay=0,Rendering=1)
+		WinScreen(Alchemy.Game(P1,P2,Loli,pygame,Replayer1,Replayer2,BG,pygame.mixer.Sound("Sounds/GameStart0.wav"),SaveReplay=0,Rendering=1))
 	#X=Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)
 	#print(WinIndex[X[0]*2+X[1]])
 def QuitGame():

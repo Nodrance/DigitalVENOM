@@ -503,8 +503,9 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			Camera.X=PsudoX+random.randint(-RenderFrames,RenderFrames)
 			Camera.Y=PsudoY+random.randint(-RenderFrames,RenderFrames)
 			#win.fill(EffectColor)
-			#win.fill(0)
-		if 1:
+		if CameraZoom:
+			win.fill(0)
+		else:
 			try:
 				for i in BG.Sprites:
 					if i["Large"]:

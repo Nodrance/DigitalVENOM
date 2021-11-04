@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 #DigitalVENOM files to be ignored
-Replays/
 Replay.json
 OutputLog.txt
+ErrorLog.txt

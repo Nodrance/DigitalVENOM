@@ -28,7 +28,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -43,7 +44,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -58,7 +60,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -73,7 +76,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -88,7 +92,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -103,10 +108,41 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
 			{
 				"Box": [
 					[
@@ -124,30 +160,9 @@
 				"Stun": 10,
 				"Block Stun": 3,
 				"Knockback": 10,
-				"Hit Lag": 1,
-				"Knockback2": 0
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 3,
-				"Chip Damage": 1,
-				"Type": "Hit",
-				"Stun": 10,
-				"Block Stun": 3,
-				"Knockback": 10,
-				"Hit Lag": 1,
-				"Knockback2": 0
+				"Hit Lag": 20,
+				"Knockback2": 0,
+				"Attributes": []
 			}
 		],
 		[
@@ -162,7 +177,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -177,7 +193,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -192,7 +209,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -207,7 +225,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -222,7 +241,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		],
 		[
@@ -237,7 +257,8 @@
 						0
 					]
 				],
-				"Type": "Hurt"
+				"Type": "Hurt",
+				"Attributes": []
 			}
 		]
 	],
@@ -316,7 +337,7 @@
 						1
 					]
 				},
-				"Effect": 1,
+				"Effect": 0,
 				"State": "am2"
 			}
 		],

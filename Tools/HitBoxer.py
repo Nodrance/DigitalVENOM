@@ -64,7 +64,6 @@ def ConvertToHurtBox():
 
 def DoubleFrames():
 	global AttackData,Frame,SelectedTrigger
-	AttackData["Triggers"][Frame][SelectedTrigger]["Type"]="Hurt"
 	at=AttackData.copy()
 	TR=[]
 	for F in range(len(AttackData["Triggers"])):
@@ -82,6 +81,12 @@ def DoubleFrames():
 	AttackData["Animation"]=AN
 	AttackData["Cancels"]=CA
 	AttackData["Frames"]*=2
+
+def AddBlankAttributes():
+	global AttackData,Frame,SelectedTrigger
+	for F in range(len(AttackData["Triggers"])):
+		for J in range(len(AttackData["Triggers"][F])):
+			AttackData["Triggers"][F][J]["Attributes"]=[]
 
 def ConvertToHitBox():
 	global AttackData,Frame,SelectedTrigger
