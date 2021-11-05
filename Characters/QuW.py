@@ -233,8 +233,10 @@ class Character:
 		pass
 		pass
 	def FaultReversal(self):
-		self.FaultReversalTag=1
-		self.X+=(self.Tags["Side"]-0.5)*-512
+		if self.Meter>int(self.MaxMeter/4):
+			self.FaultReversalTag=1
+			self.X+=(self.Tags["Side"]-0.5)*-512
+			self.Meter-=int(self.MaxMeter/4)
 	def Nogeki(self):
 		self.Meter-=100
 	def Pangeki(self):
@@ -460,6 +462,7 @@ class Character:
 						"Hit Lag":10,
 						"Knockback2":10,}]
 			self.State=self.Jump
+			self.Meter=0
 		if self.Y<0:
 			if self.StateFrame==0:
 				self.YV=min(-3,self.YV)

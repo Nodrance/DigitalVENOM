@@ -189,6 +189,7 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	if D[0].X<BG.Bounds[0]:
 		if WallDurability1<0:
 			WallDurability1=MaxWallDurability
+			WallDurability2=MaxWallDurability
 			DuelFault=max(-BG.FaultOffset,DuelFault-1)
 			D[0].X=BG.Bounds[1]-200
 			D[1].X=BG.Bounds[1]-100
@@ -202,6 +203,7 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			WallDurability1-=1
 	if D[1].X>BG.Bounds[1]:
 		if WallDurability2<0:
+			WallDurability1=MaxWallDurability
 			WallDurability2=MaxWallDurability
 			DuelFault=min(BG.FaultOffset,DuelFault+1)
 			D[0].X=BG.Bounds[0]+100
@@ -330,9 +332,10 @@ def RenderThread():
 			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom)
 			time.sleep(0)
 def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
+	global PlayerSides,MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
 	WallDurability1=MaxWallDurability
 	WallDurability2=MaxWallDurability
+	PlayerSides=0
 	pygame.mixer.music.set_volume(100)
 	ReplayData=[{
 	"Engine Module Name":__name__,

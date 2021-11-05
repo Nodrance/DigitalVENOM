@@ -22,12 +22,8 @@ for i in range(12):
 	pass
 """
 
-"""
+"""  
 -Todo-
-Implement trigger attributes
-Add cancels for medium and heavy attacks
-=======
-
 
 -Done-
 Change Standardized State Names
@@ -43,6 +39,10 @@ Add Auto Combo
 Add win screen
 Fix dash canceling into jumps infinitely
 Implement trigger attributes
+Add cancels for medium and heavy attacks
+Reset player sides at round start
+Make fault reversal cost meter
+Make burst cost meter
 """ 
 
 CSCharacters=[QuW.Character,QuW.Character]
