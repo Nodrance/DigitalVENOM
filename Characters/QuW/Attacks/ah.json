@@ -176,7 +176,7 @@
 				"Stun": 30,
 				"Block Stun": 5,
 				"Knockback": 100,
-				"Hit Lag": 3,
+				"Hit Lag": 30,
 				"Knockback2": -50,
 				"Attributes": []
 			}

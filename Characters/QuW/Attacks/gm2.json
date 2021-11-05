@@ -334,13 +334,83 @@
 	],
 	"Filename": "Characters/QuW/Attacks/gm2.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gh"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gh"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gh"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gh"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gh"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "gh"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "gh"
+			}
+		],
 		[],
 		[],
 		[],

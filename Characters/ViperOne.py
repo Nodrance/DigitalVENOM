@@ -122,6 +122,24 @@ class Default:
 				BlockStun+=i[1]["Block Stun"]
 				Knockback+=i[1]["Knockback"]
 				Knockback2=i[1]["Knockback2"]
+				if self.Character.SSN=="Block":
+					self.Character.Health-=Damage
+					self.Character.StateFrame=-1
+					self.Character.State=self.Character.BlockStun
+					self.Character.Stun=BlockStun
+					pass
+				else:
+					self.Character.Health-=Damage
+					self.Character.StateFrame=-1
+					self.Character.YV=-Knockback2
+					self.Character.XV=Knockback*(Tags["Side"]-0.5)
+					self.Character.KV=0
+					if "Knockdown" in i[1]["Attributes"]:
+						self.Character.CancelStates["Knockdown"]()
+						self.Character.Stun=Stun
+					else:
+						self.Character.State=self.Character.HitStun
+						self.Character.Stun=Stun
 			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Grab":
 				self.Character.Grabbed=1
 				Damage+=i[1]["Damage"]
@@ -141,26 +159,6 @@ class Default:
 			self.Character.BackState=self.Character.State
 		self.Character.State(Tags)
 		R={}
-		if Damage>0:
-			if self.Character.SSN=="Block":
-				if not self.Character.DF:
-					self.Character.Health-=Damage
-					self.Character.StateFrame=-1
-					self.Character.State=self.Character.BlockStun
-					self.Character.Stun=BlockStun
-				pass
-			else:
-				if not self.Character.DF:
-					self.Character.Health-=Damage
-					self.Character.StateFrame=-1
-					self.Character.YV=-Knockback2
-					self.Character.XV=Knockback*(Tags["Side"]-0.5)
-					self.Character.KV=0
-					self.Character.State=self.Character.HitStun
-					self.Character.Stun=Stun
-			self.Character.DF=1
-		else:
-			self.Character.DF=0
 		for i in Tags["Triggers"]:
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
 				self.Character.HitLag+=i[0]["Hit Lag"]

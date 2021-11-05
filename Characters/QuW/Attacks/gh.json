@@ -99,7 +99,7 @@
 					],
 					[
 						-95,
-						-60
+						-50
 					]
 				],
 				"Damage": 40,
@@ -108,8 +108,8 @@
 				"Stun": 30,
 				"Block Stun": 10,
 				"Knockback": 0,
-				"Hit Lag": 25,
-				"Knockback2": 17,
+				"Hit Lag": 30,
+				"Knockback2": 20,
 				"Attributes": []
 			}
 		],

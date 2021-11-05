@@ -14,6 +14,7 @@ CameraZoom=0
 Rendering3=0
 InputList=[]
 Rendering2=1
+PlayerSides=0
 P1T=[]
 P2T=[]
 T1=[]
@@ -88,7 +89,7 @@ def CheckCollisions(P1,P2): #Check all hurtboxes to find any collisions and retu
 	pass
 PygameEvents=[]
 def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one frame of gameplay.
-	global Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
+	global PlayerSides,Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
 	i=0
 	PygameEvents=pygame.event.get()
 	for Event in PygameEvents:
@@ -174,50 +175,51 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	LFC1=P1C1
 	LFC2=P2C1"""
 	ReplayData.append([P1C1,P2C1])
-	P1T=P1({"Side":0,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C1,"Other Player":P2})
-	P2T=P2({"Side":1,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C1,"Other Player":P1})
-	if P1.X+32>P2.X:
-		P1.X=P2.X=(P2.X+P1.X)/2
-		P1.X-=16
-		P2.X+=16
-	if P1.X+400<P2.X:
-		P1.X=P2.X=(P2.X+P1.X)/2
-		P1.X-=200
-		P2.X+=200
-	if P1.X<BG.Bounds[0]:
+	P1T=P1({"Side":P1.X>P2.X,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C1,"Other Player":P2})
+	P2T=P2({"Side":P2.X>P1.X,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C1,"Other Player":P1})
+	D=[[P1,P2],[P2,P1]][PlayerSides]
+	if D[0].X+32>D[1].X:
+		D[0].X=D[1].X=(D[1].X+D[0].X)/2
+		D[0].X-=16
+		D[1].X+=16
+	if D[0].X+400<D[1].X:
+		D[0].X=D[1].X=(D[1].X+D[0].X)/2
+		D[0].X-=200
+		D[1].X+=200
+	if D[0].X<BG.Bounds[0]:
 		if WallDurability1<0:
 			WallDurability1=MaxWallDurability
 			DuelFault=max(-BG.FaultOffset,DuelFault-1)
-			P1.X=BG.Bounds[1]-200
-			P2.X=BG.Bounds[1]-100
+			D[0].X=BG.Bounds[1]-200
+			D[1].X=BG.Bounds[1]-100
 			Renderer.Camera.X=BG.Bounds[1]+BG.DuelFaultCameraOffset
 			DuelFaultChangeSound.play()
 			for i in range(100):
 				Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[1],random.randint(BG.Bounds[2],0)),(random.randint(-64,-16),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 			#P1.XV=-P1.XV
 		else:
-			P1.X=BG.Bounds[0]
+			D[0].X=BG.Bounds[0]
 			WallDurability1-=1
-	if P2.X>BG.Bounds[1]:
+	if D[1].X>BG.Bounds[1]:
 		if WallDurability2<0:
 			WallDurability2=MaxWallDurability
 			DuelFault=min(BG.FaultOffset,DuelFault+1)
-			P1.X=BG.Bounds[0]+100
-			P2.X=BG.Bounds[0]+200
+			D[0].X=BG.Bounds[0]+100
+			D[1].X=BG.Bounds[0]+200
 			Renderer.Camera.X=BG.Bounds[0]-BG.DuelFaultCameraOffset
 			DuelFaultChangeSound.play()
 			for i in range(100):
 				Renderer.Particles.append(Renderer.LineParticle((BG.Bounds[0],random.randint(BG.Bounds[2],0)),(random.randint(16,64),random.randint(-8,8)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 			#P2.XV=-P2.XV
 		else:
-			P2.X=BG.Bounds[1]
+			D[1].X=BG.Bounds[1]
 			WallDurability2-=1
-	if P1.Y<BG.Bounds[2]:
-		P1.Y=BG.Bounds[2]
-		P1.YV=-P1.YV
-	if P2.Y<BG.Bounds[2]:
-		P2.Y=BG.Bounds[2]
-		P2.YV=-P2.YV
+	if D[0].Y<BG.Bounds[2]:
+		D[0].Y=BG.Bounds[2]
+		D[0].YV=-D[0].YV
+	if D[1].Y<BG.Bounds[2]:
+		D[1].Y=BG.Bounds[2]
+		D[1].YV=-D[1].YV
 	HFF=0
 	try:
 		HFF+=P1T["Hit Lag"]
@@ -226,6 +228,12 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	try:
 		HFF+=P2T["Hit Lag"]
 	except Exception as e:
+		pass
+	try:
+		if P1T["Fault Reversal"] or P2T["Fault Reversal"]:
+			PlayerSides+=1
+			PlayerSides%=2
+	except:
 		pass
 	#print(SimulatedFrames/((pygame.time.get_ticks()-StartTime)/1000))
 	#if (pygame.time.get_ticks()-StartTime)/SimulatedFrames<1000/SimulatedFramerate:

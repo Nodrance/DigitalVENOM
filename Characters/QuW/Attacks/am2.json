@@ -202,7 +202,7 @@
 				"Stun": 20,
 				"Block Stun": 3,
 				"Knockback": 0,
-				"Hit Lag": 20,
+				"Hit Lag": 10,
 				"Knockback2": 0,
 				"Attributes": []
 			}
@@ -402,17 +402,127 @@
 	],
 	"Filename": "Characters/QuW/Attacks/am2.json",
 	"Cancels": [
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "ah"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"h": [
+						1
+					]
+				},
+				"Effect": 1,
+				"State": "ah"
+			}
+		],
 		[],
 		[],
 		[],

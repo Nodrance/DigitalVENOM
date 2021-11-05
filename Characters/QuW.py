@@ -98,6 +98,8 @@ class Character:
 		"am":ViperOne.Move(self,self.ViperZero("am"),"am",PreMove=self.Nogeki),
 		"am2":ViperOne.Move(self,self.ViperZero("am2"),"am2",PreMove=self.Pangeki),
 		"ah":ViperOne.Move(self,self.ViperZero("ah"),"ah",PreMove=self.Nogeki),
+		"Knockdown":self.Knockdown,
+		"HitStun":self.Knockdown,
 		"The24Frame":ViperOne.Move(self,self.ViperZero("The24Frame"),"gThe24Frame"),
 		}
 		"""if P==0:
@@ -119,6 +121,9 @@ class Character:
 		"am":ViperOne.Cancel(self,self.States["am"]),
 		"am2":ViperOne.Cancel(self,self.States["am2"]),
 		"ah":ViperOne.Cancel(self,self.States["ah"]),
+		"Knockdown":ViperOne.Cancel(self,self.States["Knockdown"]),
+		"HitStun":ViperOne.Cancel(self,self.States["HitStun"]),
+		"FaultReversal":self.FaultReversal,
 		"PanchiraJumpCancel":self.PanchiraJumpCancel,
 		"AutoPanchiraJumpCancel":self.AutoPanchiraJumpCancel,
 		"NogekiJumpCancel":self.NogekiJumpCancel,
@@ -227,6 +232,9 @@ class Character:
 			self.YV+=(self.Tags["Other Player"].Y-self.Y)/10
 		pass
 		pass
+	def FaultReversal(self):
+		self.FaultReversalTag=1
+		self.X+=(self.Tags["Side"]-0.5)*-512
 	def Nogeki(self):
 		self.Meter-=100
 	def Pangeki(self):
@@ -240,10 +248,12 @@ class Character:
 		self.Meter+=20
 		pass
 	def __call__(self,Tags):
+		self.FaultReversalTag=0
 		R=self.ViperOne.Frame(Tags)
 		R["Hit Lag"]=self.HitLag
 		R["Sounds"]=self.Sounds
 		R["Sprites"]=self.TS
+		R["Fault Reversal"]=self.FaultReversalTag
 		R["GUI"]=[
 		#{"Sprite":self.PanchiraGuage[int(self.Meter/5)],"X":5,"Y":37,"W":128,"H":32}
 		]
@@ -383,23 +393,23 @@ class Character:
 		return {}
 	def NogekiJumpCancel(self):
 		self.Sounds.append(self.MiscSounds["Jump Cancel"])
-		self.HitLag+=10
+		#self.HitLag+=10
 		Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-		self.YV=-15
+		self.YV=-20
 		self.XV=self.Tags["Controller"]["X"]*8
 		self.AirDashable=0
 		self.State=self.Jump
 	def JumpCancel(self):
-		self.YV=-15
+		self.YV=-20
 		self.XV=self.Tags["Controller"]["X"]*8
 		self.AirDashable=1
 		self.State=self.Jump
 	def PanchiraJumpCancel(self):
 		if self.Meter>=100:
-			self.HitLag+=10
+			#self.HitLag+=10
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-15
+			self.YV=-20
 			self.XV=self.Tags["Controller"]["X"]*8
 			self.Meter-=100
 			self.AirDashable=0
@@ -409,7 +419,7 @@ class Character:
 			self.HitLag+=10
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-15
+			self.YV=-20
 			self.XV=-(self.Tags["Side"]-0.5)*16#self.Tags["Controller"]["X"]*8
 			self.Meter-=200
 			self.AirDashable=0
@@ -450,12 +460,10 @@ class Character:
 						"Hit Lag":10,
 						"Knockback2":10,}]
 			self.State=self.Jump
-		if self.Y<0 or self.YV<0:
-			#self.YV+=5
-			pass
-		elif self.YV>0:
-			self.State=self.Knockdown
-		elif self.StateFrame==0:
+		if self.Y<0:
+			if self.StateFrame==0:
+				self.YV=min(-3,self.YV)
+		elif self.StateFrame==0 and self.YV>=0:
 			self.XV=Tags["Side"]*10-5
 			self.YV=-5*(self.Y<0)
 			self.Y=0
@@ -519,7 +527,7 @@ class Character:
 			elif Tags["Controller"]["m"]:
 				self.CancelStates["am"]()
 			elif Tags["Controller"]["Jump2"]:
-				self.CancelStates["Jump"]()
+				self.CancelStates["NogekiJumpCancel"]()
 		else:
 			if Tags["Controller"]["l"]:
 				self.CancelStates["gl"]()

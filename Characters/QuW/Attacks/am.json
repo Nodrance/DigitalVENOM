@@ -160,7 +160,7 @@
 				"Stun": 10,
 				"Block Stun": 3,
 				"Knockback": 10,
-				"Hit Lag": 20,
+				"Hit Lag": 10,
 				"Knockback2": 0,
 				"Attributes": []
 			}
@@ -348,11 +348,21 @@
 						1
 					]
 				},
+				"Effect": 0,
+				"State": "am2"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
 				"Effect": 1,
 				"State": "am2"
 			}
 		],
-		[],
 		[],
 		[],
 		[]

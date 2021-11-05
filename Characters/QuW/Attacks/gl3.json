@@ -235,7 +235,7 @@
 				"Block Stun": 10,
 				"Knockback": 0,
 				"Hit Lag": 30,
-				"Knockback2": 15,
+				"Knockback2": 20,
 				"Attributes": []
 			}
 		],
@@ -692,6 +692,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -712,6 +721,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -732,6 +750,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -752,6 +779,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -772,6 +808,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -792,6 +837,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -812,6 +866,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -832,6 +895,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -852,6 +924,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -872,6 +953,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -892,6 +982,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -912,6 +1011,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -932,6 +1040,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -952,6 +1069,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -972,6 +1098,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -992,6 +1127,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1012,6 +1156,15 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1027,11 +1180,20 @@
 			{
 				"Conditions": {
 					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "AutoPanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"m": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "AutoPanchiraJumpCancel"
+				"State": "FaultReversal"
 			}
 		],
 		[],

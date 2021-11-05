@@ -26,6 +26,8 @@ for i in range(12):
 -Todo-
 Implement trigger attributes
 Add cancels for medium and heavy attacks
+=======
+
 
 -Done-
 Change Standardized State Names
@@ -39,6 +41,8 @@ Fix the length of hitlag (hitstop)
 Fix Crashes
 Add Auto Combo
 Add win screen
+Fix dash canceling into jumps infinitely
+Implement trigger attributes
 """ 
 
 CSCharacters=[QuW.Character,QuW.Character]
