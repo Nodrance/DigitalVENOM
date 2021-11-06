@@ -473,44 +473,13 @@
 		[
 			{
 				"Conditions": {
-					"l": [
+					"Jump": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "al3"
+				"State": "PanchiraJumpCancel"
 			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "am"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "al3"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "am"
-			}
-		],
-		[
 			{
 				"Conditions": {
 					"l": [
@@ -533,44 +502,13 @@
 		[
 			{
 				"Conditions": {
-					"l": [
+					"Jump": [
 						1
 					]
 				},
 				"Effect": 0,
-				"State": "al3"
+				"State": "PanchiraJumpCancel"
 			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "am"
-			}
-		],
-		[
-			{
-				"Conditions": {
-					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "al3"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "am"
-			}
-		],
-		[
 			{
 				"Conditions": {
 					"l": [
@@ -593,6 +531,15 @@
 		[
 			{
 				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
 					"l": [
 						1
 					]
@@ -613,6 +560,15 @@
 		[
 			{
 				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
 					"l": [
 						1
 					]
@@ -631,6 +587,131 @@
 			}
 		],
 		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
+			{
+				"Conditions": {
+					"l": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "al3"
+			},
+			{
+				"Conditions": {
+					"m": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "am"
+			}
+		],
+		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
 			{
 				"Conditions": {
 					"l": [
@@ -651,6 +732,15 @@
 			}
 		],
 		[
+			{
+				"Conditions": {
+					"Jump": [
+						1
+					]
+				},
+				"Effect": 0,
+				"State": "PanchiraJumpCancel"
+			},
 			{
 				"Conditions": {
 					"l": [

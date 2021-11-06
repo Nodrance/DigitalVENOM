@@ -24,25 +24,7 @@ for i in range(12):
 
 """  
 -Todo-
-
--Done-
-Change Standardized State Names
-Made airdashes only require one input
-Add gattling again
-Add jump cancels again
-Add SFX back to moves
-Converted moves to ViperOne
-Fix panchira attacks
-Fix the length of hitlag (hitstop)
-Fix Crashes
-Add Auto Combo
-Add win screen
-Fix dash canceling into jumps infinitely
-Implement trigger attributes
-Add cancels for medium and heavy attacks
-Reset player sides at round start
-Make fault reversal cost meter
-Make burst cost meter
+Fix cancelling am>am2
 """ 
 
 CSCharacters=[QuW.Character,QuW.Character]

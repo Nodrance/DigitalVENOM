@@ -14,6 +14,7 @@ class Character:
 			Character=self,
 			)
 		self.ViperOne.Reset(self)
+		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
 		self.Costume=["64Cyan","64Alt"][P]
@@ -124,6 +125,7 @@ class Character:
 		"Knockdown":ViperOne.Cancel(self,self.States["Knockdown"]),
 		"HitStun":ViperOne.Cancel(self,self.States["HitStun"]),
 		"FaultReversal":self.FaultReversal,
+		"Roman":self.RomanCancel,
 		"PanchiraJumpCancel":self.PanchiraJumpCancel,
 		"AutoPanchiraJumpCancel":self.AutoPanchiraJumpCancel,
 		"NogekiJumpCancel":self.NogekiJumpCancel,
@@ -131,6 +133,7 @@ class Character:
 		}
 		self.DashTimer=0
 		self.CancelBuffer=0
+		self.MaxAirDash=5
 		self.DF=0
 		self.RNGV=0
 		self.HitSound=0
@@ -211,9 +214,14 @@ class Character:
 		self.SN="idle1"
 		self.TSN="idle1"
 		self.TS=[]
+		self.MaxAirDash=5
 		self.DF=0
 		self.HitSound=0
 		self.Meter=0
+	def MakeScreenSpaceText(self,X):
+		RCT=self.RCFont.render(X,1,(255,255,255))
+		W=512*256/(RCT.get_width()+RCT.get_height())
+		Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],10))
 	def ViperZero(self,AN):
 		#print(AN)
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
@@ -237,8 +245,20 @@ class Character:
 			self.FaultReversalTag=1
 			self.X+=(self.Tags["Side"]-0.5)*-512
 			self.Meter-=int(self.MaxMeter/4)
+	def RomanCancel(self):
+		if self.Meter>int(self.MaxMeter/4):
+			#self.FaultReversalTag=1
+			self.MakeScreenSpaceText("CANCEL")
+			self.HitLag+=30
+			if self.Y<0 or self.YV<0:
+				self.State=self.Jump
+			else:
+				#self.X+=(self.Tags["Side"]-0.5)*-128
+				self.State=self.Idle
+			self.Meter-=int(self.MaxMeter/4)
 	def Nogeki(self):
-		self.Meter-=100
+		#self.Meter-=100
+		pass
 	def Pangeki(self):
 		self.Sounds.append(self.HitSounds["Pangeki"][self.RNG()%len(self.HitSounds["Pangeki"])])
 		"""if self.Meter==24:
@@ -261,15 +281,16 @@ class Character:
 		]
 		self.Meter=min(max(self.Meter,0),self.MaxMeter)
 		self.Triggers=copy.deepcopy(self.Triggers)
-		for i in self.Triggers:
+		"""for i in self.Triggers:
 			if i["Type"]=="Hit":
-				i["Damage"]/=1+max(self.Meter/self.MaxMeter/2,0)
-				i["Chip Damage"]/=1+max(self.Meter/self.MaxMeter/2,0)
+				i["Damage"]/=1+max(self.Meter/self.MaxMeter/10,0)
+				i["Chip Damage"]/=1+max(self.Meter/self.MaxMeter/10,0)
 				i["Stun"]+=Tags["Fault"]*2+2
-				i["Block Stun"]+=Tags["Fault"]*2+2
+				i["Block Stun"]+=Tags["Fault"]*2+2"""
 		return R
 	def Idle(self,Tags):
 		self.XV=0
+		self.AirDashable=self.MaxAirDash
 		self.The48Frame=False
 		self.SSN="Idle"
 		self.SN=["idle1","idle2","idle3","idle2"][int(self.StateFrame/12)%4]
@@ -283,10 +304,10 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame
-		elif Tags["Controller"]["l"] and Tags["Controller"]["m"] and self.Meter>=int(self.MaxMeter/2):# and Tags["Controller"]["Y2"]==-1:
+		"""elif Tags["Controller"]["l"] and Tags["Controller"]["m"] and self.Meter>=int(self.MaxMeter/2):# and Tags["Controller"]["Y2"]==-1:
 			Tags["Other Player"].HalfTime+=50
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
-			self.Meter-=int(self.MaxMeter/2)
+			self.Meter-=int(self.MaxMeter/2)"""
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
@@ -296,16 +317,17 @@ class Character:
 		elif Tags["Controller"]["Jump2"]:
 			self.CancelStates["Jump"]()
 		elif not Tags["Controller"]["X"] == 0:
-			if self.DashTimer<2:
+			"""if self.DashTimer<2:
 				self.State=[self.Dash,self.BackDash][Tags["Controller"]["X"] == Tags["Side"]*2-1]
-			else:
-				self.State=[self.Walk,self.BackWalk][Tags["Controller"]["X"] == Tags["Side"]*2-1]
+			else:"""
+			self.State=[self.Walk,self.BackWalk][Tags["Controller"]["X"] == Tags["Side"]*2-1]
 			self.DashTimer=0
 		self.DashTimer+=1
 		return {}
 	def Walk(self,Tags):
 		self.Meter+=1
 		self.SSN="Walk"
+		self.AirDashable=self.MaxAirDash
 		self.SN=["walk1","walk2","walk3","walk4"][int(self.StateFrame/25)%4]
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
@@ -336,10 +358,11 @@ class Character:
 		self.SN=["walk2","walk1","walk4","walk3"][int(self.StateFrame/40)%4]
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
+		self.AirDashable=self.MaxAirDash
 		self.YV=0
 		self.XV=Tags["Controller"]["X"]*2
 		if Tags["Controller"]["l"]:
-			self.CancelStates["gl"]()
+			self.CancelStates["gl2"]()
 		elif Tags["Controller"]["h"]:
 			self.CancelStates["gh"]()
 		elif Tags["Controller"]["m"]:
@@ -394,37 +417,38 @@ class Character:
 					self.State=self.Walk
 		return {}
 	def NogekiJumpCancel(self):
-		self.Sounds.append(self.MiscSounds["Jump Cancel"])
-		#self.HitLag+=10
-		Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-		self.YV=-20
-		self.XV=self.Tags["Controller"]["X"]*8
-		self.AirDashable=0
-		self.State=self.Jump
+		if self.AirDashable:
+			self.Sounds.append(self.MiscSounds["Jump Cancel"])
+			#self.HitLag+=10
+			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
+			self.YV=-self.AirDashable*4
+			self.XV=self.Tags["Controller"]["X"]*8
+			self.AirDashable-=1
+			self.State=self.Jump
 	def JumpCancel(self):
-		self.YV=-20
+		self.YV=-self.AirDashable*4
 		self.XV=self.Tags["Controller"]["X"]*8
-		self.AirDashable=1
+		#self.AirDashable=1
 		self.State=self.Jump
 	def PanchiraJumpCancel(self):
-		if self.Meter>=100:
+		if self.Meter>=100 and self.AirDashable:
 			#self.HitLag+=10
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-20
+			self.YV=-self.AirDashable*4
 			self.XV=self.Tags["Controller"]["X"]*8
 			self.Meter-=100
-			self.AirDashable=0
+			self.AirDashable-=1
 			self.State=self.Jump
 	def AutoPanchiraJumpCancel(self):
-		if self.Meter>=200:
+		if self.Meter>=200 and self.AirDashable:
 			self.HitLag+=10
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
-			self.YV=-20
+			self.YV=-self.AirDashable*4
 			self.XV=-(self.Tags["Side"]-0.5)*16#self.Tags["Controller"]["X"]*8
 			self.Meter-=200
-			self.AirDashable=0
+			self.AirDashable-=1
 			self.State=self.Jump
 	def The24Frame(self,Tags):
 		self.HitBoxerFrameData=self.The24FrameData
@@ -446,9 +470,11 @@ class Character:
 		if self.Y<0:
 			#self.YV/=1.3
 			self.YV+=1
+			if self.StateFrame==0:
+				self.YV=min(-10,self.YV)
 		#self.YV+=5
 		self.SSN="HitStun"
-		self.AirDashable=1
+		self.AirDashable=self.MaxAirDash
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="hitstun1"
 		if Tags["Controller"]["h"] and self.Meter>=self.MaxMeter:
@@ -463,9 +489,6 @@ class Character:
 						"Knockback2":10,}]
 			self.State=self.Jump
 			self.Meter=0
-		if self.Y<0:
-			if self.StateFrame==0:
-				self.YV=min(-3,self.YV)
 		elif self.StateFrame==0 and self.YV>=0:
 			self.XV=Tags["Side"]*10-5
 			self.YV=-5*(self.Y<0)
@@ -482,7 +505,7 @@ class Character:
 	def Knockdown(self, Tags):
 		self.XV/=1.1
 		self.SSN="Knockdown"
-		self.AirDashable=1
+		self.AirDashable=self.MaxAirDash
 		if self.Y<-16:
 			[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		else:
@@ -505,6 +528,7 @@ class Character:
 		self.SSN="Block"
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="jump"
+		self.XV=-(self.Tags["Side"]-0.5)*10
 		if self.Y<0 or self.YV<0:
 			self.YV+=1
 			if self.StateFrame>self.Stun:
@@ -519,7 +543,6 @@ class Character:
 		self.Meter+=2
 		self.SSN="Dash"
 		self.SN="dash1"
-		self.AirDashable=0
 		self.DashTimer=5
 		self.YV=0
 		if self.Y<0:
@@ -541,6 +564,7 @@ class Character:
 			elif Tags["Controller"]["Jump2"]:
 				self.CancelStates["Jump"]()
 		if self.StateFrame==0:
+			self.AirDashable-=1
 			self.XV=20*(-Tags["Side"]+0.5)
 		elif numpy.sign(self.XV) != numpy.sign(50*(-Tags["Side"]+0.5)):
 			self.State=self.BackDash
@@ -555,10 +579,10 @@ class Character:
 	def BackDash(self,Tags):
 		self.SSN="Dash"
 		self.SN="dash2"
-		self.AirDashable=0
 		self.DashTimer=5
 		self.YV=0
 		if self.StateFrame==0:
+			self.AirDashable-=1
 			self.XV=6*(Tags["Side"]-0.5)
 		elif numpy.sign(self.XV) != numpy.sign(30*(Tags["Side"]-0.5)):
 			self.State=self.Dash

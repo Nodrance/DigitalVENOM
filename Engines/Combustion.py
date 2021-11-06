@@ -110,6 +110,8 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 				if L=="End Game":
 					return 2,"End Game"
 				Rendering2=1
+				StartTime=time.time()
+				SimulatedFrames=0
 				#pygame.quit()
 				#sys.exit()
 	GlobalPlayer1=P1
@@ -366,6 +368,7 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 		pass
 	#threading.Thread(target=RenderThread,args=(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)).start()
 	Rendering2=1
+	pygame.event.get()
 	RenderSetup(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)
 	if not Rendering3:
 		Rendering3=1

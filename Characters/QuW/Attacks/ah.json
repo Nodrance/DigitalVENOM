@@ -158,6 +158,54 @@
 				],
 				"Type": "Hurt",
 				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
 			},
 			{
 				"Box": [
@@ -170,126 +218,15 @@
 						-60
 					]
 				],
-				"Damage": 10,
+				"Damage": 20,
 				"Chip Damage": 5,
 				"Type": "Hit",
-				"Stun": 30,
+				"Stun": 10,
 				"Block Stun": 5,
 				"Knockback": 100,
 				"Hit Lag": 30,
 				"Knockback2": -50,
-				"Attributes": []
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt",
-				"Attributes": []
-			},
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 10,
-				"Chip Damage": 5,
-				"Type": "Hit",
-				"Stun": 30,
-				"Block Stun": 5,
-				"Knockback": 100,
-				"Hit Lag": 3,
-				"Knockback2": -50,
-				"Attributes": []
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt",
-				"Attributes": []
-			},
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 10,
-				"Chip Damage": 5,
-				"Type": "Hit",
-				"Stun": 10,
-				"Block Stun": 5,
-				"Knockback": 100,
-				"Hit Lag": 3,
-				"Knockback2": -50,
-				"Attributes": []
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt",
-				"Attributes": []
-			},
-			{
-				"Box": [
-					[
-						-12,
-						62
-					],
-					[
-						-95,
-						-60
-					]
-				],
-				"Damage": 10,
-				"Chip Damage": 5,
-				"Type": "Hit",
-				"Stun": 10,
-				"Block Stun": 5,
-				"Knockback": 100,
-				"Hit Lag": 3,
-				"Knockback2": -50,
-				"Attributes": []
+				"Attributes": ["Knockdown"]
 			}
 		],
 		[

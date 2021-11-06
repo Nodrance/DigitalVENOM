@@ -1,7 +1,15 @@
 {
 	"Format": "ViperZero",
-	"Frames": 38,
+	"Frames": 46,
 	"Animation": [
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
 		"fierce1",
 		"fierce1",
 		"fierce1",
@@ -102,14 +110,142 @@
 						-50
 					]
 				],
-				"Damage": 40,
+				"Damage": 20,
 				"Chip Damage": 0,
 				"Type": "Hit",
-				"Stun": 30,
-				"Block Stun": 10,
+				"Stun": 20,
+				"Block Stun": 3,
 				"Knockback": 0,
 				"Hit Lag": 30,
 				"Knockback2": 20,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
 				"Attributes": []
 			}
 		],
@@ -818,6 +954,14 @@
 				"State": "NogekiJumpCancel"
 			}
 		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
 		[],
 		[],
 		[],

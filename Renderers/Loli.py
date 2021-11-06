@@ -110,6 +110,22 @@ class BlitParticle:
 		RenderSprite(self.Animation[self.Time%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
 		self.Time+=1
 		return self.Time>self.Life
+class ScreenSpaceParticle:
+	def __init__(self,Width,Height,Animation,Life,Blend=None):
+		global Camera
+		self.StartTime=pygame.time.get_ticks()
+		self.Pos=(Camera.X,Camera.Y,0)
+		self.Time=0
+		self.Life=Life
+		self.Width=Width
+		self.Height=Height
+		self.Blend=Blend
+		self.Animation=Animation
+	def Render(self,Camera):
+		self.Pos=(Camera.X,Camera.Y,Camera.Z+1)
+		RenderSprite(self.Animation[self.Time%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
+		self.Time+=1
+		return self.Time>self.Life
 class InverseLineParticle:
 	def __init__(self,Pos,Vel,Life,Length,Color):
 		self.StartTime=pygame.time.get_ticks()
