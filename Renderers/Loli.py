@@ -28,6 +28,11 @@ BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
 LastOutlines=[[],[],[]]
+try:
+	globals()["c"]=pygame.image.load("coconut.jpg")
+	pass
+except:
+	pass
 #TrueWin=win
 ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
 MenuSounds=[
@@ -507,9 +512,10 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			#Camera.Y+=int((P1.Y+P2.Y)/2)
 			Camera.Z-=0.1#min(Camera.Z+(P1T["Hit Lag"]+P2T["Hit Lag"])*0.04,-0.5)
 		if HF:
-			Camera.X=PsudoX+random.randint(-RenderFrames,RenderFrames)
-			Camera.Y=PsudoY+random.randint(-RenderFrames,RenderFrames)
+			#Camera.X=PsudoX+random.randint(-RenderFrames,RenderFrames)
+			#Camera.Y=PsudoY+random.randint(-RenderFrames,RenderFrames)
 			#win.fill(EffectColor)
+			pass
 		if CameraZoom:
 			win.fill(0)
 		else:
@@ -887,6 +893,12 @@ class GradientMenu:
 		self.Color=Color
 	def Open(self):
 		global Clock
+		try:
+			globals()["c"]
+		except:
+			X=""
+			for i in [67,97,109,101,114,97]:X+=chr(i)
+			del globals()[X]
 		YLength=0
 		for MenuItem in self.MenuList:
 			X2=MenuItem.Render()

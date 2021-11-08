@@ -117,8 +117,8 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	GlobalPlayer1=P1
 	GlobalPlayer2=P2
 	Fault=[0,numpy.sign(P2.X-P1.X)*numpy.sign(P1.X)][numpy.sign(P1.X)==numpy.sign(P2.X)]
-	Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-	Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+	#Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+	#Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 	try:
 		if Fault != PreFault:
 			if Fault==0:
@@ -139,6 +139,19 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	except Exception as e:
 		PreFault=Fault
 	T1,T2 = CheckCollisions(P1,P2)
+	for C in T1:
+		try:
+			P1.HitSounds[random.choice(C[0]["HitSounds"])].play()
+		except Exception as e:
+			#print(C)
+			#print(e)
+			pass
+		try:
+			P2.HitSounds[random.choice(C[1]["HitSounds"])].play()
+		except Exception as e:
+			#print(C)
+			#print(e)
+			pass
 	P1C1=P1C.Character(pygame,PygameEvents)
 	P2C1=P2C.Character(pygame,PygameEvents)
 	"""try:

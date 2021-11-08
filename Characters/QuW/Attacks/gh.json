@@ -115,7 +115,7 @@
 				"Type": "Hit",
 				"Stun": 20,
 				"Block Stun": 3,
-				"Knockback": 0,
+				"Knockback": 8,
 				"Hit Lag": 30,
 				"Knockback2": 20,
 				"Attributes": []

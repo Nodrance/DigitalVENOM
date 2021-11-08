@@ -17,7 +17,7 @@ class Character:
 		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
-		self.Costume=["64Cyan","64Alt"][P]
+		self.Costume=["64Cyan","64Cyan"][P]
 		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"
 		self.TS=[]
@@ -34,10 +34,18 @@ class Character:
 		"fierce1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Fierce1.png").convert_alpha(),
 		"short1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Short1.png").convert_alpha(),
 		"short2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Short2.png").convert_alpha(),
-		"forward1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Forward1.png").convert_alpha(),
-		"forward2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Forward2.png").convert_alpha(),
+		"gl2-0001":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl2-0001.png").convert_alpha(),
+		"gl2-0002":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl2-0002.png").convert_alpha(),
+		"gl2-0003":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl2-0003.png").convert_alpha(),
 		"roundhouse1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Roundhouse1.png").convert_alpha(),
 		"roundhouse2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Roundhouse2.png").convert_alpha(),
+		"gl3-0001":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl3-0001.png").convert_alpha(),
+		"gl3-0002":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl3-0002.png").convert_alpha(),
+		"gl3-0003":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl3-0003.png").convert_alpha(),
+		"gl3-0004":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl3-0004.png").convert_alpha(),
+		"gl3-0005":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl3-0005.png").convert_alpha(),
+		"gl3-0006":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl3-0006.png").convert_alpha(),
+		"gl3-0007":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/gl3-0007.png").convert_alpha(),
 		"kiss1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Kiss1.png").convert_alpha(),
 		"kiss2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Kiss2.png").convert_alpha(),
 		"jab aerial 1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/JabAerial1.png").convert_alpha(),
@@ -173,6 +181,7 @@ class Character:
 			pygame.mixer.Sound("Characters/QuW/Hitsounds/H7.wav"),
 			pygame.mixer.Sound("Characters/QuW/Hitsounds/H8.wav"),
 			],
+		"h1":pygame.mixer.Sound("Characters/QuW/Hitsounds/H1.wav"),
 		"The24Frame":pygame.mixer.Sound("Characters/QuW/Hitsounds/The24Frame.wav"),
 		}
 		self.MiscSounds={
@@ -245,6 +254,11 @@ class Character:
 			self.FaultReversalTag=1
 			self.X+=(self.Tags["Side"]-0.5)*-512
 			self.Meter-=int(self.MaxMeter/4)
+			if self.Y<0 or self.YV<0:
+				self.State=self.Jump
+			else:
+				#self.X+=(self.Tags["Side"]-0.5)*-128
+				self.State=self.Idle
 	def RomanCancel(self):
 		if self.Meter>int(self.MaxMeter/4):
 			#self.FaultReversalTag=1
@@ -297,6 +311,10 @@ class Character:
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.YV=0
+		"""elif Tags["Controller"]["l"] and Tags["Controller"]["m"] and self.Meter>=int(self.MaxMeter/2):# and Tags["Controller"]["Y2"]==-1:
+			Tags["Other Player"].HalfTime+=50
+			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
+			self.Meter-=int(self.MaxMeter/2)"""
 		if Tags["Controller"]["l"] and Tags["Controller"]["m"] and Tags["Controller"]["h"] and self.Meter>=self.MaxMeter:# and Tags["Controller"]["Y2"]==-1:
 			#Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
@@ -304,10 +322,6 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame
-		"""elif Tags["Controller"]["l"] and Tags["Controller"]["m"] and self.Meter>=int(self.MaxMeter/2):# and Tags["Controller"]["Y2"]==-1:
-			Tags["Other Player"].HalfTime+=50
-			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
-			self.Meter-=int(self.MaxMeter/2)"""
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
@@ -465,13 +479,11 @@ class Character:
 			self.State=self.Idle
 		return {}
 	def HitStun(self, Tags):
-		self.XV/=1.3
+		#self.XV/=1.3
 		self.Meter+=5
 		if self.Y<0:
 			#self.YV/=1.3
 			self.YV+=1
-			if self.StateFrame==0:
-				self.YV=min(-10,self.YV)
 		#self.YV+=5
 		self.SSN="HitStun"
 		self.AirDashable=self.MaxAirDash
@@ -482,17 +494,15 @@ class Character:
 			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
 						"Damage":50,
 						"Chip Damage":0,
-						"Stun":10,
-						"Block Stun":10,
-						"Knockback":10,
-						"Hit Lag":10,
-						"Knockback2":10,}]
+						"Stun":30,
+						"Block Stun":5,
+						"Knockback":30,
+						"Hit Lag":30,
+						"Knockback2":30,
+						"Attributes":[],
+						}]
 			self.State=self.Jump
 			self.Meter=0
-		elif self.StateFrame==0 and self.YV>=0:
-			self.XV=Tags["Side"]*10-5
-			self.YV=-5*(self.Y<0)
-			self.Y=0
 		if self.StateFrame>self.Stun:
 			self.Stun=0
 			#self.XV=0
