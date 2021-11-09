@@ -1,9 +1,16 @@
 import copy,random,math,json,pygame,numpy
 from Renderers import Loli
 from Characters import ViperOne
-from Tools import HitBoxer
+from Tools import HitBoxer,ColorChanger
 class Character:
-	def __init__(self,P,pygame):
+	#TODO:
+	#This whole block of code here probably isn't best practice
+	#Figure out a way to do it better
+	CharacterSelectSprites=[]
+	color_grid=pygame.image.load("Characters/QuW/Sprites/color_grid.png")
+	for i in range(color_grid.get_height()):
+		CharacterSelectSprites.append(ColorChanger.FasterSwapImageColors(pygame.image.load("Characters/QuW/Sprites/64Cyan/Idle1.png").convert_alpha(),color_grid,i))
+	def __init__(self,P,pygame,color):
 		self.ViperOne=ViperOne.Default(
 			Player=P,
 			DIR="Characters/QuW",
@@ -18,6 +25,7 @@ class Character:
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
 		self.Costume=["64Cyan","64Cyan"][P]
+		self.color_grid=pygame.image.load("Characters/QuW/Sprites/color_grid.png")
 		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"
 		self.TS=[]
@@ -88,6 +96,7 @@ class Character:
 		"roundhouse aerial swoosh 2":pygame.image.load("Characters/QuW/Sprites/Effects/RoundhouseAerialSwoosh2.png").convert_alpha(),
 		"heart":pygame.image.load("Characters/QuW/Sprites/Effects/Heart.png"),
 		}
+		ColorChanger.FasterSwapColors(self.Sprites,self.color_grid,color)
 		self.Sprite=self.Sprites["idle1"]
 		self.SN="idle1"
 		self.TSN="idle1"

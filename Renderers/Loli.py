@@ -628,7 +628,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		except:
 			pass"""
 	pass
-def RenderSelect(P1,P2,I1,I2):
+def RenderSelect(P1,P2,I1,I2,CSP1S,CSP2S):
 	global win,TrueWin,Camera,CamCap,ReadyScreen,HBR,SoundtrackList,CSBackground
 	Camera.X=0
 	Camera.Y=-15
@@ -646,9 +646,13 @@ def RenderSelect(P1,P2,I1,I2):
 	RenderSprite(CSSImage,(0,0,0),128,64,Camera,Smooth=0)
 	RenderSprite(CSP1Image,(P1[0],P1[1],0),64,64,Camera,Smooth=0)
 	RenderSprite(CSP2Image,(P2[0],P2[1],0),64,64,Camera,Smooth=0)
+	RenderSprite(CSP1S,(-256,0,0),256,256,Camera,Smooth=0)
+	RenderSprite(P.transform.flip(CSP2S,1,0),(256,0,0),256,256,Camera,Smooth=0)
 	ScaleWin()
 	pass
 def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
+	#TODO:
+	#Improve all of this code
 	P1S=0
 	P2S=0
 	R=0
@@ -660,14 +664,20 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 	Index2=0
 	OI1=Index1
 	OI2=Index2
+	Color1=0
+	Color2=0
+	CSP1S=CSCharacters[Index1].CharacterSelectSprites[Color1]
+	CSP2S=CSCharacters[Index2].CharacterSelectSprites[Color2]
 	while True:
 		Events=pygame.event.get()
 		if P1R and P2R:
-			return CSCharacters[Index1](0,pygame),CSCharacters[Index2](1,pygame)
+			return CSCharacters[Index1](0,pygame,Color1),CSCharacters[Index2](1,pygame,Color2)
 		P1T=[64*(Index1%2)-32,0]
 		P2T=[64*(Index2%2)-32,0]
 		Index1=Index1%len(CSCharacters)
 		Index2=Index2%len(CSCharacters)
+		Color1=Color1%len(CSCharacters[Index1].CharacterSelectSprites)
+		Color2=Color2%len(CSCharacters[Index2].CharacterSelectSprites)
 		G=1
 		X=P1C.Character(pygame,Events)
 		Y=P2C.Character(pygame,Events)
@@ -675,7 +685,9 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 		Y2=Y
 		while G:
 			Events=pygame.event.get()
-			RenderSelect(P1T,P2T,Index1,Index2)
+			CSP1S=CSCharacters[Index1].CharacterSelectSprites[Color1]
+			CSP2S=CSCharacters[Index2].CharacterSelectSprites[Color2]
+			RenderSelect(P1T,P2T,Index1,Index2,CSP1S,CSP2S)
 			for Event in Events:
 				if Event.type == pygame.QUIT:
 					pygame.quit()
@@ -692,6 +704,7 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 					P1R=1
 				else:
 					Index1+=X["X"]
+					Color1+=X["Y"]
 					if OI1!=Index1:
 						MenuSounds[0].play()
 						OI1=Index1
@@ -703,6 +716,7 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 					P2R=1
 				else:
 					Index2+=Y["X"]
+					Color2+=Y["Y"]
 					if OI2!=Index2:
 						MenuSounds[0].play()
 						OI2=Index2
