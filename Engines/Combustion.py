@@ -76,11 +76,11 @@ def CheckCollisions(P1,P2): #Check all hurtboxes to find any collisions and retu
 				D2=copy.deepcopy(Y)
 				try:
 					if Fault+DuelFault*2>0:
-						D["Damage"]+=5*(Fault+DuelFault*2)
-						D["Chip Damage"]+=1*(Fault+DuelFault*2)
+						D["Damage"]+=1*(Fault+DuelFault*2)
+						#D["Chip Damage"]+=1*(Fault+DuelFault*2)
 					if Fault+DuelFault*2<0:
-						D2["Damage"]+=5*-(Fault+DuelFault*2)
-						D2["Chip Damage"]+=1*-(Fault+DuelFault*2)
+						D2["Damage"]+=1*-(Fault+DuelFault*2)
+						#D2["Chip Damage"]+=1*-(Fault+DuelFault*2)
 				except:
 					pass
 				P1T.append([D,D2])
@@ -206,8 +206,8 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			WallDurability1=MaxWallDurability
 			WallDurability2=MaxWallDurability
 			DuelFault=max(-BG.FaultOffset,DuelFault-1)
-			D[0].X=BG.Bounds[1]-200
-			D[1].X=BG.Bounds[1]-100
+			D[0].X=BG.Bounds[1]-500
+			D[1].X=BG.Bounds[1]
 			Renderer.Camera.X=BG.Bounds[1]+BG.DuelFaultCameraOffset
 			DuelFaultChangeSound.play()
 			for i in range(100):
@@ -221,8 +221,8 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			WallDurability1=MaxWallDurability
 			WallDurability2=MaxWallDurability
 			DuelFault=min(BG.FaultOffset,DuelFault+1)
-			D[0].X=BG.Bounds[0]+100
-			D[1].X=BG.Bounds[0]+200
+			D[0].X=BG.Bounds[0]
+			D[1].X=BG.Bounds[0]+500
 			Renderer.Camera.X=BG.Bounds[0]-BG.DuelFaultCameraOffset
 			DuelFaultChangeSound.play()
 			for i in range(100):

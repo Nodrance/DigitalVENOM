@@ -105,22 +105,19 @@ class BlitParticle:
 	def __init__(self,Pos,Width,Height,Animation,Life,Blend=None):
 		self.StartTime=pygame.time.get_ticks()
 		self.Pos=(Pos[0],Pos[1],0)
-		self.Time=0
 		self.Life=Life
 		self.Width=Width
 		self.Height=Height
 		self.Blend=Blend
 		self.Animation=Animation
 	def Render(self,Camera):
-		RenderSprite(self.Animation[self.Time%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
-		self.Time+=1
-		return self.Time>self.Life
+		RenderSprite(self.Animation[int((pygame.time.get_ticks()-self.StartTime)/17)%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
+		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class ScreenSpaceParticle:
 	def __init__(self,Width,Height,Animation,Life,Blend=None):
 		global Camera
 		self.StartTime=pygame.time.get_ticks()
 		self.Pos=(Camera.X,Camera.Y,0)
-		self.Time=0
 		self.Life=Life
 		self.Width=Width
 		self.Height=Height
@@ -128,9 +125,8 @@ class ScreenSpaceParticle:
 		self.Animation=Animation
 	def Render(self,Camera):
 		self.Pos=(Camera.X,Camera.Y,Camera.Z+1)
-		RenderSprite(self.Animation[self.Time%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
-		self.Time+=1
-		return self.Time>self.Life
+		RenderSprite(self.Animation[int((pygame.time.get_ticks()-self.StartTime)/17)%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
+		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class InverseLineParticle:
 	def __init__(self,Pos,Vel,Life,Length,Color):
 		self.StartTime=pygame.time.get_ticks()
@@ -229,6 +225,37 @@ class CircleParticle:
 				pygame.draw.circle(win,self.Color,(int(X+self.XV*TT),int(Y+self.YV*TT+TT**2)),int(10*T2))
 				pygame.draw.circle(win,(255,255,255),(int(X+self.XV*TT),int(Y+self.YV*TT+TT**2)),int(8*T2))
 		except:
+			pass
+		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
+class PulseParticle:
+	def __init__(self,Pos,Life,Length,Color):
+		self.StartTime=pygame.time.get_ticks()
+		self.X=Pos[0]
+		self.Y=Pos[1]
+		self.Life=Life
+		self.Length=Length
+		self.Color=Color
+	def Render(self,Camera):
+		TT=(pygame.time.get_ticks()-self.StartTime)/100
+		X=self.X-Camera.X
+		Y=self.Y-Camera.Y
+		X/=-Camera.Z*Camera.FOV
+		Y/=-Camera.Z*Camera.FOV
+		X+=win.get_width()/2
+		Y+=win.get_height()/2
+		try:
+			pygame.draw.circle(win,self.Color,(int(X),int(Y)),
+				int(
+					self.Length-
+					self.Length/((
+						(
+							pygame.time.get_ticks()-self.StartTime
+							)/1000/self.Life
+						)+1)
+					),
+				width=2)
+		except Exception as e:
+			print(e)
 			pass
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class LoliCamera: #Defines the camera object.

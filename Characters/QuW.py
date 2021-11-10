@@ -117,7 +117,8 @@ class Character:
 		"am2":ViperOne.Move(self,self.ViperZero("am2"),"am2",PreMove=self.Pangeki),
 		"ah":ViperOne.Move(self,self.ViperZero("ah"),"ah",PreMove=self.Nogeki),
 		"Knockdown":self.Knockdown,
-		"HitStun":self.Knockdown,
+		"HitStun":self.HitStun,
+		"Idle":self.Idle,
 		"The24Frame":ViperOne.Move(self,self.ViperZero("The24Frame"),"gThe24Frame"),
 		}
 		"""if P==0:
@@ -239,7 +240,8 @@ class Character:
 	def MakeScreenSpaceText(self,X):
 		RCT=self.RCFont.render(X,1,(255,255,255))
 		W=512*256/(RCT.get_width()+RCT.get_height())
-		Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],10))
+		Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],0.5))
+		Loli.Particles.append(Loli.PulseParticle((self.X+self.Offset[0],self.Y+self.Offset[1]),0.5,100,(255,255,0)))
 	def ViperZero(self,AN):
 		#print(AN)
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
@@ -344,11 +346,12 @@ class Character:
 				self.State=[self.Dash,self.BackDash][Tags["Controller"]["X"] == Tags["Side"]*2-1]
 			else:"""
 			self.State=[self.Walk,self.BackWalk][Tags["Controller"]["X"] == Tags["Side"]*2-1]
-			self.DashTimer=0
+			#self.DashTimer=0
 		self.DashTimer+=1
 		return {}
 	def Walk(self,Tags):
-		self.Meter+=1
+		if self.StateFrame>30:
+			self.Meter+=int((self.StateFrame-30)/5)
 		self.SSN="Walk"
 		self.AirDashable=self.MaxAirDash
 		self.SN=["walk1","walk2","walk3","walk4"][int(self.StateFrame/25)%4]
@@ -547,7 +550,8 @@ class Character:
 		self.SSN="Block"
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="jump"
-		self.XV=-(self.Tags["Side"]-0.5)*10
+		self.Meter-=3
+		self.XV=(self.Tags["Side"]-0.5)*4
 		if self.Y<0 or self.YV<0:
 			self.YV+=1
 			if self.StateFrame>self.Stun:
@@ -605,7 +609,7 @@ class Character:
 			self.XV=6*(Tags["Side"]-0.5)
 		elif numpy.sign(self.XV) != numpy.sign(30*(Tags["Side"]-0.5)):
 			self.State=self.Dash
-		if self.StateFrame > 5:# and (Tags["Side"]-0.5)*Tags["Controller"]["X"]<0.1:
+		if self.StateFrame > 20:# and (Tags["Side"]-0.5)*Tags["Controller"]["X"]<0.1:
 			self.XV=15*(Tags["Side"]-0.5)
 			if self.Y==0:
 				self.State=self.Idle
