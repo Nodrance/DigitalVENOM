@@ -124,7 +124,7 @@ class ScreenSpaceParticle:
 		self.Blend=Blend
 		self.Animation=Animation
 	def Render(self,Camera):
-		self.Pos=(Camera.X,Camera.Y,Camera.Z+1)
+		self.Pos=(Camera.X,Camera.Y,Camera.Z+1+((pygame.time.get_ticks()-self.StartTime)/1000/self.Life/10))
 		RenderSprite(self.Animation[int((pygame.time.get_ticks()-self.StartTime)/17)%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class InverseLineParticle:
@@ -228,6 +228,7 @@ class CircleParticle:
 			pass
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class PulseParticle:
+	#Creates a pulse effect. Used for cancels.
 	def __init__(self,Pos,Life,Length,Color):
 		self.StartTime=pygame.time.get_ticks()
 		self.X=Pos[0]
@@ -243,19 +244,15 @@ class PulseParticle:
 		Y/=-Camera.Z*Camera.FOV
 		X+=win.get_width()/2
 		Y+=win.get_height()/2
+		#TODO:
+		#Clean up this code a little.
+		H=3
+		H2=(1-((pygame.time.get_ticks()-self.StartTime)/1000/self.Life))**H
+		H3=1-H2
+		H4=self.Length*H3
 		try:
-			pygame.draw.circle(win,self.Color,(int(X),int(Y)),
-				int(
-					self.Length-
-					self.Length/((
-						(
-							pygame.time.get_ticks()-self.StartTime
-							)/1000/self.Life
-						)+1)
-					),
-				width=2)
-		except Exception as e:
-			print(e)
+			pygame.draw.circle(win,self.Color,(int(X),int(Y)),int(H4),width=2)
+		except:
 			pass
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class LoliCamera: #Defines the camera object.
@@ -464,7 +461,7 @@ def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None
 def Sound(X):
 	return P.mixer.Sound(X)
 
-def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZoom=0,EffectColor=(255,255,0)): #The render function
+def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZoom=0,EffectColor=(255,255,0),Tension=0): #The render function
 	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,HitFlashes,Clock,ImpactGlitch,LastOutlines,RenderBenchmarking
 	try:HandleMusic()
 	except:pass
@@ -564,16 +561,20 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 					#pygame.draw.polygon(win,Polygon["Color"],PolygonVertexShader(Polygon["Points"],Camera))
 			except Exception as e:
 				pass
-		W0=win.get_width()
-		W3=int(W0/2)
-		W1=int(P1.Health*W3/P1.MaxHealth)
-		W2=int(P2.Health*W3/P2.MaxHealth)
-		W12=int(P1.Meter*W3/P1.MaxMeter)
-		W22=int(P2.Meter*W3/P2.MaxMeter)
-		pygame.draw.rect(win,(0,255,255),[W3-W1,0,W1,15])
-		pygame.draw.rect(win,(255,0,255),[W3,0,W2,15])
-		pygame.draw.rect(win,(255,255,0),[0,15,W12,15])
-		pygame.draw.rect(win,(255,255,0),[W0-W22,15,W22,15])
+		try:
+			W0=win.get_width()
+			W3=int(W0/2)
+			W5=1.5
+			W1=int(P1.Health**W5*W3/P1.MaxHealth**W5)
+			W2=int(P2.Health**W5*W3/P2.MaxHealth**W5)
+			W12=int(P1.Meter*W3/P1.MaxMeter)
+			W22=int(P2.Meter*W3/P2.MaxMeter)
+			pygame.draw.rect(win,(0,255,255),[W3-W1,0,W1,15])
+			pygame.draw.rect(win,(255,0,255),[W3,0,W2,15])
+			pygame.draw.rect(win,(255,255,0),[0,15,W12,15])
+			pygame.draw.rect(win,(255,255,0),[W0-W22,15,W22,15])
+		except:
+			pass
 		if P1W:
 			win.blit(P1WSprite,(0,15))
 			#pygame.draw.rect(win,(255,0,255),[0,15,15,15])
@@ -632,7 +633,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		win.blits(BlitList)
 		if not Countdown == 0:
 			win.blit(pygame.transform.scale(ReadyScreen,(W0,win.get_height())).convert_alpha(),(0,0))
-		if HF and ImpactGlitch:
+		if CameraZoom and ImpactGlitch:
 			WinPixels=pygame.surfarray.pixels2d(win)
 			BloomPixels=pygame.surfarray.pixels2d(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())))
 			G=pygame.surfarray.make_surface(numpy.add(WinPixels,BloomPixels))

@@ -15,7 +15,7 @@ def Old():
 				except:pass
 		pygame.image.save(Image,i)
 def SwapColors(dictionary,color_grid,colors_id):
-	#This is the bullshit that runs during runtime
+	#This can run on runtime, but it's slow and now obsolete
 	Image=color_grid;S=pygame.surfarray.array2d(Image)
 	C={}
 	for X in range(Image.get_width()):

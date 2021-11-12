@@ -170,8 +170,15 @@ class Default:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Heavy"]))"""
 				if Tags["Other Player"].SSN=="HitStun":
 					self.Character.Combo+=1
+					self.Character.IPSProne=self.Character.SSN in self.Character.IPSBuffer
+					self.Character.IPSBuffer.append(self.Character.SSN)
 				else:
 					self.Character.Combo=1
+					self.Character.IPSProne=0
+					self.Character.IPSBuffer=[self.Character.SSN]
+		if Tags["Other Player"].SSN!="HitStun":
+			self.Character.IPSProne=0
+		self.Character.IPSProne=self.Player
 		if self.Character.SN!=self.Character.TSN:
 			self.Character.Sprite=self.Character.Sprites[self.Character.SN]
 			self.Character.TSN=self.Character.SN

@@ -29,6 +29,8 @@ class Character:
 		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"
 		self.TS=[]
+		self.IPSBuffer=[]
+		self.IPSProne=0
 		self.MaxMeter=1000
 		self.Sprites={
 		"idle1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle1.png").convert_alpha(),
@@ -234,6 +236,7 @@ class Character:
 		self.TSN="idle1"
 		self.TS=[]
 		self.MaxAirDash=5
+		self.IPSProne=0
 		self.DF=0
 		self.HitSound=0
 		self.Meter=0
@@ -241,7 +244,7 @@ class Character:
 		RCT=self.RCFont.render(X,1,(255,255,255))
 		W=512*256/(RCT.get_width()+RCT.get_height())
 		Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],0.5))
-		Loli.Particles.append(Loli.PulseParticle((self.X+self.Offset[0],self.Y+self.Offset[1]),0.5,100,(255,255,0)))
+		Loli.Particles.append(Loli.PulseParticle((self.X+self.Offset[0],self.Y+self.Offset[1]),0.5,200,(255,255,0)))
 	def ViperZero(self,AN):
 		#print(AN)
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
@@ -261,19 +264,39 @@ class Character:
 		pass
 		pass
 	def FaultReversal(self):
-		if self.Meter>int(self.MaxMeter/4):
+		if self.Meter>int(self.MaxMeter/2) and abs(self.X-self.Tags["Other Player"].X)<200:
 			self.FaultReversalTag=1
 			self.X+=(self.Tags["Side"]-0.5)*-512
-			self.Meter-=int(self.MaxMeter/4)
+			self.Meter-=int(self.MaxMeter/2)
 			if self.Y<0 or self.YV<0:
 				self.State=self.Jump
 			else:
 				#self.X+=(self.Tags["Side"]-0.5)*-128
 				self.State=self.Idle
 	def RomanCancel(self):
+		"""if self.SSN in ["Idle","Jump"]:
+			if self.Meter>int(self.MaxMeter/2) and abs(self.X-self.Tags["Other Player"].X)<200:
+				self.FaultReversalTag=1
+				self.MakeScreenSpaceText("FAULT")
+				self.HitLag+=30
+				self.X+=(self.Tags["Side"]-0.5)*-512
+				self.Meter-=int(self.MaxMeter/2)
+				self.Y=-10
+				self.YV=-10
+				self.State=self.Jump
+			elif self.Meter==self.MaxMeter:
+				self.FaultReversalTag=1
+				self.MakeScreenSpaceText("FAULT")
+				self.HitLag+=30
+				self.X=self.Tags["Other Player"].X+(self.Tags["Side"]-0.5)*-512
+				self.Meter-=self.MaxMeter
+				self.Y=-10
+				self.YV=-10
+				self.State=self.Jump"""
 		if self.Meter>int(self.MaxMeter/4):
 			#self.FaultReversalTag=1
 			self.MakeScreenSpaceText("CANCEL")
+			self.IPSBuffer=[]
 			self.HitLag+=30
 			if self.Y<0 or self.YV<0:
 				self.State=self.Jump
@@ -281,6 +304,26 @@ class Character:
 				#self.X+=(self.Tags["Side"]-0.5)*-128
 				self.State=self.Idle
 			self.Meter-=int(self.MaxMeter/4)
+	def BurstCancel(self):
+		if self.Meter>=self.MaxMeter or self.Tags["Other Player"].IPSProne:
+			self.MakeScreenSpaceText("BURST")
+			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
+				"Damage":50,
+				"Chip Damage":0,
+				"Stun":30,
+				"Block Stun":5,
+				"Knockback":30,
+				"Hit Lag":30,
+				"Knockback2":30,
+				"Attributes":[],
+				}]
+			if self.Y<0 or self.YV<0:
+				self.State=self.Jump
+			else:
+				#self.X+=(self.Tags["Side"]-0.5)*-128
+				self.State=self.Idle
+			if not self.Tags["Other Player"].IPSProne:
+				self.Meter=0
 	def Nogeki(self):
 		#self.Meter-=100
 		pass
@@ -297,6 +340,12 @@ class Character:
 	def __call__(self,Tags):
 		self.FaultReversalTag=0
 		R=self.ViperOne.Frame(Tags)
+		if Tags["Controller"]["m"] and Tags["Controller"]["h"]:
+			self.BurstCancel()
+		elif Tags["Controller"]["l"] and Tags["Controller"]["m"]:
+			self.RomanCancel()
+		#if Tags["Controller"]["l"] and Tags["Controller"]["h"]:
+			#self.FaultReversal()
 		R["Hit Lag"]=self.HitLag
 		R["Sounds"]=self.Sounds
 		R["Sprites"]=self.TS
@@ -501,20 +550,6 @@ class Character:
 		self.AirDashable=self.MaxAirDash
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="hitstun1"
-		if Tags["Controller"]["h"] and self.Meter>=self.MaxMeter:
-			#self.Nogeki()
-			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
-						"Damage":50,
-						"Chip Damage":0,
-						"Stun":30,
-						"Block Stun":5,
-						"Knockback":30,
-						"Hit Lag":30,
-						"Knockback2":30,
-						"Attributes":[],
-						}]
-			self.State=self.Jump
-			self.Meter=0
 		if self.StateFrame>self.Stun:
 			self.Stun=0
 			#self.XV=0

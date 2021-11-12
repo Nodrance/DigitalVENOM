@@ -23,8 +23,9 @@ for i in range(12):
 """
 
 """  
--Todo-
+TODO:
 Fix cancelling am>am2
+Implement grabs
 """ 
 
 CSCharacters=[QuW.Character,QuW.Character]

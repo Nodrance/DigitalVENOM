@@ -12,6 +12,7 @@ WallDurability2=MaxWallDurability
 HF=0
 CameraZoom=0
 Rendering3=0
+StayMaxTension=0
 InputList=[]
 Rendering2=1
 PlayerSides=0
@@ -19,6 +20,7 @@ P1T=[]
 P2T=[]
 T1=[]
 T2=[]
+Tension=0
 def EndGame():
 	return "End Game"
 def SetupHitBoxer():
@@ -43,6 +45,14 @@ def TrainingFillMeters():
 	except:
 		pass
 	pass
+def SetOneHealth():
+	global GlobalPlayer1,GlobalPlayer2
+	try:
+		GlobalPlayer1.Health=1
+		GlobalPlayer2.Health=1
+	except:
+		pass
+	pass
 def PauseMenu(Renderer):
 	return Renderer.SlideMenu([
 		Renderer.MenuTitle("Game Paused"),
@@ -55,6 +65,7 @@ def TrainingMenu(Renderer):
 		Renderer.MenuTitle("Game Paused"),
 		Renderer.MenuLabel("Reset",Function=TrainingResetGame),
 		Renderer.MenuLabel("Fill Meters",Function=TrainingFillMeters),
+		Renderer.MenuLabel("Set One Health",Function=SetOneHealth),
 		Renderer.MenuLabel("HitBoxer",Function=SetupHitBoxer),
 		Renderer.MenuLabel("End Game",Function=EndGame),
 		]).Open()
@@ -89,7 +100,7 @@ def CheckCollisions(P1,P2): #Check all hurtboxes to find any collisions and retu
 	pass
 PygameEvents=[]
 def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one frame of gameplay.
-	global PlayerSides,Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
+	global StayMaxTension,Tension,PlayerSides,Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
 	i=0
 	PygameEvents=pygame.event.get()
 	for Event in PygameEvents:
@@ -117,8 +128,9 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	GlobalPlayer1=P1
 	GlobalPlayer2=P2
 	Fault=[0,numpy.sign(P2.X-P1.X)*numpy.sign(P1.X)][numpy.sign(P1.X)==numpy.sign(P2.X)]
-	#Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
-	#Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+	if Tension>50:
+		Renderer.Particles.append(Renderer.CircleParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
+		Renderer.Particles.append(Renderer.LineParticle((random.randint(BG.Bounds[0],BG.Bounds[1]),0),(random.randint(-8,8),random.randint(-64,-16)),random.randint(5,20)/10,0.6,[(255,0,255),(255,255,0),(0,255,255)][int(Fault+1)]))
 	try:
 		if Fault != PreFault:
 			if Fault==0:
@@ -192,6 +204,15 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	ReplayData.append([P1C1,P2C1])
 	P1T=P1({"Side":P1.X>P2.X,"Fault":Fault,"Triggers":T1,"Stage":BG,"Controller":P1C1,"Other Player":P2})
 	P2T=P2({"Side":P2.X>P1.X,"Fault":-Fault,"Triggers":T2,"Stage":BG,"Controller":P2C1,"Other Player":P1})
+	if StayMaxTension:
+		Tension=100
+	else:
+		Tension=(50*
+			(2-
+				P1.Health/P1.MaxHealth-
+				P2.Health/P2.MaxHealth
+				)
+			)
 	D=[[P1,P2],[P2,P1]][PlayerSides]
 	if D[0].X+32>D[1].X:
 		D[0].X=D[1].X=(D[1].X+D[0].X)/2
@@ -270,10 +291,10 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 	SimulatedFrames+=1+HFF
 	if HFF>0:
 		#Renderer.Particles.append(Renderer.StarParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-8,8),random.randint(32,64)),random.randint(1,5)/10,0.6,(255,255,255)))
-		for i in range(min(HFF*5,50)):
-			Renderer.Particles.append(Renderer.LineParticle((int((P1.X+P2.X)/2)+random.randint(-64,64),int((P1.Y+P2.Y)/2)-32+random.randint(-64,64)),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,(255,255,0)))
-		for i in range(min(HFF*5,50)):
-			Renderer.Particles.append(Renderer.CircleParticle((int((P1.X+P2.X)/2)+random.randint(-64,64),int((P1.Y+P2.Y)/2)-32+random.randint(-64,64)),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,(255,255,0)))
+		for i in range(HFF*5):
+			Renderer.Particles.append(Renderer.LineParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,(255,255,0)))
+		for i in range(HFF*5):
+			Renderer.Particles.append(Renderer.CircleParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,(255,255,0)))
 		#for i in range(min(RenderFrames,10)):
 		#	Particles.append(SpikeParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-5,5),random.randint(-5,5)),random.randint(1,5)/10,random.randint(1,3)*1000,EffectColor))
 		#"""
@@ -341,15 +362,16 @@ def GetCurrentList(L):
 		L.pop(0)
 	pass
 def RenderThread():
-	global HF,Rendering2,CameraZoom,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData,P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training
+	global Tension,HF,Rendering2,CameraZoom,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData,P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training
 	while 1:
 		if Rendering2:
-			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom)
+			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom,Tension=Tension)
 			time.sleep(0)
 def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global PlayerSides,MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
+	global Tension,PlayerSides,MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
 	WallDurability1=MaxWallDurability
 	WallDurability2=MaxWallDurability
+	Tension=0
 	PlayerSides=0
 	pygame.mixer.music.set_volume(100)
 	ReplayData=[{
