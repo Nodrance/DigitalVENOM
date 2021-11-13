@@ -25,7 +25,6 @@ for i in range(12):
 """  
 TODO:
 Fix cancelling am>am2
-Implement grabs
 """ 
 
 CSCharacters=[QuW.Character,QuW.Character]
@@ -38,8 +37,8 @@ try:
 	P2C=EdenJoystick2.Controller(pygame)
 except:
 	try:
-		P1C=OwenJoystick.Controller(pygame)
-		P2C=Eden.Controller(pygame)
+		P1C=Owen.Controller(pygame)
+		P2C=OwenJoystick.Controller(pygame)
 	except:
 		P1C=Owen.Controller(pygame)
 		P2C=Eden.Controller(pygame)

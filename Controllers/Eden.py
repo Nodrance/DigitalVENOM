@@ -7,6 +7,7 @@ class Controller:
 		"l":0,
 		"m":0,
 		"h":0,
+		"v":0,
 		}
 		R["X"]=keys[pygame.K_d]-keys[pygame.K_a]
 		R["Y"]=keys[pygame.K_s]-keys[pygame.K_w]
@@ -22,6 +23,8 @@ class Controller:
 					R["m"]=1
 				if Event.key==pygame.K_o:
 					R["h"]=1
+				if Event.key==pygame.K_y:
+					R["y"]=1
 				if Event.key in [pygame.K_d or pygame.K_a]:
 					R["X2"]=R["X"]
 				if Event.key in [pygame.K_w or pygame.K_s]:

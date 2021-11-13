@@ -7,6 +7,7 @@ class Controller:
 		"l":0,
 		"m":0,
 		"h":0,
+		"v":0,
 		}
 		R["X"]=keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]
 		R["Y"]=keys[pygame.K_DOWN]-keys[pygame.K_UP]
@@ -22,9 +23,11 @@ class Controller:
 					R["m"]=1
 				if Event.key==pygame.K_m:
 					R["h"]=1
-				if Event.key in [pygame.K_RIGHT or pygame.K_LEFT]:
+				if Event.key==pygame.K_v:
+					R["v"]=1
+				if Event.key==pygame.K_RIGHT or Event.key==pygame.K_LEFT:
 					R["X2"]=R["X"]
-				if Event.key in [pygame.K_UP or pygame.K_DOWN]:
+				if Event.key==pygame.K_UP or Event.key==pygame.K_RIGHT:
 					R["Y2"]=R["Y"]
 					R["Jump2"]=max(-R["Y2"],0)
 		return R

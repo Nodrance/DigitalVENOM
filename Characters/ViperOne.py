@@ -122,7 +122,7 @@ class Default:
 				BlockStun+=i[1]["Block Stun"]
 				Knockback+=i[1]["Knockback"]
 				Knockback2=i[1]["Knockback2"]
-				if self.Character.SSN=="Block":
+				if self.Character.SSN=="Block" and not "Unblockable" in i[1]["Attributes"]:
 					self.Character.Health-=Damage
 					self.Character.StateFrame=-1
 					self.Character.State=self.Character.BlockStun
@@ -178,7 +178,6 @@ class Default:
 					self.Character.IPSBuffer=[self.Character.SSN]
 		if Tags["Other Player"].SSN!="HitStun":
 			self.Character.IPSProne=0
-		self.Character.IPSProne=self.Player
 		if self.Character.SN!=self.Character.TSN:
 			self.Character.Sprite=self.Character.Sprites[self.Character.SN]
 			self.Character.TSN=self.Character.SN

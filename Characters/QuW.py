@@ -106,6 +106,7 @@ class Character:
 		self.The48Frame=False
 		self.The24FrameData=self.ViperZero("The24Frame")
 		self.States={
+		"gv":ViperOne.Move(self,self.ViperZero("gv"),"gv",PreMove=self.Nogeki),
 		"gl":ViperOne.Move(self,self.ViperZero("gl"),"gl",PreMove=self.Pangeki),
 		"gl2":ViperOne.Move(self,self.ViperZero("gl2"),"gl2",PreMove=self.Pangeki),
 		"gl3":ViperOne.Move(self,self.ViperZero("gl3"),"gl3",PreMove=self.Pangeki),
@@ -130,6 +131,7 @@ class Character:
 				HitBoxer.Implement()
 				pass"""
 		self.CancelStates={
+		"gv":ViperOne.Cancel(self,self.States["gv"]),
 		"gl":ViperOne.Cancel(self,self.States["gl"]),
 		"gl2":ViperOne.Cancel(self,self.States["gl2"]),
 		"gl3":ViperOne.Cancel(self,self.States["gl3"]),
@@ -246,7 +248,6 @@ class Character:
 		Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],0.5))
 		Loli.Particles.append(Loli.PulseParticle((self.X+self.Offset[0],self.Y+self.Offset[1]),0.5,200,(255,255,0)))
 	def ViperZero(self,AN):
-		#print(AN)
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
 		X["Filename"]="Characters/QuW/Attacks/"+AN+".json"
 		return X
@@ -382,6 +383,11 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame
+		elif Tags["Controller"]["v"]:
+			self.MakeScreenSpaceText("VENOM")
+			self.X=self.Tags["Other Player"].X-32
+			self.HitLag=30
+			self.CancelStates["gv"]()
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
@@ -399,8 +405,8 @@ class Character:
 		self.DashTimer+=1
 		return {}
 	def Walk(self,Tags):
-		if self.StateFrame>30:
-			self.Meter+=int((self.StateFrame-30)/5)
+		if self.StateFrame>15:
+			self.Meter+=int((self.StateFrame-15)/5)
 		self.SSN="Walk"
 		self.AirDashable=self.MaxAirDash
 		self.SN=["walk1","walk2","walk3","walk4"][int(self.StateFrame/25)%4]
@@ -415,7 +421,12 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame"""
-		if Tags["Controller"]["l"]:
+		if Tags["Controller"]["v"]:
+			self.MakeScreenSpaceText("VENOM")
+			self.X=self.Tags["Other Player"].X-32
+			self.HitLag=30
+			self.CancelStates["gv"]()
+		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
 			self.CancelStates["gh"]()
@@ -469,8 +480,8 @@ class Character:
 				self.SSN="Block"
 				pass
 		if Tags["Controller"]["X2"]!=0:
-			if self.AirDashable and self.DashTimer<2:
-				if Tags["Controller"]["X"] == Tags["Side"]*2-1:
+			if self.AirDashable and self.DashTimer<20:
+				if Tags["Controller"]["X2"] == Tags["Side"]*2-1:
 					self.State=self.BackDash
 					#self.Pangeki()
 				else:
@@ -516,13 +527,13 @@ class Character:
 			self.AirDashable-=1
 			self.State=self.Jump
 	def AutoPanchiraJumpCancel(self):
-		if self.Meter>=200 and self.AirDashable:
+		if self.Meter>=500 and self.AirDashable:
 			self.HitLag+=10
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 			self.YV=-self.AirDashable*4
 			self.XV=-(self.Tags["Side"]-0.5)*16#self.Tags["Controller"]["X"]*8
-			self.Meter-=200
+			self.Meter-=500
 			self.AirDashable-=1
 			self.State=self.Jump
 	def The24Frame(self,Tags):

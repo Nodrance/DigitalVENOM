@@ -10,6 +10,21 @@ MaxWallDurability=24
 WallDurability1=MaxWallDurability
 WallDurability2=MaxWallDurability
 HF=0
+AntiTurbo=[
+{
+	"l":0,
+	"m":0,
+	"h":0,
+},
+{
+	"l":0,
+	"m":0,
+	"h":0,
+}
+]
+AntiTurboStrength=5
+AntiTurboTimer=0
+NegativePenaltySound=pygame.mixer.Sound("Sounds/Negative Penalty.wav")
 CameraZoom=0
 Rendering3=0
 StayMaxTension=0
@@ -100,7 +115,7 @@ def CheckCollisions(P1,P2): #Check all hurtboxes to find any collisions and retu
 	pass
 PygameEvents=[]
 def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one frame of gameplay.
-	global StayMaxTension,Tension,PlayerSides,Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
+	global AntiTurboTimer,AntiTurbo,AntiTurboStrength,StayMaxTension,Tension,PlayerSides,Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
 	i=0
 	PygameEvents=pygame.event.get()
 	for Event in PygameEvents:
@@ -166,6 +181,31 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 			pass
 	P1C1=P1C.Character(pygame,PygameEvents)
 	P2C1=P2C.Character(pygame,PygameEvents)
+	if AntiTurboTimer<=0:
+		AntiTurbo[0]["l"]+=P1C1["l"]*AntiTurboStrength
+		AntiTurbo[0]["m"]+=P1C1["m"]*AntiTurboStrength
+		AntiTurbo[0]["h"]+=P1C1["h"]*AntiTurboStrength
+		AntiTurbo[1]["l"]+=P2C1["l"]*AntiTurboStrength
+		AntiTurbo[1]["m"]+=P2C1["m"]*AntiTurboStrength
+		AntiTurbo[1]["h"]+=P2C1["h"]*AntiTurboStrength
+		AntiTurbo[0]["l"]=max(0,AntiTurbo[0]["l"]-1)
+		AntiTurbo[0]["m"]=max(0,AntiTurbo[0]["m"]-1)
+		AntiTurbo[0]["h"]=max(0,AntiTurbo[0]["h"]-1)
+		AntiTurbo[1]["l"]=max(0,AntiTurbo[1]["l"]-1)
+		AntiTurbo[1]["m"]=max(0,AntiTurbo[1]["m"]-1)
+		AntiTurbo[1]["h"]=max(0,AntiTurbo[1]["h"]-1)
+		if max([AntiTurbo[0][i] for i in AntiTurbo[0].keys()])>5:
+			P1.Health-=int(P1.MaxHealth/2)
+			NegativePenaltySound.play()
+			AntiTurbo=[{"l":0,"m":0,"h":0,},{"l":0,"m":0,"h":0,}]
+		if max([AntiTurbo[1][i] for i in AntiTurbo[1].keys()])>5:
+			P2.Health-=int(P2.MaxHealth/2)
+			NegativePenaltySound.play()
+			AntiTurbo=[{"l":0,"m":0,"h":0,},{"l":0,"m":0,"h":0,}]
+	else:
+		#print(AntiTurboTimer)
+		AntiTurbo=[{"l":0,"m":0,"h":0,},{"l":0,"m":0,"h":0,}]
+		AntiTurboTimer-=1
 	"""try:
 		LFC1
 		LFC2
@@ -290,6 +330,7 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 		pass
 	SimulatedFrames+=1+HFF
 	if HFF>0:
+		AntiTurboTimer=3
 		#Renderer.Particles.append(Renderer.StarParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-8,8),random.randint(32,64)),random.randint(1,5)/10,0.6,(255,255,255)))
 		for i in range(HFF*5):
 			Renderer.Particles.append(Renderer.LineParticle((int((P1.X+P2.X)/2),int((P1.Y+P2.Y)/2)-32),(random.randint(-64,64),random.randint(-64,64)),random.randint(5,20)/10,0.6,(255,255,0)))
@@ -368,7 +409,7 @@ def RenderThread():
 			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom,Tension=Tension)
 			time.sleep(0)
 def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
-	global Tension,PlayerSides,MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
+	global AntiTurboTimer,Tension,PlayerSides,MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
 	WallDurability1=MaxWallDurability
 	WallDurability2=MaxWallDurability
 	Tension=0
@@ -404,6 +445,7 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 	#threading.Thread(target=RenderThread,args=(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)).start()
 	Rendering2=1
 	pygame.event.get()
+	AntiTurboTimer=3
 	RenderSetup(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)
 	if not Rendering3:
 		Rendering3=1

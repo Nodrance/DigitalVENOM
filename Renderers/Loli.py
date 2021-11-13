@@ -561,20 +561,17 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 					#pygame.draw.polygon(win,Polygon["Color"],PolygonVertexShader(Polygon["Points"],Camera))
 			except Exception as e:
 				pass
-		try:
-			W0=win.get_width()
-			W3=int(W0/2)
-			W5=1.5
-			W1=int(P1.Health**W5*W3/P1.MaxHealth**W5)
-			W2=int(P2.Health**W5*W3/P2.MaxHealth**W5)
-			W12=int(P1.Meter*W3/P1.MaxMeter)
-			W22=int(P2.Meter*W3/P2.MaxMeter)
-			pygame.draw.rect(win,(0,255,255),[W3-W1,0,W1,15])
-			pygame.draw.rect(win,(255,0,255),[W3,0,W2,15])
-			pygame.draw.rect(win,(255,255,0),[0,15,W12,15])
-			pygame.draw.rect(win,(255,255,0),[W0-W22,15,W22,15])
-		except:
-			pass
+		W0=win.get_width()
+		W3=int(W0/2)
+		W5=1.5
+		W1=int(max(P1.Health,0)**W5*W3/P1.MaxHealth**W5)
+		W2=int(max(P2.Health,0)**W5*W3/P2.MaxHealth**W5)
+		W12=int(P1.Meter*W3/P1.MaxMeter)
+		W22=int(P2.Meter*W3/P2.MaxMeter)
+		pygame.draw.rect(win,(0,255,255),[W3-W1,0,W1,15])
+		pygame.draw.rect(win,(255,0,255),[W3,0,W2,15])
+		pygame.draw.rect(win,(255,255,0),[0,15,W12,15])
+		pygame.draw.rect(win,(255,255,0),[W0-W22,15,W22,15])
 		if P1W:
 			win.blit(P1WSprite,(0,15))
 			#pygame.draw.rect(win,(255,0,255),[0,15,15,15])
