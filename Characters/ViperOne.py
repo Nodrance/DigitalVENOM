@@ -65,7 +65,7 @@ class Move:
 		pass
 		pass
 class Default:
-	def __init__(self,Player,DIR,Character,MaxHealth=500,Offset=(0,-64),Height=128,Width=128):
+	def __init__(self,Player,DIR,Character,MaxHealth=500,Offset=(0,-64),Height=128,Width=128,HitMeterGain=15):
 		self.StartDistance=100
 		self.MaxHealth=MaxHealth
 		self.Player=Player
@@ -74,6 +74,7 @@ class Default:
 		self.Width=Width
 		self.DIR=DIR
 		self.Character=Character
+		self.HitMeterGain=HitMeterGain
 		pass
 	def Reset(self,CHA):
 		CHA.Health=self.MaxHealth
@@ -162,6 +163,7 @@ class Default:
 		for i in Tags["Triggers"]:
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
 				self.Character.HitLag+=i[0]["Hit Lag"]
+				self.Character.Meter+=self.HitMeterGain
 				"""if self.Character.State in [self.Character.States["gh"],self.Character.States["gb"],self.Character.States["ah"],self.Character.States["ab"]]:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Light"]))
 				if self.Character.State in [self.Character.States["gj"],self.Character.States["gn"],self.Character.States["aj"],self.Character.States["an"]]:

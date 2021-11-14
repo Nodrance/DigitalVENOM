@@ -1,7 +1,7 @@
 import os,sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 from Controllers import Owen,OwenJoystick,Eden,EdenJoystick,Replayer,EdenJoystick2
-from Characters import InjectionCube,QuW
+from Characters import InjectionCube,QuW,ERic
 from Renderers import Loli
 from Rulesets import Competitive,Warmup,Training
 from Engines import Alchemy,Combustion
@@ -27,7 +27,7 @@ TODO:
 Fix cancelling am>am2
 """ 
 
-CSCharacters=[QuW.Character,QuW.Character]
+CSCharacters=[ERic.Character,QuW.Character]
 TitleScreenImage=pygame.image.load("Sprites/Title Screen/Title Screen.png").convert()
 P1WImage=pygame.image.load("Sprites/Win Screen/Player 1 Wins.png").convert()
 P2WImage=pygame.image.load("Sprites/Win Screen/Player 2 Wins.png").convert()

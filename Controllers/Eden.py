@@ -24,7 +24,7 @@ class Controller:
 				if Event.key==pygame.K_o:
 					R["h"]=1
 				if Event.key==pygame.K_y:
-					R["y"]=1
+					R["v"]=1
 				if Event.key in [pygame.K_d or pygame.K_a]:
 					R["X2"]=R["X"]
 				if Event.key in [pygame.K_w or pygame.K_s]:

@@ -19,12 +19,13 @@ class Character:
 			Height=128,
 			Width=128,
 			Character=self,
+			HitMeterGain=0,
 			)
 		self.ViperOne.Reset(self)
 		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
-		self.Costume=["64Cyan","64Cyan"][P]
+		self.Costume="64Cyan"
 		self.color_grid=pygame.image.load("Characters/QuW/Sprites/color_grid.png")
 		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"

@@ -1,0 +1,212 @@
+{
+	"Format": "ViperZero",
+	"Frames": 8,
+	"Animation": [
+		"gl",
+		"gl",
+		"gl",
+		"gl",
+		"gl",
+		"gl",
+		"gl",
+		"gl",
+		"gl",
+		"gl"
+	],
+	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
+			{
+				"Box": [
+					[
+						0,
+						64
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Damage": 9,
+				"Chip Damage": 3,
+				"Type": "Hit",
+				"Stun": 10,
+				"Block Stun": 3,
+				"Knockback": 0,
+				"Hit Lag": 10,
+				"Knockback2": 3,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		]
+	],
+	"Filename": "Characters/ERic/Attacks/al.json",
+	"Cancels": [
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}

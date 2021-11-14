@@ -1,0 +1,248 @@
+{
+	"Format": "ViperZero",
+	"Frames": 10,
+	"Animation": [
+		"glitch1",
+		"glitch1",
+		"glitch2",
+		"glitch2",
+		"gl",
+		"gl",
+		"gl",
+		"gl",
+		"glitch1",
+		"glitch1",
+		"glitch2",
+		"glitch2"
+	],
+	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
+			{
+				"Box": [
+					[
+						0,
+						64
+					],
+					[
+						-64,
+						0
+					]
+				],
+				"Damage": 9,
+				"Chip Damage": 3,
+				"Type": "Hit",
+				"Stun": 10,
+				"Block Stun": 10,
+				"Knockback": 3,
+				"Hit Lag": 10,
+				"Knockback2": 0,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		]
+	],
+	"Filename": "Characters/ERic/Attacks/gl.json",
+	"Cancels": [
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}

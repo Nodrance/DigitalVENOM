@@ -1,0 +1,815 @@
+{
+	"Format": "ViperZero",
+	"Frames": 38,
+	"Animation": [
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1",
+		"fierce1"
+	],
+	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 250,
+				"Chip Damage": 5,
+				"Type": "Hit",
+				"Stun": 10,
+				"Block Stun": 5,
+				"Knockback": 50,
+				"Hit Lag": 12,
+				"Knockback2": 50,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 250,
+				"Chip Damage": 5,
+				"Type": "Hit",
+				"Stun": 10,
+				"Block Stun": 5,
+				"Knockback": 50,
+				"Hit Lag": 12,
+				"Knockback2": 50,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 10,
+				"Chip Damage": 5,
+				"Type": "Hit",
+				"Stun": 10,
+				"Block Stun": 5,
+				"Knockback": 50,
+				"Hit Lag": 12,
+				"Knockback2": 50,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 10,
+				"Chip Damage": 5,
+				"Type": "Hit",
+				"Stun": 10,
+				"Block Stun": 5,
+				"Knockback": 50,
+				"Hit Lag": 12,
+				"Knockback2": 50,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		]
+	],
+	"Filename": "Characters/QuW/Attacks/The24Frame.json",
+	"Cancels": [
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}

@@ -1,0 +1,212 @@
+{
+	"Format": "ViperZero",
+	"Frames": 8,
+	"Animation": [
+		"glitch1",
+		"glitch1",
+		"glitch2",
+		"glitch2",
+		"glitch2",
+		"gm",
+		"gm",
+		"glitch2",
+		"glitch2",
+		"glitch2"
+	],
+	"Triggers": [
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			},
+			{
+				"Box": [
+					[
+						-12,
+						62
+					],
+					[
+						-95,
+						-60
+					]
+				],
+				"Damage": 12,
+				"Chip Damage": 3,
+				"Type": "Hit",
+				"Stun": 5,
+				"Block Stun": 3,
+				"Knockback": 3,
+				"Hit Lag": 10,
+				"Knockback2": 0,
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		]
+	],
+	"Filename": "Characters/QuW/Attacks/gm.json",
+	"Cancels": [
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}
