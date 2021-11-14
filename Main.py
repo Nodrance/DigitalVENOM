@@ -5,7 +5,7 @@ from Characters import InjectionCube,QuW,ERic
 from Renderers import Loli
 from Rulesets import Competitive,Warmup,Training
 from Engines import Alchemy,Combustion
-from Stages import VenomCompetitive,VenomWarmup,City
+from Stages import VenomCompetitive,VenomWarmup,City,CityLights
 from Tools import HitBoxer,ControllerDebug
 import sys,copy,json,pygame,dis,inspect,Debug
 #sys.stdout = open("OutputLog.txt", "w")
@@ -47,7 +47,7 @@ P1=QuW.Character#(0,pygame)
 P2=QuW.Character#(1,pygame)
 
 BG=VenomWarmup.Stage(pygame)
-BG2=VenomCompetitive.Stage(pygame)
+BG2=CityLights.Stage(pygame)
 
 WinIndex=[
 "Nobody Wins?",
