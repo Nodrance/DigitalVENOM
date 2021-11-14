@@ -13,7 +13,7 @@ class Stage:
 		self.FaultOffset=3
 		self.Bounds=[-750,750,-1000]
 		self.Sprites=[{
-		"Sprite":pygame.image.load("Stages/City Lights/F0"),
+		"Sprite":pygame.image.load("Stages/City Lights/F0.png"),
 		"X":0,
 		"Y":0,
 		"Z":3,
@@ -37,7 +37,7 @@ class F0:
 	def __init__(self,pygame):
 		self.Bounds=[-750,750,-1000]
 		self.Sprites=[{
-		"Sprite":pygame.image.load("Stages/City Lights/F0"),
+		"Sprite":pygame.image.load("Stages/City Lights/F0.png"),
 		"X":0,
 		"Y":0,
 		"Z":3,
