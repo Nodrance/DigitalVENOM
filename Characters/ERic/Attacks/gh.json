@@ -110,8 +110,8 @@
 						-50
 					]
 				],
-				"Damage": 60,
-				"Chip Damage": 15,
+				"Damage": 10,
+				"Chip Damage": 3,
 				"Type": "Hit",
 				"Stun": 20,
 				"Block Stun": 3,

@@ -106,10 +106,10 @@
 						0
 					]
 				],
-				"Damage": 9,
-				"Chip Damage": 3,
+				"Damage": 3,
+				"Chip Damage": 1,
 				"Type": "Hit",
-				"Stun": 10,
+				"Stun": 20,
 				"Block Stun": 10,
 				"Knockback": 3,
 				"Hit Lag": 10,

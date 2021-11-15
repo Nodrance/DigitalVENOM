@@ -14,10 +14,10 @@ class Character:
 		self.ViperOne=ViperOne.Default(
 			Player=P,
 			DIR="Characters/ERic",
-			Offset=(0,-55),
+			Offset=(0,-65),
 			MaxHealth=700,
-			Height=128,
-			Width=128,
+			Height=150,
+			Width=150,
 			Character=self,
 			)
 		self.ViperOne.Reset(self)
