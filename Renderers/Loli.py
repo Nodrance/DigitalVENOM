@@ -286,6 +286,12 @@ def HandleMusic():
 		P.mixer.music.load(random.choice(SoundtrackList))
 		P.mixer.music.play()
 		P.mixer.music.queue(random.choice(SoundtrackList))
+def CreateShadow(Sprite,Color,Angle):
+	Mask=pygame.mask.from_surface(Sprite)
+	Shadow=Mask.to_surface(setcolor=Color,unsetcolor=(255,255,255))
+	Sprite.blit(Shadow,Angle,special_flags=pygame.BLEND_MULT)
+	return Sprite
+	#Surface.set_colorkey((255,255,255))
 
 def CreateOutline(Sprite,Position,Color=(0,0,0)):
 	Mask=pygame.mask.from_surface(Sprite)
@@ -585,8 +591,8 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		LastOutlines[0]=CreateOutline(P1RS[0],P1RS[1],(0,0,0))
 		LastOutlines[0].extend(CreateOutline(P2RS[0],P2RS[1],(0,0,0)))
 		BlitList.extend(LastOutlines[0])
-		BlitList.append(P1RS)
-		BlitList.append(P2RS)
+		BlitList.append((CreateShadow(P1RS[0],(127,127,255),(-int(P1.X/100),2)),P1RS[1]))
+		BlitList.append((CreateShadow(P2RS[0],(127,127,255),(-int(P2.X/100),2)),P2RS[1]))
 		if BlitBloom==1:
 			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_ADD)
 		try:

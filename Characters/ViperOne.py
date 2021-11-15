@@ -16,6 +16,24 @@ class Move:
 		self.PostFrame=PostFrame
 		self.PreMove=PreMove
 		self.PostMove=PostMove
+		self.Startup=0
+		self.EndLag=0
+		self.StunStun=0
+		CountStage=0
+		for i in FrameData["Triggers"]:
+			X=0
+			for j in i:
+				if j["Type"]=="Hit":
+					X=1
+					HitBox=j
+			if X:
+				self.HitStun=HitBox["Stun"]
+				CountStage=1
+			elif CountStage:
+				self.EndLag+=1
+			else:
+				self.Startup+=1
+		self.FrameAdvantage=self.HitStun-self.EndLag
 		pass
 	def __call__(self,Tags):
 		if self.Character.StateFrame==0 and self.PreMove!=None:
@@ -26,6 +44,12 @@ class Move:
 		self.Character.SSN=self.SSN
 		self.Character.SN=self.FrameData["Animation"][self.Character.StateFrame]
 		self.Character.Triggers=self.FrameData["Triggers"][self.Character.StateFrame]
+		"""if self.Character.StateFrame==0:
+			print("Attack Data")
+			print(self.Startup)
+			print(self.HitStun)
+			print(self.EndLag)
+			print(self.FrameAdvantage)"""
 		if self.Character.Y<0:
 			self.Character.YV+=1
 		if self.SSN.lower().startswith("a"):
