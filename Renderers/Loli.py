@@ -286,9 +286,9 @@ def HandleMusic():
 		P.mixer.music.load(random.choice(SoundtrackList))
 		P.mixer.music.play()
 		P.mixer.music.queue(random.choice(SoundtrackList))
-def CreateShadow(Sprite,Color,Angle):
+def CreateShadow(Sprite,Color,Highlight,Angle):
 	Mask=pygame.mask.from_surface(Sprite)
-	Shadow=Mask.to_surface(setcolor=Color,unsetcolor=(255,255,255))
+	Shadow=Mask.to_surface(setcolor=Color,unsetcolor=Highlight)
 	Sprite.blit(Shadow,Angle,special_flags=pygame.BLEND_MULT)
 	return Sprite
 	#Surface.set_colorkey((255,255,255))
@@ -478,9 +478,9 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 	Camera.X-=int((P1.X+P2.X)/2)
 	Camera.X=int(Camera.X/CS)
 	Camera.X+=int((P1.X+P2.X)/2)
-	Camera.Y-=int((P1.Y+P2.Y)/2+125*Camera.Z)
+	Camera.Y-=int((P1.Y+P2.Y)/2+100*Camera.Z)
 	Camera.Y=int(Camera.Y/CS)
-	Camera.Y+=int((P1.Y+P2.Y)/2+125*Camera.Z)
+	Camera.Y+=int((P1.Y+P2.Y)/2+100*Camera.Z)
 	Camera.Z+=min(max(0.75,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),1)
 	Camera.Z=(Camera.Z/CS)#-0.075
 	Camera.Z-=min(max(0.75,(abs(P1.X-P2.X)/CamCap),(abs(P1.Y-P2.Y)/CamCap*2)),1)
@@ -557,7 +557,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 						else:
 							RenderLargeSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera,A>0,i["Blending"])
 					else:
-						BlitList.append(RenderSpriteQuick(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera))
+						RenderSprite(i["Sprite"],(i["X"],i["Y"],i["Z"]),i["W"],i["H"],Camera)
 					A+=1
 			except:
 				pass
@@ -591,8 +591,8 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		LastOutlines[0]=CreateOutline(P1RS[0],P1RS[1],(0,0,0))
 		LastOutlines[0].extend(CreateOutline(P2RS[0],P2RS[1],(0,0,0)))
 		BlitList.extend(LastOutlines[0])
-		BlitList.append((CreateShadow(P1RS[0],(127,127,255),(-int(P1.X/100),2)),P1RS[1]))
-		BlitList.append((CreateShadow(P2RS[0],(127,127,255),(-int(P2.X/100),2)),P2RS[1]))
+		BlitList.append((CreateShadow(P1RS[0],(63,63,255),(255,255,127),(-int(P1.X/100),2)),P1RS[1]))
+		BlitList.append((CreateShadow(P2RS[0],(63,63,255),(255,255,127),(-int(P2.X/100),2)),P2RS[1]))
 		if BlitBloom==1:
 			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_ADD)
 		try:
@@ -868,7 +868,7 @@ def MenuLoop(self):
 					if L!=None:
 						return L
 	YLength=min(0,-self.Selected*(self.TotalYLength-(TrueWin.get_height()-self.TotalYLength/len(self.MenuList)))/len(self.MenuList))
-	for MenuItemID in range(len(self.MenuList)):
+	for MenuItemID,MenuItem in enumerate(self.MenuList):#range(len(self.MenuList)):
 		MenuItem=self.MenuList[MenuItemID]
 		X=MenuItem.Render()
 		TrueWin.blit(X,(self.XMargin+self.XPadding,YLength+self.YMargin+self.YPadding))

@@ -112,18 +112,18 @@
 			{
 				"Box": [
 					[
-						-12,
-						62
+						-7,
+						82
 					],
 					[
-						-95,
-						-60
+						-80,
+						0
 					]
 				],
 				"Damage": 5,
 				"Chip Damage": 1,
 				"Type": "Hit",
-				"Stun": 5,
+				"Stun": 18,
 				"Block Stun": 3,
 				"Knockback": 3,
 				"Hit Lag": 10,
@@ -196,7 +196,7 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/gm.json",
+	"Filename": "Characters/ERic/Attacks/gm.json",
 	"Cancels": [
 		[],
 		[],

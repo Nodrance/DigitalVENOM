@@ -5,7 +5,7 @@ from Characters import InjectionCube,QuW,ERic
 from Renderers import Loli
 from Rulesets import Competitive,Warmup,Training
 from Engines import Alchemy,Combustion
-from Stages import VenomCompetitive,VenomWarmup,City,CityLights
+from Stages import VenomCompetitive,VenomWarmup,City,CityLights,NightLight,RoyalDuel
 from Tools import HitBoxer,ControllerDebug
 import sys,copy,json,pygame,dis,inspect,Debug
 #sys.stdout = open("OutputLog.txt", "w")

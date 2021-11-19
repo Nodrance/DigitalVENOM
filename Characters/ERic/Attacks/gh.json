@@ -98,19 +98,83 @@
 				],
 				"Type": "Hurt",
 				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
+			}
+		],
+		[
+			{
+				"Box": [
+					[
+						-25,
+						30
+					],
+					[
+						-105,
+						0
+					]
+				],
+				"Type": "Hurt",
+				"Attributes": []
 			},
 			{
 				"Box": [
 					[
 						-12,
-						62
+						57
 					],
 					[
-						-95,
+						-135,
 						-50
 					]
 				],
-				"Damage": 10,
+				"Damage": 15,
 				"Chip Damage": 3,
 				"Type": "Hit",
 				"Stun": 20,
@@ -776,73 +840,9 @@
 				"Type": "Hurt",
 				"Attributes": []
 			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt",
-				"Attributes": []
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt",
-				"Attributes": []
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt",
-				"Attributes": []
-			}
-		],
-		[
-			{
-				"Box": [
-					[
-						-25,
-						30
-					],
-					[
-						-105,
-						0
-					]
-				],
-				"Type": "Hurt",
-				"Attributes": []
-			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/gh.json",
+	"Filename": "Characters/ERic/Attacks/gh.json",
 	"Cancels": [
 		[],
 		[],

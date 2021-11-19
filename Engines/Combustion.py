@@ -10,6 +10,10 @@ MaxWallDurability=24
 WallDurability1=MaxWallDurability
 WallDurability2=MaxWallDurability
 HF=0
+#TODO:
+#Stop using time.time()
+#It's not made for framerate calculations
+#Look into the use of time.perf_counter()
 AntiTurbo=[
 {
 	"l":0,
@@ -434,6 +438,7 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 	Clock=pygame.time.Clock()
 	if Rendering:
 		Renderer.Render(P1,P2,BG.Fault[BG.FaultOffset],1,{"Sounds":[GameStart]})
+	GameStart.play()
 	pygame.time.wait(2000)
 	StartTime=time.time()
 	SimulatedFrames=0

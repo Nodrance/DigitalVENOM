@@ -125,6 +125,7 @@ class Default:
 		CHA.Sounds=[]
 		CHA.HitLag=0
 		CHA.LTags={}
+		CHA.IPSMaxDistance=0
 		pass
 	def Frame(self,Tags):
 		self.Character.Tags=Tags
@@ -139,6 +140,7 @@ class Default:
 		Stun=0
 		BlockStun=0
 		Knockback=0
+		self.Character.State(Tags)
 		for i in Tags["Triggers"]:
 			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Hit":
 				Damage+=i[1]["Damage"]
@@ -182,11 +184,11 @@ class Default:
 		else:
 			self.Character.StateFrame=0
 			self.Character.BackState=self.Character.State
-		self.Character.State(Tags)
 		R={}
 		for i in Tags["Triggers"]:
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
-				self.Character.HitLag+=i[0]["Hit Lag"]
+				if Tags["Other Player"].SSN!="Block" or "Unblockable" in i[0]["Attributes"]:
+					self.Character.HitLag+=i[0]["Hit Lag"]
 				self.Character.Meter+=self.HitMeterGain
 				"""if self.Character.State in [self.Character.States["gh"],self.Character.States["gb"],self.Character.States["ah"],self.Character.States["ab"]]:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Light"]))
@@ -196,14 +198,17 @@ class Default:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Heavy"]))"""
 				if Tags["Other Player"].SSN=="HitStun":
 					self.Character.Combo+=1
-					self.Character.IPSProne=self.Character.SSN in self.Character.IPSBuffer
+					self.Character.IPSProne=(self.Character.SSN in self.Character.IPSBuffer) and abs(self.Character.X-Tags["Other Player"].X)<=self.Character.IPSMaxDistance
+					self.Character.IPSMaxDistance=max(self.Character.IPSMaxDistance,abs(self.Character.X-Tags["Other Player"].X))
 					self.Character.IPSBuffer.append(self.Character.SSN)
 				else:
+					self.Character.IPSMaxDistance=0
 					self.Character.Combo=1
 					self.Character.IPSProne=0
 					self.Character.IPSBuffer=[self.Character.SSN]
 		if Tags["Other Player"].SSN!="HitStun":
 			self.Character.IPSProne=0
+			self.Character.IPSBuffer=[]
 		if self.Character.SN!=self.Character.TSN:
 			self.Character.Sprite=self.Character.Sprites[self.Character.SN]
 			self.Character.TSN=self.Character.SN

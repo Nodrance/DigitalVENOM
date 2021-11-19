@@ -98,18 +98,18 @@
 			{
 				"Box": [
 					[
-						0,
-						64
+						-10,
+						79
 					],
 					[
-						-64,
-						0
+						-109,
+						-70
 					]
 				],
 				"Damage": 3,
 				"Chip Damage": 1,
 				"Type": "Hit",
-				"Stun": 20,
+				"Stun": 15,
 				"Block Stun": 10,
 				"Knockback": 3,
 				"Hit Lag": 10,

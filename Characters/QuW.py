@@ -528,13 +528,13 @@ class Character:
 			self.AirDashable-=1
 			self.State=self.Jump
 	def AutoPanchiraJumpCancel(self):
-		if self.Meter>=500 and self.AirDashable:
+		if self.Meter>=250 and self.AirDashable:
 			self.HitLag+=10
 			self.Sounds.append(self.MiscSounds["Jump Cancel"])
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.CutIns[4],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 			self.YV=-self.AirDashable*4
 			self.XV=-(self.Tags["Side"]-0.5)*16#self.Tags["Controller"]["X"]*8
-			self.Meter-=500
+			self.Meter-=250
 			self.AirDashable-=1
 			self.State=self.Jump
 	def The24Frame(self,Tags):
@@ -597,7 +597,6 @@ class Character:
 		self.SSN="Block"
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="jump"
-		self.Meter-=3
 		self.XV=(self.Tags["Side"]-0.5)*4
 		if self.Y<0 or self.YV<0:
 			self.YV+=1

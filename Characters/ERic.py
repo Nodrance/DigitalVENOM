@@ -537,7 +537,6 @@ class Character:
 		self.SSN="Block"
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.SN="jump"
-		self.Meter-=3
 		self.XV=(self.Tags["Side"]-0.5)*4
 		if self.Y<0 or self.YV<0:
 			self.YV+=1

@@ -211,10 +211,10 @@
 				"Box": [
 					[
 						-12,
-						62
+						67
 					],
 					[
-						-95,
+						-130,
 						-60
 					]
 				],
@@ -226,7 +226,9 @@
 				"Knockback": 100,
 				"Hit Lag": 30,
 				"Knockback2": -50,
-				"Attributes": ["Knockdown"]
+				"Attributes": [
+					"Knockdown"
+				]
 			}
 		],
 		[
@@ -774,7 +776,7 @@
 			}
 		]
 	],
-	"Filename": "Characters/QuW/Attacks/ah.json",
+	"Filename": "Characters/ERic/Attacks/ah.json",
 	"Cancels": [
 		[],
 		[],

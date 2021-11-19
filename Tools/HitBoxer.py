@@ -11,6 +11,9 @@ TriggerSprite1=pygame.image.load("Sprites/Trigger.png").convert()
 TriggerSprite2=pygame.image.load("Sprites/Trigger2.png").convert()
 AttackData=[]
 
+#TODO:
+#Add controller support for HitBoxer?
+
 Camera=Loli.LoliCamera(0,0,-1,1)
 
 class TriggerSelecter:
@@ -215,6 +218,14 @@ def Start():
 					AttackData["Triggers"][Frame][SelectedTrigger]["Box"][1][1]+=5
 				if Event.key==pygame.K_RIGHT:
 					AttackData["Triggers"][Frame][SelectedTrigger]["Box"][0][1]+=5
+				if Event.key==pygame.K_i:
+					Camera.Y-=1
+				if Event.key==pygame.K_j:
+					Camera.X-=1
+				if Event.key==pygame.K_k:
+					Camera.Y+=1
+				if Event.key==pygame.K_l:
+					Camera.X+=1
 				if Event.key==pygame.K_z:
 					Frame-=1
 					Frame%=len(AttackData["Triggers"])
