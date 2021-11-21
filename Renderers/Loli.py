@@ -591,8 +591,10 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		LastOutlines[0]=CreateOutline(P1RS[0],P1RS[1],(0,0,0))
 		LastOutlines[0].extend(CreateOutline(P2RS[0],P2RS[1],(0,0,0)))
 		BlitList.extend(LastOutlines[0])
-		BlitList.append((CreateShadow(P1RS[0],(63,63,255),(255,255,127),(-int(P1.X/100),2)),P1RS[1]))
-		BlitList.append((CreateShadow(P2RS[0],(63,63,255),(255,255,127),(-int(P2.X/100),2)),P2RS[1]))
+		#BlitList.append(P1RS)
+		#BlitList.append(P2RS)
+		BlitList.append((CreateShadow(P1RS[0],(127,127,255),(255,255,127),(-int(P1.X/100),2)),P1RS[1]))
+		BlitList.append((CreateShadow(P2RS[0],(127,127,255),(255,255,127),(-int(P2.X/100),2)),P2RS[1]))
 		if BlitBloom==1:
 			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_ADD)
 		try:
@@ -659,26 +661,48 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		except:
 			pass"""
 	pass
-def RenderSelect(P1,P2,I1,I2,CSP1S,CSP2S):
+def RenderSelect(P1,P2,I1,I2,P1R,P2R,CSP1S,CSP2S):
 	global win,TrueWin,Camera,CamCap,ReadyScreen,HBR,SoundtrackList,CSBackground
-	Camera.X=0
-	Camera.Y=-15
+	#TODO:
+	#Add character outlines
+	Camera.X/=1.1
+	Camera.Y+=15
+	Camera.Y/=1.1
+	Camera.Y-=15
 	Camera.Z=-1
 	Camera.FOV=2
 	#win.fill(0)
 	#pygame.transform.smoothscale(CSBackground,(win.get_width(),win.get_height()),win)
 	K=pygame.Surface((2,2))
-	K.set_at((0,0),(127,0,127))
-	K.set_at((1,1),(0,127,127))
+	if not P1R:
+		K.set_at((0,0),(127,0,127))
+	if not P2R:
+		K.set_at((1,1),(0,127,127))
 	pygame.transform.smoothscale(K,(win.get_width(),win.get_height()),win)
 	HandleMusic()
-	RenderSprite(CSCharacters[I1],(-256,0,0),288,512,Camera,Smooth=0)
-	RenderSprite(P.transform.flip(CSCharacters[I2],1,0),(256,0,0),288,512,Camera,Smooth=0)
-	RenderSprite(CSSImage,(0,0,0),128,64,Camera,Smooth=0)
-	RenderSprite(CSP1Image,(P1[0],P1[1],0),64,64,Camera,Smooth=0)
-	RenderSprite(CSP2Image,(P2[0],P2[1],0),64,64,Camera,Smooth=0)
-	RenderSprite(CSP1S,(-256,0,0),256,256,Camera,Smooth=0)
-	RenderSprite(P.transform.flip(CSP2S,1,0),(256,0,0),256,256,Camera,Smooth=0)
+	BlitList=[]
+	if not P1R:
+		BlitList.append(RenderSpriteQuick(CSCharacters[I1],(-256,0,0),288,512,Camera))
+	if not P2R:
+		BlitList.append(RenderSpriteQuick(P.transform.flip(CSCharacters[I2],1,0),(256,0,0),288,512,Camera))
+	BlitList.append(RenderSpriteQuick(CSSImage,(0,0,0),128,64,Camera))
+	BlitList.append(RenderSpriteQuick(CSP1Image,(P1[0],P1[1],0),64,64,Camera))
+	BlitList.append(RenderSpriteQuick(CSP2Image,(P2[0],P2[1],0),64,64,Camera))
+	X=RenderSpriteQuick(CSP1S,(-256,0,0),256,256,Camera)
+	if P1R:
+		CreateShadow(X[0],(0,0,0),(127,127,255),(2,2))
+	else:
+		CreateShadow(X[0],(127,127,255),(255,255,127),(2,2))
+	BlitList.extend(CreateOutline(*X,(0,63,63)))
+	BlitList.append(X)
+	X=RenderSpriteQuick(P.transform.flip(CSP2S,1,0),(256,0,0),256,256,Camera)
+	if P2R:
+		CreateShadow(X[0],(0,0,0),(127,127,255),(-2,-2))
+	else:
+		CreateShadow(X[0],(127,127,255),(255,255,127),(-2,-2))
+	BlitList.extend(CreateOutline(*X,(63,0,63)))
+	BlitList.append(X)
+	win.blits(BlitList)
 	ScaleWin()
 	pass
 def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
@@ -702,7 +726,7 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 	while True:
 		Events=pygame.event.get()
 		if P1R and P2R:
-			return CSCharacters[Index1](0,pygame,Color1),CSCharacters[Index2](1,pygame,Color2)
+			return CSCharacters[Index1](0,Color1,SelectButton1),CSCharacters[Index2](1,Color2,SelectButton2)
 		P1T=[64*(Index1%2)-32,0]
 		P2T=[64*(Index2%2)-32,0]
 		Index1=Index1%len(CSCharacters)
@@ -718,7 +742,7 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 			Events=pygame.event.get()
 			CSP1S=CSCharacters[Index1].CharacterSelectSprites[Color1]
 			CSP2S=CSCharacters[Index2].CharacterSelectSprites[Color2]
-			RenderSelect(P1T,P2T,Index1,Index2,CSP1S,CSP2S)
+			RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,CSP1S,CSP2S)
 			for Event in Events:
 				if Event.type == pygame.QUIT:
 					pygame.quit()
@@ -730,24 +754,36 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 			X=P1C.Character(pygame,Events)
 			Y=P2C.Character(pygame,Events)
 			if X!=X2 and not P1R:
-				if X["l"]:
+				if X["l"] or X["m"] or X["h"] or X["v"]:
+					for k in "lmhv":
+						if X[k]:
+							SelectButton1=k
 					MenuSounds[1].play()
 					P1R=1
+					RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,CSP1S,CSP2S)
 				else:
 					Index1+=X["X"]
 					Color1+=X["Y"]
+					Camera.X=X["X"]*10
+					Camera.Y=(X["Y"]*10)-15
 					if OI1!=Index1:
 						MenuSounds[0].play()
 						OI1=Index1
 				X2=X
 				G=0
 			if Y!=Y2 and not P2R:
-				if Y["l"]:
+				if Y["l"] or Y["m"] or Y["h"] or Y["v"]:
+					for k in "lmhv":
+						if Y[k]:
+							SelectButton2=k
 					MenuSounds[1].play()
 					P2R=1
+					RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,CSP1S,CSP2S)
 				else:
 					Index2+=Y["X"]
 					Color2+=Y["Y"]
+					Camera.X=Y["X"]*10
+					Camera.Y=(Y["Y"]*10)-15
 					if OI2!=Index2:
 						MenuSounds[0].play()
 						OI2=Index2

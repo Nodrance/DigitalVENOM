@@ -2,6 +2,8 @@ import copy,random,math,json,pygame,numpy
 from Renderers import Loli
 from Characters import ViperOne
 from Tools import HitBoxer,ColorChanger
+#TODO:
+#Give ERic unique aerials
 class Character:
 	#TODO:
 	#This whole block of code here probably isn't best practice
@@ -9,8 +11,8 @@ class Character:
 	CharacterSelectSprites=[]
 	color_grid=pygame.image.load("Characters/ERic/Sprites/color_grid.png")
 	for i in range(color_grid.get_height()):
-		CharacterSelectSprites.append(ColorChanger.FasterSwapImageColors(pygame.image.load("Characters/ERic/Sprites/64Cyan/Idle1.png").convert_alpha(),color_grid,i))
-	def __init__(self,P,pygame,color):
+		CharacterSelectSprites.append(ColorChanger.FasterSwapImageColors(pygame.image.load("Characters/ERic/Sprites/v/Idle1.png").convert_alpha(),color_grid,i))
+	def __init__(self,P,color,button):
 		self.ViperOne=ViperOne.Default(
 			Player=P,
 			DIR="Characters/ERic",
@@ -24,7 +26,7 @@ class Character:
 		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
-		self.Costume="64Cyan"
+		self.Costume="v"
 		self.color_grid=pygame.image.load("Characters/ERic/Sprites/color_grid.png")
 		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"
@@ -32,6 +34,8 @@ class Character:
 		self.IPSBuffer=[]
 		self.IPSProne=0
 		self.MaxMeter=1000
+		#TODO:
+		#Give ERic unique cut-ins
 		self.Sprites={
 		"idle1":pygame.image.load("Characters/ERic/Sprites/"+self.Costume+"/Idle1.png").convert_alpha(),
 		"idle2":pygame.image.load("Characters/ERic/Sprites/"+self.Costume+"/Idle2.png").convert_alpha(),
@@ -171,7 +175,7 @@ class Character:
 		self.RNGV+=1+self.StateFrame+pygame.time.get_ticks()
 		return self.RNGV
 		pass
-	def Reset(self,P,pygame):
+	def Reset(self,P):
 		self.ViperOne.Reset(self)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["idle1"]
@@ -327,7 +331,7 @@ class Character:
 		elif Tags["Controller"]["v"]:
 			self.MakeScreenSpaceText("VENOM")
 			self.X=self.Tags["Other Player"].X-32
-			self.HitLag=30
+			self.HitLag=20
 			self.CancelStates["gv"]()
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()

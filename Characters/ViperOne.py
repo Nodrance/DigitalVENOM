@@ -89,7 +89,7 @@ class Move:
 		pass
 		pass
 class Default:
-	def __init__(self,Player,DIR,Character,MaxHealth=500,Offset=(0,-64),Height=128,Width=128,HitMeterGain=15):
+	def __init__(self,Player,DIR,Character,AutoSpriteChange=1,MaxHealth=500,Offset=(0,-64),Height=128,Width=128,HitMeterGain=15):
 		self.StartDistance=100
 		self.MaxHealth=MaxHealth
 		self.Player=Player
@@ -99,6 +99,7 @@ class Default:
 		self.DIR=DIR
 		self.Character=Character
 		self.HitMeterGain=HitMeterGain
+		self.AutoSpriteChange=AutoSpriteChange
 		pass
 	def Reset(self,CHA):
 		CHA.Health=self.MaxHealth
@@ -209,7 +210,7 @@ class Default:
 		if Tags["Other Player"].SSN!="HitStun":
 			self.Character.IPSProne=0
 			self.Character.IPSBuffer=[]
-		if self.Character.SN!=self.Character.TSN:
+		if self.Character.SN!=self.Character.TSN and self.AutoSpriteChange==1:
 			self.Character.Sprite=self.Character.Sprites[self.Character.SN]
 			self.Character.TSN=self.Character.SN
 		self.Character.X+=self.Character.XV

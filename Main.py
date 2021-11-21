@@ -10,7 +10,6 @@ from Tools import HitBoxer,ControllerDebug
 import sys,copy,json,pygame,dis,inspect,Debug
 #sys.stdout = open("OutputLog.txt", "w")
 #sys.stderr = open("ErrorLog.txt", "w")
-
 """
 Camera=Loli.LoliCamera(0,-15,-1,1)
 BlitzLogo=pygame.image.load("Sprites/BlitzLogoTransparent.png")
@@ -45,7 +44,6 @@ except:
 #ControllerDebug.Main()
 P1=QuW.Character#(0,pygame)
 P2=QuW.Character#(1,pygame)
-
 BG=VenomWarmup.Stage(pygame)
 BG2=VenomCompetitive.Stage(pygame)
 

@@ -52,8 +52,8 @@ def SetupHitBoxer():
 	HitBoxer.Start()
 def TrainingResetGame():
 	global GlobalPlayer1,GlobalPlayer2
-	GlobalPlayer1.Reset(0,pygame)
-	GlobalPlayer2.Reset(1,pygame)
+	GlobalPlayer1.Reset(0)
+	GlobalPlayer2.Reset(1)
 	return 0
 	pass
 def TrainingFillMeters():

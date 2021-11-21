@@ -2,6 +2,54 @@ import copy,random,math,json,pygame,numpy
 from Renderers import Loli
 from Characters import ViperOne
 from Tools import HitBoxer,ColorChanger
+class SoftBody:
+	def __init__(self,Color=(0,255,255),Weight=0,Size=4):
+		self.Pos=[0,0]
+		self.Vel=[0,0]
+		self.OldOrigin=[64,64]
+		self.Origin=[64,64]
+		self.MaxDistance=5-Weight/4
+		self.Size=Size
+		self.Color=Color
+		self.Draw=1
+		self.Resistance=1.1+Weight/10
+		self.Division=5-Weight
+		self.Gravity=0.5+Weight/8
+		pass
+	def Jiggle(self,Strength=5):
+		self.Vel[0]=random.randint(-Strength,Strength)
+		self.Vel[1]=random.randint(-Strength,Strength)
+	def __call__(self,Sprite,XV,YV):
+		#TODO:
+		#Speed this up with more numpy
+		Render=pygame.Surface((Sprite.get_width(),Sprite.get_height()),flags=pygame.SRCALPHA)
+		XV+=self.Origin[0]-self.OldOrigin[0]
+		YV+=self.Origin[1]-self.OldOrigin[1]
+		self.OldOrigin=self.Origin
+		X=int(abs(XV)+abs(YV))
+		if XV!=0 or YV!=0:
+			self.Vel[0]-=XV+random.randint(-X,X)
+			self.Vel[1]-=YV+random.randint(-X,X)
+		self.Vel[1]+=self.Gravity
+		self.Vel=numpy.subtract(self.Vel,self.Pos)
+		self.Vel[0]/=self.Resistance
+		self.Vel[1]/=self.Resistance
+		if numpy.linalg.norm(self.Vel)>0.1:
+			self.Pos=numpy.add(self.Pos,numpy.divide(self.Vel,self.Division))
+			#self.Pos=[0,0]
+			#self.Vel=[0,0]
+		X=numpy.linalg.norm(self.Pos)
+		if X>self.MaxDistance:
+			self.Pos[0]/=X/self.MaxDistance
+			self.Pos[1]/=X/self.MaxDistance
+		if self.Draw:
+			pygame.draw.circle(Render,self.Color,numpy.add(self.Pos,self.Origin),self.Size)#,draw_top_right=1,draw_bottom_right=1)
+		try:
+			Sprite.blit(Render,(0,0))
+			return Sprite
+		except:
+			return Sprite
+		pass
 class Character:
 	#TODO:
 	#This whole block of code here probably isn't best practice
@@ -9,10 +57,36 @@ class Character:
 	CharacterSelectSprites=[]
 	color_grid=pygame.image.load("Characters/QuW/Sprites/color_grid.png")
 	for i in range(color_grid.get_height()):
-		CharacterSelectSprites.append(ColorChanger.FasterSwapImageColors(pygame.image.load("Characters/QuW/Sprites/64Cyan/Idle1.png").convert_alpha(),color_grid,i))
-	def __init__(self,P,pygame,color):
+		CharacterSelectSprites.append(ColorChanger.FasterSwapImageColors(pygame.image.load("Characters/QuW/Sprites/v/Idle1.png").convert_alpha(),color_grid,i))
+	def __init__(self,P,color,button):
+		"""
+		__init__(P,pygame,color)
+		
+		Initializes a Character object for QuW.
+		Do not call this function directly using QuW.Character.__init__().
+		Instead call it by instantiating her using QuW.Character().
+
+		self:
+			The Character object being initialized.
+			Python handles self automatically, do not pass it as an input.
+
+		P:
+			The player number.
+			P should be equal to 0 for player 1.
+			P should be equal to 1 for player 2.
+
+		color:
+			This is color ID for the character.
+			If color is equal to 0, QuW will be initialized with her default color.
+
+		button:
+			Which button was used to select QuW.
+			This will be either "l", "m", "h", or "v".
+			This is currently unused
+		"""
 		self.ViperOne=ViperOne.Default(
 			Player=P,
+			AutoSpriteChange=0,
 			DIR="Characters/QuW",
 			Offset=(0,-55),
 			MaxHealth=500,
@@ -25,14 +99,50 @@ class Character:
 		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
-		self.Costume="64Cyan"
+		self.Costume="v"
 		self.color_grid=pygame.image.load("Characters/QuW/Sprites/color_grid.png")
 		self.HitBoxerFrameData=[{"Triggers":[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]}]
 		self.SSN="Idle"
 		self.TS=[]
 		self.IPSBuffer=[]
 		self.IPSProne=0
+		SoftBodyPresetIndex=json.load(open("Characters/QuW/SoftBodyPresetIndex.json"))
+		"""SoftBodyPresetIndex=[
+		(3,5),#0
+		(0,6),#1
+		(0,5),#2
+		(0,6),#3
+		(4,1),#4
+		(3,5),#5
+		(3,5),#6
+		(3,5),#7
+		(3,5),#8
+		(0,6),#9
+		(0,6),#10
+		(3,5),#11
+		(0,6),#12
+		(1,6),#13
+		(3,5),#14
+		(3,5),#15
+		]
+		json.dump(SoftBodyPresetIndex,open("Characters/QuW/SoftBodyPresetIndex.json","w"),indent="\t")"""
+		if button=="v":
+			self.SoftBody1=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=0,Size=6)
+			self.SoftBody2=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=0,Size=6)
+		else:
+			self.SoftBody1=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=SoftBodyPresetIndex[color][0],Size=SoftBodyPresetIndex[color][1])
+			self.SoftBody2=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=SoftBodyPresetIndex[color][0],Size=SoftBodyPresetIndex[color][1])
+		self.SoftBodyOrigins={
+		"idle1": [[66,47],[72,47]],
+		"idle2": [[66,47],[72,47]],
+		"idle3": [[66,47],[72,47]],
+		"hitstun1": [[55,48],[58,48]],
+		"knockdown": [[45,100],[45,103]],
+		"jump": [[66,48],[72,48]],
+		}
 		self.MaxMeter=1000
+		#TODO:
+		#Rename attack animations, and make more of them especially for aerials
 		self.Sprites={
 		"idle1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle1.png").convert_alpha(),
 		"idle2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle2.png").convert_alpha(),
@@ -231,7 +341,7 @@ class Character:
 		self.RNGV+=1+self.StateFrame+pygame.time.get_ticks()
 		return self.RNGV
 		pass
-	def Reset(self,P,pygame):
+	def Reset(self,P):
 		self.ViperOne.Reset(self)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.Sprite=self.Sprites["idle1"]
@@ -340,6 +450,23 @@ class Character:
 		self.Meter+=20
 		pass
 	def __call__(self,Tags):
+		"""
+		__call__(Tags) -> dict
+		
+		This function is run every frame for QuW.
+		This function should be called by calling her directly.
+		Use P1() rather than P1.__call__()
+
+		self:
+			The instance of QuW being used.
+			Python handles self automatically, do not pass it as an input.
+
+		Tags:
+			QuW's input tags for the given frame.
+
+		Returns:
+			A dictionary of output tags used by the engine.
+		"""
 		self.FaultReversalTag=0
 		R=self.ViperOne.Frame(Tags)
 		if Tags["Controller"]["m"] and Tags["Controller"]["h"]:
@@ -357,6 +484,19 @@ class Character:
 		]
 		self.Meter=min(max(self.Meter,0),self.MaxMeter)
 		self.Triggers=copy.deepcopy(self.Triggers)
+		#TODO:
+		#Change sprite and soft body implementation to use a class with __get__
+		#This will optimize the speed a tiny bit
+		try:
+			self.SoftBody1.Origin,self.SoftBody2.Origin=self.SoftBodyOrigins[self.SN]
+			self.SoftBody1.Draw=1
+			self.SoftBody2.Draw=1
+		except:
+			self.SoftBody1.Draw=0
+			self.SoftBody2.Draw=0
+			self.SoftBody1.Jiggle()
+			self.SoftBody2.Jiggle()
+		self.Sprite=self.SoftBody2(self.SoftBody1(self.Sprites[self.SN].copy(),self.XV,self.YV),self.XV,self.YV)
 		"""for i in self.Triggers:
 			if i["Type"]=="Hit":
 				i["Damage"]/=1+max(self.Meter/self.MaxMeter/10,0)
@@ -387,7 +527,7 @@ class Character:
 		elif Tags["Controller"]["v"]:
 			self.MakeScreenSpaceText("VENOM")
 			self.X=self.Tags["Other Player"].X-32
-			self.HitLag=30
+			self.HitLag=20
 			self.CancelStates["gv"]()
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
@@ -587,7 +727,7 @@ class Character:
 		if Tags["Controller"]["Jump2"]:
 			self.State=self.Jump
 			self.YV=-30
-		if self.StateFrame>48:
+		if self.StateFrame>120:
 			self.YV=0
 			self.Y=0
 			self.Stun=0
