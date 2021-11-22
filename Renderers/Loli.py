@@ -34,7 +34,7 @@ try:
 except:
 	pass
 #TrueWin=win
-ReadyScreen=pygame.image.load("Sprites/Game Start.png").convert_alpha()
+ReadyScreen=pygame.image.load("Sprites/Game Start Second Injection.png").convert_alpha()
 MenuSounds=[
 pygame.mixer.Sound("Sounds/Menu Screen/Switch.wav"),
 pygame.mixer.Sound("Sounds/Menu Screen/Select.wav"),
@@ -472,8 +472,11 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 	try:HandleMusic()
 	except:pass
 	#HF=0
-	try:CS=1+15/Clock.get_fps()
-	except:CS=1.1
+	if Countdown==0:
+		try:CS=1+15/Clock.get_fps()
+		except:CS=1.1
+	else:
+		CS=1+0.1/Countdown
 	Camera.FOV=1.3
 	Camera.X-=int((P1.X+P2.X)/2)
 	Camera.X=int(Camera.X/CS)
@@ -593,8 +596,8 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		BlitList.extend(LastOutlines[0])
 		#BlitList.append(P1RS)
 		#BlitList.append(P2RS)
-		BlitList.append((CreateShadow(P1RS[0],(127,127,255),(255,255,127),(-int(P1.X/100),2)),P1RS[1]))
-		BlitList.append((CreateShadow(P2RS[0],(127,127,255),(255,255,127),(-int(P2.X/100),2)),P2RS[1]))
+		BlitList.append((CreateShadow(P1RS[0],P1.Shading[1],P1.Shading[0],(-int(P1.X/100),2)),P1RS[1]))
+		BlitList.append((CreateShadow(P2RS[0],P2.Shading[1],P2.Shading[0],(-int(P2.X/100),2)),P2RS[1]))
 		if BlitBloom==1:
 			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_ADD)
 		try:
@@ -636,8 +639,13 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			else:
 				win.blit(S,(0,i.Y))
 		win.blits(BlitList)
-		if not Countdown == 0:
-			win.blit(pygame.transform.scale(ReadyScreen,(W0,win.get_height())).convert_alpha(),(0,0))
+		if Countdown != 0:
+			X=pygame.Surface((2,2))
+			X.set_at((0,0),(0,127*Countdown,127*Countdown))
+			X.set_at((1,1),(127*Countdown,0,127*Countdown))
+			#ReadyScreen
+			win.blit(pygame.transform.smoothscale(X,(W0,win.get_height())),(0,0),special_flags=pygame.BLEND_ADD)
+			win.blit(ReadyScreen,(0,0),special_flags=pygame.BLEND_ADD)
 		if CameraZoom and ImpactGlitch:
 			WinPixels=pygame.surfarray.pixels2d(win)
 			BloomPixels=pygame.surfarray.pixels2d(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())))
@@ -675,9 +683,9 @@ def RenderSelect(P1,P2,I1,I2,P1R,P2R,CSP1S,CSP2S):
 	#pygame.transform.smoothscale(CSBackground,(win.get_width(),win.get_height()),win)
 	K=pygame.Surface((2,2))
 	if not P1R:
-		K.set_at((0,0),(127,0,127))
+		K.set_at((0,0),(0,127,127))
 	if not P2R:
-		K.set_at((1,1),(0,127,127))
+		K.set_at((1,1),(127,0,127))
 	pygame.transform.smoothscale(K,(win.get_width(),win.get_height()),win)
 	HandleMusic()
 	BlitList=[]
@@ -997,8 +1005,8 @@ class GradientMenu:
 		self.MenuOpen=1
 		while self.MenuOpen:
 			K=pygame.Surface((2,2))
-			K.set_at((0,0),(127,0,127))
-			K.set_at((1,1),(0,127,127))
+			K.set_at((0,0),(0,127,127))
+			K.set_at((1,1),(127,0,127))
 			pygame.transform.smoothscale(K,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
 			L=MenuLoop(self)
 			if L!=None:

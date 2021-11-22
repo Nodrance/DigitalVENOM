@@ -106,32 +106,16 @@ class Character:
 		self.TS=[]
 		self.IPSBuffer=[]
 		self.IPSProne=0
-		SoftBodyPresetIndex=json.load(open("Characters/QuW/SoftBodyPresetIndex.json"))
-		"""SoftBodyPresetIndex=[
-		(3,5),#0
-		(0,6),#1
-		(0,5),#2
-		(0,6),#3
-		(4,1),#4
-		(3,5),#5
-		(3,5),#6
-		(3,5),#7
-		(3,5),#8
-		(0,6),#9
-		(0,6),#10
-		(3,5),#11
-		(0,6),#12
-		(1,6),#13
-		(3,5),#14
-		(3,5),#15
-		]
-		json.dump(SoftBodyPresetIndex,open("Characters/QuW/SoftBodyPresetIndex.json","w"),indent="\t")"""
-		if button=="v":
-			self.SoftBody1=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=0,Size=6)
-			self.SoftBody2=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=0,Size=6)
-		else:
-			self.SoftBody1=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=SoftBodyPresetIndex[color][0],Size=SoftBodyPresetIndex[color][1])
-			self.SoftBody2=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=SoftBodyPresetIndex[color][0],Size=SoftBodyPresetIndex[color][1])
+		#SoftBodyPresetIndex=json.load(open("Characters/QuW/SoftBodyPresetIndex.json"))
+		#json.dump(SoftBodyPresetIndex,open("Characters/QuW/SoftBodyPresetIndex.json","w"),indent="\t")"""
+		X=list("lmhv").index(button)
+		Weight=(self.color_grid.get_at((5,color))[0]+self.color_grid.get_at((5,color))[2])/170
+		Size=6-(self.color_grid.get_at((5,color))[0]+self.color_grid.get_at((5,color))[2])/170
+		Weight+=(0-Weight)*X/3
+		Size+=(6-Size)*X/3
+		self.SoftBody1=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=Weight,Size=Size)
+		self.SoftBody2=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=Weight,Size=Size)
+		self.Shading=[(255,255,127),(127,127,255)]
 		self.SoftBodyOrigins={
 		"idle1": [[66,47],[72,47]],
 		"idle2": [[66,47],[72,47]],

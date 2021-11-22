@@ -36,6 +36,7 @@ class Character:
 		self.MaxMeter=1000
 		#TODO:
 		#Give ERic unique cut-ins
+		self.Shading=[(255,255,127),(127,127,255)]
 		self.Sprites={
 		"idle1":pygame.image.load("Characters/ERic/Sprites/"+self.Costume+"/Idle1.png").convert_alpha(),
 		"idle2":pygame.image.load("Characters/ERic/Sprites/"+self.Costume+"/Idle2.png").convert_alpha(),

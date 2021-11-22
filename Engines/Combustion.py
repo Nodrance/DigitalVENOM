@@ -392,6 +392,9 @@ def RenderSetup(a,b,c,d,e,f,g,h,i,j,k):
 	P1=a
 	P2=b
 	Renderer=c
+	Renderer.Camera.X=random.randint(-750,750)
+	Renderer.Camera.Y=random.randint(-750,750)
+	Renderer.Camera.Z=-0.3
 	pygame=d
 	P1C=e
 	P2C=f
@@ -410,7 +413,7 @@ def RenderThread():
 	global Tension,HF,Rendering2,CameraZoom,MaxWallDurability,keys,PygameEvents,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,StartTime,ReplayData,P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training
 	while 1:
 		if Rendering2:
-			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],0,P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom,Tension=Tension)
+			Renderer.Render(P1,P2,BG.Fault[DuelFault+BG.FaultOffset],max(0,StartTime-time.time()),P1T,P2T,Collisions=T1,HF=HF,Impact=HF,CameraZoom=CameraZoom,Tension=Tension)
 			time.sleep(0)
 def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Training=0):
 	global AntiTurboTimer,Tension,PlayerSides,MaxWallDurability,Rendering2,Rendering3,WallDurability1,WallDurability2,Clock,DuelFault,DuelFaultChangeSound,SimuatedFrames,StartTime,ReplayData
@@ -439,8 +442,6 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 	if Rendering:
 		Renderer.Render(P1,P2,BG.Fault[BG.FaultOffset],1,{"Sounds":[GameStart]})
 	GameStart.play()
-	pygame.time.wait(2000)
-	StartTime=time.time()
 	SimulatedFrames=0
 	try:
 		del LFC1
@@ -457,4 +458,6 @@ def Game(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay=0,Rendering=1,Tra
 		RTT=threading.Thread(target=RenderThread)
 		RTT.daemon=True
 		RTT.start()#,args=(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)).start()
+	StartTime=time.time()+2
+	pygame.time.wait(2000)
 	return GameplayThread(P1,P2,Renderer,pygame,P1C,P2C,BG,GameStart,SaveReplay,Rendering,Training)
