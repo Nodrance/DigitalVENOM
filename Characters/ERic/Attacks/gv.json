@@ -209,12 +209,12 @@
 				"Damage": 35,
 				"Chip Damage": 0,
 				"Type": "Hit",
-				"Stun": 20,
+				"Stun": 60,
 				"Block Stun": 3,
-				"Knockback": 30,
+				"Knockback": -3,
 				"Hit Lag": 30,
-				"Knockback2": 25,
-				"Attributes": ["Unblockable","Knockdown"]
+				"Knockback2": 0,
+				"Attributes": ["Unblockable"]
 			}
 		],
 		[

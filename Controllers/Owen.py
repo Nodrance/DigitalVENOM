@@ -1,6 +1,13 @@
 class Controller:
 	def __init__(self,pygame):
-		pass
+		self.Down=pygame.K_DOWN
+		self.Up=pygame.K_UP
+		self.Left=pygame.K_LEFT
+		self.Right=pygame.K_RIGHT
+		self.l=pygame.K_b
+		self.m=pygame.K_n
+		self.h=pygame.K_m
+		self.v=pygame.K_v
 	def Character(self,pygame,PygameEvents):
 		keys=pygame.key.get_pressed()
 		R={
@@ -9,41 +16,25 @@ class Controller:
 		"h":0,
 		"v":0,
 		}
-		R["X"]=keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]
-		R["Y"]=keys[pygame.K_DOWN]-keys[pygame.K_UP]
+		R["X"]=keys[self.Right]-keys[self.Left]
+		R["Y"]=keys[self.Down]-keys[self.Up]
 		R["X2"]=0
 		R["Y2"]=0
 		R["Jump2"]=0
-		R["Jump"]=keys[pygame.K_DOWN]-(keys[pygame.K_UP] or keys[pygame.K_g])==-1
+		R["Jump"]=keys[self.Down]-keys[self.Up]==-1
 		for Event in PygameEvents:
 			if Event.type==pygame.KEYDOWN:
-				if Event.key==pygame.K_b:
+				if Event.key==self.l:
 					R["l"]=1
-				if Event.key==pygame.K_n:
+				if Event.key==self.m:
 					R["m"]=1
-				if Event.key==pygame.K_m:
+				if Event.key==self.h:
 					R["h"]=1
-				if Event.key==pygame.K_v:
+				if Event.key==self.v:
 					R["v"]=1
-				if Event.key==pygame.K_RIGHT or Event.key==pygame.K_LEFT:
+				if Event.key==self.Right or Event.key==self.Left:
 					R["X2"]=R["X"]
-				if Event.key==pygame.K_UP or Event.key==pygame.K_RIGHT:
+				if Event.key==self.Up or Event.key==self.Down:
 					R["Y2"]=R["Y"]
 					R["Jump2"]=max(-R["Y2"],0)
 		return R
-		"""return {
-		"X":keys[pygame.K_RIGHT]-keys[pygame.K_LEFT],
-		"Y":keys[pygame.K_DOWN]-(keys[pygame.K_UP] or keys[pygame.K_g]),
-		"Jump":keys[pygame.K_DOWN]-(keys[pygame.K_UP] or keys[pygame.K_g])==-1,#keys[pygame.K_l],
-		"Jab":0,#keys[pygame.K_h] or keys[pygame.K_g],
-		"Strong":0,#keys[pygame.K_j] or keys[pygame.K_g],
-		"Fierce":0,#keys[pygame.K_k] or keys[pygame.K_g],
-		"Short":0,#keys[pygame.K_b] or (keys[pygame.K_v] and self.Frame%2),# or abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]),
-		"Forward":0,#keys[pygame.K_n],# or abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]),
-		"Roundhouse":0,#keys[pygame.K_m],# or abs(keys[pygame.K_RIGHT]-keys[pygame.K_LEFT]),
-		"l":keys[pygame.K_b],
-		"m":keys[pygame.K_n],
-		"h":keys[pygame.K_m],
-		}"""
-		pass
-	pass

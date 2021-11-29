@@ -8,30 +8,33 @@ class SoftBody:
 		self.Vel=[0,0]
 		self.OldOrigin=[64,64]
 		self.Origin=[64,64]
-		self.MaxDistance=5-Weight/4
+		self.MaxDistance=4-Weight/4
 		self.Size=Size
 		self.Color=Color
 		self.Draw=1
 		self.Resistance=1.1+Weight/10
 		self.Division=5-Weight
 		self.Gravity=0.5+Weight/8
+		self.OriginalDivision=1
+		self.PositionalDivision=5
 		pass
 	def Jiggle(self,Strength=5):
-		self.Vel[0]=random.randint(-Strength,Strength)
-		self.Vel[1]=random.randint(-Strength,Strength)
+		self.Vel[0]+=random.randint(-Strength,Strength)
+		self.Vel[1]+=random.randint(-Strength,Strength)
 	def __call__(self,Sprite,XV,YV):
 		#TODO:
 		#Speed this up with more numpy
 		Render=pygame.Surface((Sprite.get_width(),Sprite.get_height()),flags=pygame.SRCALPHA)
 		XV+=self.Origin[0]-self.OldOrigin[0]
 		YV+=self.Origin[1]-self.OldOrigin[1]
+		XV/=self.OriginalDivision
+		YV/=self.OriginalDivision
 		self.OldOrigin=self.Origin
-		X=int(abs(XV)+abs(YV))
 		if XV!=0 or YV!=0:
-			self.Vel[0]-=XV+random.randint(-X,X)
-			self.Vel[1]-=YV+random.randint(-X,X)
-		self.Vel[1]+=self.Gravity
-		self.Vel=numpy.subtract(self.Vel,self.Pos)
+			self.Vel[0]-=XV
+			self.Vel[1]-=YV
+		self.Vel[1]+=self.Gravity/self.PositionalDivision
+		self.Vel=numpy.subtract(self.Vel,numpy.divide(self.Pos,self.PositionalDivision))
 		self.Vel[0]/=self.Resistance
 		self.Vel[1]/=self.Resistance
 		if numpy.linalg.norm(self.Vel)>0.1:
@@ -55,9 +58,11 @@ class Character:
 	#This whole block of code here probably isn't best practice
 	#Figure out a way to do it better
 	CharacterSelectSprites=[]
+	CharacterSelectShades=[]
 	color_grid=pygame.image.load("Characters/QuW/Sprites/color_grid.png")
 	for i in range(color_grid.get_height()):
 		CharacterSelectSprites.append(ColorChanger.FasterSwapImageColors(pygame.image.load("Characters/QuW/Sprites/v/Idle1.png").convert_alpha(),color_grid,i))
+		CharacterSelectShades.append([color_grid.get_at((0,i)),color_grid.get_at((1,i))])
 	def __init__(self,P,color,button):
 		"""
 		__init__(P,pygame,color)
@@ -96,7 +101,6 @@ class Character:
 			HitMeterGain=0,
 			)
 		self.ViperOne.Reset(self)
-		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
 		self.Costume="v"
@@ -109,18 +113,24 @@ class Character:
 		#SoftBodyPresetIndex=json.load(open("Characters/QuW/SoftBodyPresetIndex.json"))
 		#json.dump(SoftBodyPresetIndex,open("Characters/QuW/SoftBodyPresetIndex.json","w"),indent="\t")"""
 		X=list("lmhv").index(button)
-		Weight=(self.color_grid.get_at((5,color))[0]+self.color_grid.get_at((5,color))[2])/170
-		Size=6-(self.color_grid.get_at((5,color))[0]+self.color_grid.get_at((5,color))[2])/170
+		Weight=(self.color_grid.get_at((7,color))[0]+self.color_grid.get_at((7,color))[2])/170
+		Size=7-(self.color_grid.get_at((7,color))[0]+self.color_grid.get_at((7,color))[2])/256
 		Weight+=(0-Weight)*X/3
 		Size+=(6-Size)*X/3
-		self.SoftBody1=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=Weight,Size=Size)
-		self.SoftBody2=SoftBody(Color=self.color_grid.get_at((5,color)),Weight=Weight,Size=Size)
-		self.Shading=[(255,255,127),(127,127,255)]
+		self.SoftBody1=SoftBody(Color=self.color_grid.get_at((7,color)),Weight=Weight,Size=Size)
+		self.SoftBody2=SoftBody(Color=self.color_grid.get_at((7,color)),Weight=Weight,Size=Size)
+		self.Shading=[self.color_grid.get_at((0,color)),self.color_grid.get_at((1,color))]
 		self.SoftBodyOrigins={
 		"idle1": [[66,47],[72,47]],
 		"idle2": [[66,47],[72,47]],
 		"idle3": [[66,47],[72,47]],
-		"hitstun1": [[55,48],[58,48]],
+		"idle2-1": [[65,40],[71,40]],
+		"idle2-2": [[65,43],[71,43]],
+		"idle2-3": [[65,40],[71,40]],
+		"idle2-4": [[65,39],[71,39]],
+		"hitstun1": [[58,49],[66,49]],
+		"hitstun2": [[61,45],[67,45]],
+		"hitstun3": [[63,51],[70,51]],
 		"knockdown": [[45,100],[45,103]],
 		"jump": [[66,48],[72,48]],
 		}
@@ -131,7 +141,13 @@ class Character:
 		"idle1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle1.png").convert_alpha(),
 		"idle2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle2.png").convert_alpha(),
 		"idle3":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle3.png").convert_alpha(),
+		"idle2-1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle2-1.png").convert_alpha(),
+		"idle2-2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle2-2.png").convert_alpha(),
+		"idle2-3":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle2-3.png").convert_alpha(),
+		"idle2-4":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Idle2-4.png").convert_alpha(),
 		"hitstun1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/HitStun1.png").convert_alpha(),
+		"hitstun2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/HitStun2.png").convert_alpha(),
+		"hitstun3":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/HitStun3.png").convert_alpha(),
 		"jab1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Jab1.png").convert_alpha(),
 		"jab2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Jab2.png").convert_alpha(),
 		"strong1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Strong1.png").convert_alpha(),
@@ -159,10 +175,14 @@ class Character:
 		"short aerial 1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/ShortAerial1.png").convert_alpha(),
 		"forward aerial 1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/ForwardAerial1.png").convert_alpha(),
 		"roundhouse aerial 1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/RoundhouseAerial1.png").convert_alpha(),
-		"walk1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk1.png").convert_alpha(),
-		"walk2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk2.png").convert_alpha(),
-		"walk3":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk3.png").convert_alpha(),
-		"walk4":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk4.png").convert_alpha(),
+		"walk0":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0000.png").convert_alpha(),
+		"walk1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0001.png").convert_alpha(),
+		"walk2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0002.png").convert_alpha(),
+		"walk3":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0003.png").convert_alpha(),
+		"walk4":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0004.png").convert_alpha(),
+		"walk5":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0005.png").convert_alpha(),
+		"walk6":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0006.png").convert_alpha(),
+		"walk7":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Walk0007.png").convert_alpha(),
 		"jump":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Jump.png").convert_alpha(),
 		"dash1":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Dash1.png").convert_alpha(),
 		"dash2":pygame.image.load("Characters/QuW/Sprites/"+self.Costume+"/Dash2.png").convert_alpha(),
@@ -242,7 +262,7 @@ class Character:
 		"Knockdown":ViperOne.Cancel(self,self.States["Knockdown"]),
 		"HitStun":ViperOne.Cancel(self,self.States["HitStun"]),
 		"FaultReversal":self.FaultReversal,
-		"Roman":self.RomanCancel,
+		"Roman":self.ViperOne.RomanCancel,
 		"PanchiraJumpCancel":self.PanchiraJumpCancel,
 		"AutoPanchiraJumpCancel":self.AutoPanchiraJumpCancel,
 		"NogekiJumpCancel":self.NogekiJumpCancel,
@@ -337,11 +357,6 @@ class Character:
 		self.DF=0
 		self.HitSound=0
 		self.Meter=0
-	def MakeScreenSpaceText(self,X):
-		RCT=self.RCFont.render(X,1,(255,255,255))
-		W=512*256/(RCT.get_width()+RCT.get_height())
-		Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],0.5))
-		Loli.Particles.append(Loli.PulseParticle((self.X+self.Offset[0],self.Y+self.Offset[1]),0.5,200,(255,255,0)))
 	def ViperZero(self,AN):
 		X=json.load(open("Characters/QuW/Attacks/"+AN+".json","r"))
 		X["Filename"]="Characters/QuW/Attacks/"+AN+".json"
@@ -369,57 +384,6 @@ class Character:
 			else:
 				#self.X+=(self.Tags["Side"]-0.5)*-128
 				self.State=self.Idle
-	def RomanCancel(self):
-		"""if self.SSN in ["Idle","Jump"]:
-			if self.Meter>int(self.MaxMeter/2) and abs(self.X-self.Tags["Other Player"].X)<200:
-				self.FaultReversalTag=1
-				self.MakeScreenSpaceText("FAULT")
-				self.HitLag+=30
-				self.X+=(self.Tags["Side"]-0.5)*-512
-				self.Meter-=int(self.MaxMeter/2)
-				self.Y=-10
-				self.YV=-10
-				self.State=self.Jump
-			elif self.Meter==self.MaxMeter:
-				self.FaultReversalTag=1
-				self.MakeScreenSpaceText("FAULT")
-				self.HitLag+=30
-				self.X=self.Tags["Other Player"].X+(self.Tags["Side"]-0.5)*-512
-				self.Meter-=self.MaxMeter
-				self.Y=-10
-				self.YV=-10
-				self.State=self.Jump"""
-		if self.Meter>int(self.MaxMeter/4):
-			#self.FaultReversalTag=1
-			self.MakeScreenSpaceText("CANCEL")
-			self.IPSBuffer=[]
-			self.HitLag+=30
-			if self.Y<0 or self.YV<0:
-				self.State=self.Jump
-			else:
-				#self.X+=(self.Tags["Side"]-0.5)*-128
-				self.State=self.Idle
-			self.Meter-=int(self.MaxMeter/4)
-	def BurstCancel(self):
-		if self.Meter>=self.MaxMeter or self.Tags["Other Player"].IPSProne:
-			self.MakeScreenSpaceText("BURST")
-			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
-				"Damage":50,
-				"Chip Damage":0,
-				"Stun":30,
-				"Block Stun":5,
-				"Knockback":30,
-				"Hit Lag":30,
-				"Knockback2":30,
-				"Attributes":[],
-				}]
-			if self.Y<0 or self.YV<0:
-				self.State=self.Jump
-			else:
-				#self.X+=(self.Tags["Side"]-0.5)*-128
-				self.State=self.Idle
-			if not self.Tags["Other Player"].IPSProne:
-				self.Meter=0
 	def Nogeki(self):
 		#self.Meter-=100
 		pass
@@ -453,10 +417,6 @@ class Character:
 		"""
 		self.FaultReversalTag=0
 		R=self.ViperOne.Frame(Tags)
-		if Tags["Controller"]["m"] and Tags["Controller"]["h"]:
-			self.BurstCancel()
-		elif Tags["Controller"]["l"] and Tags["Controller"]["m"]:
-			self.RomanCancel()
 		#if Tags["Controller"]["l"] and Tags["Controller"]["h"]:
 			#self.FaultReversal()
 		R["Hit Lag"]=self.HitLag
@@ -466,7 +426,6 @@ class Character:
 		R["GUI"]=[
 		#{"Sprite":self.PanchiraGuage[int(self.Meter/5)],"X":5,"Y":37,"W":128,"H":32}
 		]
-		self.Meter=min(max(self.Meter,0),self.MaxMeter)
 		self.Triggers=copy.deepcopy(self.Triggers)
 		#TODO:
 		#Change sprite and soft body implementation to use a class with __get__
@@ -493,7 +452,10 @@ class Character:
 		self.AirDashable=self.MaxAirDash
 		self.The48Frame=False
 		self.SSN="Idle"
-		self.SN=["idle1","idle2","idle3","idle2"][int(self.StateFrame/12)%4]
+		if self.StateFrame%1200<300:
+			self.SN=["idle1","idle2","idle3","idle2"][int(self.StateFrame/12)%4]
+		else:
+			self.SN=["idle2-1","idle2-2","idle2-3","idle2-4"][int(self.StateFrame/10)%4]
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.YV=0
@@ -508,17 +470,17 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame
-		elif Tags["Controller"]["v"]:
-			self.MakeScreenSpaceText("VENOM")
-			self.X=self.Tags["Other Player"].X-32
-			self.HitLag=20
-			self.CancelStates["gv"]()
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
 			self.CancelStates["gh"]()
 		elif Tags["Controller"]["m"]:
 			self.CancelStates["gm"]()
+		elif Tags["Controller"]["v"]:
+			self.ViperOne.MakeScreenSpaceText("VENOM")
+			self.X=self.Tags["Other Player"].X-32
+			self.HitLag=20
+			self.CancelStates["gv"]()
 		elif Tags["Controller"]["Jump2"]:
 			self.CancelStates["Jump"]()
 		elif not Tags["Controller"]["X"] == 0:
@@ -530,11 +492,10 @@ class Character:
 		self.DashTimer+=1
 		return {}
 	def Walk(self,Tags):
-		if self.StateFrame>15:
-			self.Meter+=int((self.StateFrame-15)/5)
+		self.Meter+=int(self.StateFrame/5)
 		self.SSN="Walk"
 		self.AirDashable=self.MaxAirDash
-		self.SN=["walk1","walk2","walk3","walk4"][int(self.StateFrame/25)%4]
+		self.SN=["walk0","walk1","walk2","walk3","walk4","walk5","walk6","walk7"][int(self.StateFrame/6)%8]
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.YV=0
@@ -546,17 +507,17 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame"""
-		if Tags["Controller"]["v"]:
-			self.MakeScreenSpaceText("VENOM")
-			self.X=self.Tags["Other Player"].X-32
-			self.HitLag=30
-			self.CancelStates["gv"]()
-		elif Tags["Controller"]["l"]:
+		if Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
 			self.CancelStates["gh"]()
 		elif Tags["Controller"]["m"]:
 			self.CancelStates["gm"]()
+		elif Tags["Controller"]["v"]:
+			self.ViperOne.MakeScreenSpaceText("VENOM")
+			self.X=self.Tags["Other Player"].X-32
+			self.HitLag=30
+			self.CancelStates["gv"]()
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		elif Tags["Controller"]["Jump2"]:
@@ -566,7 +527,7 @@ class Character:
 		return {}
 	def BackWalk(self,Tags):
 		self.SSN="Block"
-		self.SN=["walk2","walk1","walk4","walk3"][int(self.StateFrame/40)%4]
+		self.SN=["walk0","walk1","walk2","walk3","walk4","walk5","walk6","walk7"][int(-self.StateFrame/12)%8]
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
 		self.Y=0
 		self.AirDashable=self.MaxAirDash
@@ -682,10 +643,19 @@ class Character:
 			#self.YV/=1.3
 			self.YV+=1
 		#self.YV+=5
+		self.SoftBody1.Jiggle(Strength=5)
+		self.SoftBody2.Jiggle(Strength=5)
+		"""if self.StateFrame<10:
+			self.X-=self.XV
+			self.Y-=self.YV"""
 		self.SSN="HitStun"
 		self.AirDashable=self.MaxAirDash
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
-		self.SN="hitstun1"
+		if self.StateFrame==0:
+			try:
+				self.SN=["hitstun1","hitstun2","hitstun3"][["hitstun1","hitstun2","hitstun3"].index(self.SN)+1]#[self.Stun-self.StateFrame<min(self.Stun/3,10)]
+			except:
+				self.SN="hitstun1"
 		if self.StateFrame>self.Stun:
 			self.Stun=0
 			#self.XV=0

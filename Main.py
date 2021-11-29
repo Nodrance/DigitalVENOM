@@ -94,6 +94,7 @@ def TitleScreen():
 				G=0"""
 def CompetitiveF():
 	global P1C,P2C,P1,P2,CSCharacters
+	Combustion.GameMode="Competitive"
 	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
 	Loli.HBR=0
 	Loli.P1W=0
@@ -102,8 +103,10 @@ def CompetitiveF():
 	WinScreen(Competitive.Match(pygame,Loli,Combustion,P1C,P2C,P1,P2,BG2))
 def TrainingF():
 	global P1C,P2C,P1,P2,CSCharacters
+	Combustion.GameMode="Training"
 	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
-	Loli.HBR=1
+	#This line shows Triggers in the Loli renderer
+	#Loli.HBR=1
 	Loli.P1W=0
 	Loli.P2W=0
 	while True:
@@ -115,6 +118,7 @@ def TrainingF():
 	#print(WinIndex[X[0]*2+X[1]])
 def CasualF():
 	global P1C,P2C,P1,P2,CSCharacters
+	Combustion.GameMode="Casual"
 	P1,P2=Loli.CharacterSelect(P1C,P2C,P1,P2,CSCharacters)
 	Loli.HBR=0
 	Loli.P1W=0

@@ -9,9 +9,11 @@ class Character:
 	#This whole block of code here probably isn't best practice
 	#Figure out a way to do it better
 	CharacterSelectSprites=[]
+	CharacterSelectShades=[]
 	color_grid=pygame.image.load("Characters/ERic/Sprites/color_grid.png")
 	for i in range(color_grid.get_height()):
 		CharacterSelectSprites.append(ColorChanger.FasterSwapImageColors(pygame.image.load("Characters/ERic/Sprites/v/Idle1.png").convert_alpha(),color_grid,i))
+		CharacterSelectShades.append([color_grid.get_at((0,i)),color_grid.get_at((1,i))])
 	def __init__(self,P,color,button):
 		self.ViperOne=ViperOne.Default(
 			Player=P,
@@ -23,7 +25,6 @@ class Character:
 			Character=self,
 			)
 		self.ViperOne.Reset(self)
-		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
 		self.Triggers=[{"Box":[[-32,32],[-64,0]],"Type":"Hurt"}]
 		self.MaxHealth=500
 		self.Costume="v"
@@ -36,7 +37,7 @@ class Character:
 		self.MaxMeter=1000
 		#TODO:
 		#Give ERic unique cut-ins
-		self.Shading=[(255,255,127),(127,127,255)]
+		self.Shading=[self.color_grid.get_at((0,color)),self.color_grid.get_at((1,color))]
 		self.Sprites={
 		"idle1":pygame.image.load("Characters/ERic/Sprites/"+self.Costume+"/Idle1.png").convert_alpha(),
 		"idle2":pygame.image.load("Characters/ERic/Sprites/"+self.Costume+"/Idle2.png").convert_alpha(),
@@ -93,7 +94,7 @@ class Character:
 		"Knockdown":ViperOne.Cancel(self,self.States["Knockdown"]),
 		"HitStun":ViperOne.Cancel(self,self.States["HitStun"]),
 		"FaultReversal":self.FaultReversal,
-		"Roman":self.RomanCancel,
+		"Roman":self.ViperOne.RomanCancel,
 		"PanchiraJumpCancel":self.PanchiraJumpCancel,
 		"AutoPanchiraJumpCancel":self.AutoPanchiraJumpCancel,
 		"NogekiJumpCancel":self.NogekiJumpCancel,
@@ -188,11 +189,6 @@ class Character:
 		self.DF=0
 		self.HitSound=0
 		self.Meter=0
-	def MakeScreenSpaceText(self,X):
-		RCT=self.RCFont.render(X,1,(255,255,255))
-		W=512*256/(RCT.get_width()+RCT.get_height())
-		Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],0.5))
-		Loli.Particles.append(Loli.PulseParticle((self.X+self.Offset[0],self.Y+self.Offset[1]),0.5,200,(255,255,0)))
 	def ViperZero(self,AN):
 		X=json.load(open("Characters/ERic/Attacks/"+AN+".json","r"))
 		X["Filename"]="Characters/ERic/Attacks/"+AN+".json"
@@ -220,57 +216,6 @@ class Character:
 			else:
 				#self.X+=(self.Tags["Side"]-0.5)*-128
 				self.State=self.Idle
-	def RomanCancel(self):
-		"""if self.SSN in ["Idle","Jump"]:
-			if self.Meter>int(self.MaxMeter/2) and abs(self.X-self.Tags["Other Player"].X)<200:
-				self.FaultReversalTag=1
-				self.MakeScreenSpaceText("FAULT")
-				self.HitLag+=30
-				self.X+=(self.Tags["Side"]-0.5)*-512
-				self.Meter-=int(self.MaxMeter/2)
-				self.Y=-10
-				self.YV=-10
-				self.State=self.Jump
-			elif self.Meter==self.MaxMeter:
-				self.FaultReversalTag=1
-				self.MakeScreenSpaceText("FAULT")
-				self.HitLag+=30
-				self.X=self.Tags["Other Player"].X+(self.Tags["Side"]-0.5)*-512
-				self.Meter-=self.MaxMeter
-				self.Y=-10
-				self.YV=-10
-				self.State=self.Jump"""
-		if self.Meter>int(self.MaxMeter/4):
-			#self.FaultReversalTag=1
-			self.MakeScreenSpaceText("CANCEL")
-			self.IPSBuffer=[]
-			self.HitLag+=30
-			if self.Y<0 or self.YV<0:
-				self.State=self.Jump
-			else:
-				#self.X+=(self.Tags["Side"]-0.5)*-128
-				self.State=self.Idle
-			self.Meter-=int(self.MaxMeter/4)
-	def BurstCancel(self):
-		if self.Meter>=self.MaxMeter or self.Tags["Other Player"].IPSProne:
-			self.MakeScreenSpaceText("BURST")
-			self.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
-				"Damage":50,
-				"Chip Damage":0,
-				"Stun":30,
-				"Block Stun":5,
-				"Knockback":30,
-				"Hit Lag":30,
-				"Knockback2":30,
-				"Attributes":[],
-				}]
-			if self.Y<0 or self.YV<0:
-				self.State=self.Jump
-			else:
-				#self.X+=(self.Tags["Side"]-0.5)*-128
-				self.State=self.Idle
-			if not self.Tags["Other Player"].IPSProne:
-				self.Meter=0
 	def Nogeki(self):
 		#self.Meter-=100
 		pass
@@ -287,10 +232,6 @@ class Character:
 	def __call__(self,Tags):
 		self.FaultReversalTag=0
 		R=self.ViperOne.Frame(Tags)
-		if Tags["Controller"]["m"] and Tags["Controller"]["h"]:
-			self.BurstCancel()
-		elif Tags["Controller"]["l"] and Tags["Controller"]["m"]:
-			self.RomanCancel()
 		#if Tags["Controller"]["l"] and Tags["Controller"]["h"]:
 			#self.FaultReversal()
 		R["Hit Lag"]=self.HitLag
@@ -300,7 +241,6 @@ class Character:
 		R["GUI"]=[
 		#{"Sprite":self.PanchiraGuage[int(self.Meter/5)],"X":5,"Y":37,"W":128,"H":32}
 		]
-		self.Meter=min(max(self.Meter,0),self.MaxMeter)
 		self.Triggers=copy.deepcopy(self.Triggers)
 		"""for i in self.Triggers:
 			if i["Type"]=="Hit":
@@ -329,17 +269,17 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame
-		elif Tags["Controller"]["v"]:
-			self.MakeScreenSpaceText("VENOM")
-			self.X=self.Tags["Other Player"].X-32
-			self.HitLag=20
-			self.CancelStates["gv"]()
 		elif Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
 			self.CancelStates["gh"]()
 		elif Tags["Controller"]["m"]:
 			self.CancelStates["gm"]()
+		elif Tags["Controller"]["v"]:
+			self.ViperOne.MakeScreenSpaceText("VENOM")
+			self.X=self.Tags["Other Player"].X-32
+			self.HitLag=20
+			self.CancelStates["gv"]()
 		elif Tags["Controller"]["Jump2"]:
 			self.CancelStates["Jump"]()
 		elif not Tags["Controller"]["X"] == 0:
@@ -351,8 +291,7 @@ class Character:
 		self.DashTimer+=1
 		return {}
 	def Walk(self,Tags):
-		if self.StateFrame>15:
-			self.Meter+=int((self.StateFrame-15)/5)
+		self.Meter+=int(self.StateFrame/5)
 		self.SSN="Walk"
 		self.AirDashable=self.MaxAirDash
 		self.SN=["walk1","walk2","walk3","walk4"][int(self.StateFrame/10)%4]
@@ -367,17 +306,17 @@ class Character:
 			pygame.mixer.music.set_volume(0)
 			self.Sounds.append(self.HitSounds["The24Frame"])
 			self.State=self.The24Frame"""
-		if Tags["Controller"]["v"]:
-			self.MakeScreenSpaceText("VENOM")
-			self.X=self.Tags["Other Player"].X-32
-			self.HitLag=30
-			self.CancelStates["gv"]()
-		elif Tags["Controller"]["l"]:
+		if Tags["Controller"]["l"]:
 			self.CancelStates["gl"]()
 		elif Tags["Controller"]["h"]:
 			self.CancelStates["gh"]()
 		elif Tags["Controller"]["m"]:
 			self.CancelStates["gm"]()
+		elif Tags["Controller"]["v"]:
+			self.ViperOne.MakeScreenSpaceText("VENOM")
+			self.X=self.Tags["Other Player"].X-32
+			self.HitLag=30
+			self.CancelStates["gv"]()
 		#if Tags["Controller"]["X"] == 0:
 			#self.State=self.Idle
 		elif Tags["Controller"]["Jump2"]:

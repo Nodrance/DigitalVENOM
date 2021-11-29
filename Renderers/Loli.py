@@ -45,7 +45,10 @@ P2W=0
 HBR=0
 pygame.mixer.set_num_channels(32)
 SimScaling=4
-TriggerSprite=pygame.image.load("Sprites/Trigger.png").convert()
+TriggerSprites=[
+pygame.image.load("Sprites/Trigger.png").convert(),
+pygame.image.load("Sprites/Trigger2.png").convert()
+]
 P1WSprite=pygame.image.load("Sprites/Victory Cyan.png").convert()
 P2WSprite=pygame.image.load("Sprites/Victory Magenta.png").convert()
 KO2Sprite=pygame.image.load("Sprites/KO2.png").convert()
@@ -68,7 +71,7 @@ for (dirpath, dirnames, filenames) in walk("Music"):
 for i in Files:
 	if i.endswith(".wav"):
 		SoundtrackList.append(i)
-pygame.mixer.music.load(random.choice(SoundtrackList))
+pygame.mixer.music.load(random.choice(SoundtrackList))#"Music/Dusk and Daylight.wav")
 pygame.mixer.music.play()
 pygame.mixer.music.queue(random.choice(SoundtrackList))
 #The above commented code began crashing the game, this has now been fixed.
@@ -78,6 +81,86 @@ def FakeTimeFunction():
 	return FakeTime
 
 #pygame.time.get_ticks=FakeTimeFunction
+
+def GenerateSlidingInvertText(Text,Size,Frame,Inverted=0,Color=(255,255,255)):
+	Font=pygame.font.Font("Fonts/Kenney Future Narrow.ttf",Size)
+	Surface=win.copy()
+	Colors=[[(0,0,0),Color],[Color,(0,0,0)]][Inverted]
+	Surface.fill(Colors[0])
+	Surface2=Font.render(Text,0,Colors[1],Colors[0])
+	G=int(Surface2.get_width()/2)
+	Surface3=pygame.transform.chop(Surface2,[(G-int(G/Frame),0),(2*int(G/Frame),0)])
+	Surface.blit(Surface3,(int(Surface.get_width()/2-Surface3.get_width()/2),int(Surface.get_height()/2-Surface3.get_height()/2)))
+	return Surface
+
+class AbstractSign:
+	def __init__(self,Stages):
+		self.Stages=Stages
+		self.Color=(255,255,255)
+	def __call__(self,Size,Time,Color,BG):
+		Surface=pygame.Surface((Size,Size))
+		Surface.fill(BG)
+		Centre=Size/2
+		for i,Stage in enumerate(self.Stages):
+			if i == int(Time):
+				T=Time%1
+				if T>0.5:
+					T-=0.5
+					T=(2*T*(1-T))+0.5
+				else:
+					T=2*T*T
+				for j,Obj in enumerate(Stage):
+					pygame.draw.rect(Surface,Color,[Centre+(Obj[0]*Size/20)+min(0,Obj[4]*Size/20*T),Centre+(Obj[1]*Size/20)+min(0,Obj[5]*Size/20*T),Obj[2]*Size/20+abs(Obj[4]*Size/20*T),Obj[3]*Size/20+abs(Obj[5]*Size/20*T)])
+				break
+			else:
+				for j,Obj in enumerate(Stage):
+					pygame.draw.rect(Surface,Color,[Centre+(Obj[0]*Size/20)+min(0,Obj[4]*Size/20),Centre+(Obj[1]*Size/20)+min(0,Obj[5]*Size/20),Obj[2]*Size/20+abs(Obj[4]*Size/20),Obj[3]*Size/20+abs(Obj[5]*Size/20)])
+		return Surface
+
+AbstractSigns={
+"Competitive":AbstractSign([
+	[
+	[-7,7,2,0,0,-6],
+	[5,7,2,0,0,-6],
+	],
+	[
+	[-3,7,2,0,0,-10],
+	[1,7,2,0,0,-10],
+	],
+	[
+	[-3,-5,2,0,0,-2],
+	[1,-5,2,0,0,-2],
+	],
+	]),
+"Casual":AbstractSign([
+	[
+	[-7,5,0,2,6,0],
+	[7,5,0,2,-6,0],
+	],
+	[
+	[-7,1,0,2,6,0],
+	[7,1,0,2,-6,0],
+	],
+	[
+	[-7,-1,2,0,0,-6],
+	[5,-1,2,0,0,-6],
+	],
+	]),
+"Training":AbstractSign([
+	[
+	[-7,-7,0,2,6,0],
+	[-7,-3,0,2,6,0],
+	],
+	[
+	[-7,1,0,2,14,0],
+	[1,5,0,2,6,0],
+	],
+	[
+	[1,-1,2,0,0,-2],
+	[5,-1,2,0,0,-2],
+	],
+	]),
+}
 
 class LineParticle:
 	def __init__(self,Pos,Vel,Life,Length,Color):
@@ -126,6 +209,16 @@ class ScreenSpaceParticle:
 	def Render(self,Camera):
 		self.Pos=(Camera.X,Camera.Y,Camera.Z+1+((pygame.time.get_ticks()-self.StartTime)/1000/self.Life/10))
 		RenderSprite(self.Animation[int((pygame.time.get_ticks()-self.StartTime)/17)%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
+		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
+class SlidingInvertTextParticle:
+	def __init__(self,Text,Life,Size=50):
+		global Camera
+		self.StartTime=pygame.time.get_ticks()
+		self.Life=Life
+		self.Text=Text
+		self.Size=Size
+	def Render(self,Camera):
+		win.blit(GenerateSlidingInvertText(self.Text,self.Size,max(int((pygame.time.get_ticks()-self.StartTime)/5/self.Life),1),Inverted=(pygame.time.get_ticks()-self.StartTime)<self.Life*500,Color=(255,255,255)),(0,0),special_flags=pygame.BLEND_ADD)
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class InverseLineParticle:
 	def __init__(self,Pos,Vel,Life,Length,Color):
@@ -254,6 +347,35 @@ class PulseParticle:
 			pygame.draw.circle(win,self.Color,(int(X),int(Y)),int(H4),width=2)
 		except:
 			pass
+		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
+class ClockParticle:
+	#Creates a clock effect. Used for overclock.
+	def __init__(self,Pos,Life,Length,Color):
+		self.StartTime=pygame.time.get_ticks()
+		self.X=Pos[0]
+		self.Y=Pos[1]
+		self.Life=Life
+		self.Length=Length
+		self.Color=Color
+	def Render(self,Camera):
+		TT=(pygame.time.get_ticks()-self.StartTime)/100
+		X=self.X-Camera.X
+		Y=self.Y-Camera.Y
+		X/=-Camera.Z*Camera.FOV
+		Y/=-Camera.Z*Camera.FOV
+		X+=win.get_width()/2
+		Y+=win.get_height()/2
+		#TODO:
+		#Clean up this code a little.
+		H=(pygame.time.get_ticks()-self.StartTime)/self.Life/1000
+		H*=numpy.pi*2
+		SA=numpy.pi/2
+		EA=-H+SA
+		pygame.draw.arc(win,self.Color,[(X-self.Length,Y-self.Length),(2*self.Length,2*self.Length)],SA,EA, width=self.Length)
+		pygame.draw.arc(win,self.Color,[(X+1-self.Length,Y-self.Length),(2*self.Length,2*self.Length)],SA,EA, width=self.Length)
+		pygame.draw.arc(win,self.Color,[(X-self.Length,Y+1-self.Length),(2*self.Length,2*self.Length)],SA,EA, width=self.Length)
+		pygame.draw.arc(win,self.Color,[(X+1-self.Length,Y+1-self.Length),(2*self.Length,2*self.Length)],SA,EA, width=self.Length)
+			#pygame.draw.circle(win,self.Color,(int(X),int(Y)),int(H4),width=2)
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
 class LoliCamera: #Defines the camera object.
 	def __init__(self,X,Y,Z,FOV):
@@ -467,7 +589,7 @@ def RenderMassiveSprite(Sprite,Pos,Width,Height,Camera,Transparent,Blending=None
 def Sound(X):
 	return P.mixer.Sound(X)
 
-def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZoom=0,EffectColor=(255,255,0),Tension=0): #The render function
+def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZoom=0,EffectColor=(255,255,0),Tension=0,GameMode="Competitive"): #The render function
 	global win,TrueWin,FakeTime,Camera,CamCap,ReadyScreen,BlitBloom,LocalAlerts,HBR,SoundtrackList,FZ,Particles,HitFlashes,Clock,ImpactGlitch,LastOutlines,RenderBenchmarking
 	try:HandleMusic()
 	except:pass
@@ -476,7 +598,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		try:CS=1+15/Clock.get_fps()
 		except:CS=1.1
 	else:
-		CS=1+0.1/Countdown
+		CS=1+0.05/Countdown
 	Camera.FOV=1.3
 	Camera.X-=int((P1.X+P2.X)/2)
 	Camera.X=int(Camera.X/CS)
@@ -549,7 +671,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			#Camera.Y=PsudoY+random.randint(-RenderFrames,RenderFrames)
 			#win.fill(EffectColor)
 			pass
-		if CameraZoom:
+		if CameraZoom:# or P1.HalfTime>0 or P2.HalfTime>0:
 			win.fill(0)
 		else:
 			try:
@@ -570,6 +692,24 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 					#pygame.draw.polygon(win,Polygon["Color"],PolygonVertexShader(Polygon["Points"],Camera))
 			except Exception as e:
 				pass
+		P1RS=RenderSpriteQuick(pygame.transform.flip(P1.Sprite,P1.X>P2.X,0),(P1.X+P1.Offset[0]+random.randint(-3,3)*CameraZoom,P1.Y+P1.Offset[1]+random.randint(-3,3)*CameraZoom,0),P1.W,P1.H,Camera)
+		P2RS=RenderSpriteQuick(pygame.transform.flip(P2.Sprite,P2.X>P1.X,0),(P2.X+P2.Offset[0]+random.randint(-3,3)*CameraZoom,P2.Y+P2.Offset[1]+random.randint(-3,3)*CameraZoom,0),P2.W,P2.H,Camera)
+		#BlitList.extend(LastOutlines[0])
+		LastOutlines[0]=CreateOutline(P1RS[0],P1RS[1],(0,0,0))
+		LastOutlines[0].extend(CreateOutline(P2RS[0],P2RS[1],(0,0,0)))
+		BlitList.extend(LastOutlines[0])
+		#BlitList.append(P1RS)
+		#BlitList.append(P2RS)
+		BlitList.append((CreateShadow(P1RS[0],P1.Shading[0],P1.Shading[1],(-int(P1.X/100),2)),P1RS[1]))
+		BlitList.append((CreateShadow(P2RS[0],P2.Shading[0],P2.Shading[1],(-int(P2.X/100),2)),P2RS[1]))
+		if BlitBloom==1:
+			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_MULT)
+		C=0
+		for i in range(len(Particles)):
+			if Particles[i-C].Render(Camera):
+				Particles.pop(i-C)
+				C+=1
+			pass
 		W0=win.get_width()
 		W3=int(W0/2)
 		W5=1.5
@@ -577,8 +717,12 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		W2=int(max(P2.Health,0)**W5*W3/P2.MaxHealth**W5)
 		W12=int(P1.Meter*W3/P1.MaxMeter)
 		W22=int(P2.Meter*W3/P2.MaxMeter)
-		pygame.draw.rect(win,(0,255,255),[W3-W1,0,W1,15])
-		pygame.draw.rect(win,(255,0,255),[W3,0,W2,15])
+		pygame.draw.rect(win,(0,0,0),[0,0,W0,15])
+		for i in range(8):
+			J=W0/8
+			pygame.draw.rect(win,[(0,0,0),(63,63,63)][i%2],[int(J*i),15,int(J)+1,15])
+		pygame.draw.rect(win,[(0,255,255),(255,255,0)][P1.HalfTime>0],[W3-W1,0,W1,15])
+		pygame.draw.rect(win,[(255,0,255),(255,255,0)][P2.HalfTime>0],[W3,0,W2,15])
 		pygame.draw.rect(win,(255,255,0),[0,15,W12,15])
 		pygame.draw.rect(win,(255,255,0),[W0-W22,15,W22,15])
 		if P1W:
@@ -588,18 +732,6 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			win.blit(P2WSprite,(W0-15,15))
 			#pygame.draw.rect(win,(255,0,255),[W0-15,15,15,15])
 		win.blit(KO2Sprite,(W3-7,0))
-		P1RS=RenderSpriteQuick(pygame.transform.flip(P1.Sprite,P1.X>P2.X,0),(P1.X+P1.Offset[0],P1.Y+P1.Offset[1],0),P1.W,P1.H,Camera)
-		P2RS=RenderSpriteQuick(pygame.transform.flip(P2.Sprite,P2.X>P1.X,0),(P2.X+P2.Offset[0],P2.Y+P2.Offset[1],0),P2.W,P2.H,Camera)
-		#BlitList.extend(LastOutlines[0])
-		LastOutlines[0]=CreateOutline(P1RS[0],P1RS[1],(0,0,0))
-		LastOutlines[0].extend(CreateOutline(P2RS[0],P2RS[1],(0,0,0)))
-		BlitList.extend(LastOutlines[0])
-		#BlitList.append(P1RS)
-		#BlitList.append(P2RS)
-		BlitList.append((CreateShadow(P1RS[0],P1.Shading[1],P1.Shading[0],(-int(P1.X/100),2)),P1RS[1]))
-		BlitList.append((CreateShadow(P2RS[0],P2.Shading[1],P2.Shading[0],(-int(P2.X/100),2)),P2RS[1]))
-		if BlitBloom==1:
-			win.blit(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())).convert(),(0,0),special_flags=pygame.BLEND_ADD)
 		try:
 			for i in P1T["Sprites"]:
 				BlitList.append(RenderSpriteQuick(pygame.transform.flip(i["Sprite"],P1.X>P2.X,0),(P1.X+i["X"]*((P1.X>P2.X)*-2+1),P1.Y+i["Y"],0),i["W"],i["H"],Camera))
@@ -609,12 +741,6 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			for i in P2T["Sprites"]:
 				BlitList.append(RenderSpriteQuick(pygame.transform.flip(i["Sprite"],P2.X>P1.X,0),(P2.X+i["X"]*((P2.X>P1.X)*-2+1),P2.Y+i["Y"],0),i["W"],i["H"],Camera))
 		except:
-			pass
-		C=0
-		for i in range(len(Particles)):
-			if Particles[i-C].Render(Camera):
-				Particles.pop(i-C)
-				C+=1
 			pass
 		try:
 			for i in P1T["GUI"]:
@@ -628,9 +754,9 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 			pass
 		if HBR:
 			for i in P1.Triggers:
-				BlitList.append(RenderSprite(TriggerSprite,((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
+				BlitList.append(RenderSprite(TriggerSprites[i["Type"]=="Hit"],((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
 			for i in P2.Triggers:
-				BlitList.append(RenderSprite(TriggerSprite,((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
+				BlitList.append(RenderSprite(TriggerSprites[i["Type"]=="Hit"],((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
 		LocalAlerts=[i for i in LocalAlerts if i.Time<i.LifeTime]
 		for i in LocalAlerts:
 			S=i.Render()
@@ -641,11 +767,21 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		win.blits(BlitList)
 		if Countdown != 0:
 			X=pygame.Surface((2,2))
-			X.set_at((0,0),(0,127*Countdown,127*Countdown))
-			X.set_at((1,1),(127*Countdown,0,127*Countdown))
+			X.set_at((0,0),(0,63*Countdown,63*Countdown))
+			X.set_at((1,1),(63*Countdown,0,63*Countdown))
 			#ReadyScreen
 			win.blit(pygame.transform.smoothscale(X,(W0,win.get_height())),(0,0),special_flags=pygame.BLEND_ADD)
-			win.blit(ReadyScreen,(0,0),special_flags=pygame.BLEND_ADD)
+			TCD=Countdown>2
+			Countdown%=2
+			#GenerateSlidingInvertText("Ready?",25,int(200-Countdown*100),Inverted=Countdown>1,Color=(255,255,255))
+			if TCD:
+				S=win.copy()
+				S.fill((255,255,255))
+				S.blit(AbstractSigns[GameMode](win.get_height(),4-Countdown*2,(0,0,0),(255,255,255)),((win.get_width()-win.get_height())/2,0))
+				win.blit(S,(0,0),special_flags=pygame.BLEND_ADD)
+			else:
+				win.blit(GenerateSlidingInvertText(["Second Injection","DigitalVENOM","Play or Forfeit?",GameMode][int(Countdown*2)],25,max(int(200-Countdown*100),1),Inverted=Countdown<1 and Countdown>0.5,Color=(255,255,255)),(0,0),special_flags=pygame.BLEND_ADD)
+			#win.blit(ReadyScreen,(0,0),special_flags=pygame.BLEND_ADD)
 		if CameraZoom and ImpactGlitch:
 			WinPixels=pygame.surfarray.pixels2d(win)
 			BloomPixels=pygame.surfarray.pixels2d(P.transform.smoothscale(P.transform.smoothscale(win,(3,3)),(win.get_width(),win.get_height())))
@@ -669,14 +805,12 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 		except:
 			pass"""
 	pass
-def RenderSelect(P1,P2,I1,I2,P1R,P2R,CSP1S,CSP2S):
+def RenderSelect(P1,P2,I1,I2,P1R,P2R,Shade1,Shade2,CSP1S,CSP2S):
 	global win,TrueWin,Camera,CamCap,ReadyScreen,HBR,SoundtrackList,CSBackground
 	#TODO:
 	#Add character outlines
-	Camera.X/=1.1
-	Camera.Y+=15
-	Camera.Y/=1.1
-	Camera.Y-=15
+	Camera.X=0
+	Camera.Y=-15
 	Camera.Z=-1
 	Camera.FOV=2
 	#win.fill(0)
@@ -700,14 +834,14 @@ def RenderSelect(P1,P2,I1,I2,P1R,P2R,CSP1S,CSP2S):
 	if P1R:
 		CreateShadow(X[0],(0,0,0),(127,127,255),(2,2))
 	else:
-		CreateShadow(X[0],(127,127,255),(255,255,127),(2,2))
+		CreateShadow(X[0],*Shade1,(2,2))
 	BlitList.extend(CreateOutline(*X,(0,63,63)))
 	BlitList.append(X)
 	X=RenderSpriteQuick(P.transform.flip(CSP2S,1,0),(256,0,0),256,256,Camera)
 	if P2R:
 		CreateShadow(X[0],(0,0,0),(127,127,255),(-2,-2))
 	else:
-		CreateShadow(X[0],(127,127,255),(255,255,127),(-2,-2))
+		CreateShadow(X[0],*Shade2,(-2,-2))
 	BlitList.extend(CreateOutline(*X,(63,0,63)))
 	BlitList.append(X)
 	win.blits(BlitList)
@@ -731,8 +865,8 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 	Color2=0
 	CSP1S=CSCharacters[Index1].CharacterSelectSprites[Color1]
 	CSP2S=CSCharacters[Index2].CharacterSelectSprites[Color2]
+	Events=pygame.event.get()
 	while True:
-		Events=pygame.event.get()
 		if P1R and P2R:
 			return CSCharacters[Index1](0,Color1,SelectButton1),CSCharacters[Index2](1,Color2,SelectButton2)
 		P1T=[64*(Index1%2)-32,0]
@@ -746,11 +880,16 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 		Y=P2C.Character(pygame,Events)
 		X2=X
 		Y2=Y
+		RenderRequired=1
 		while G:
 			Events=pygame.event.get()
 			CSP1S=CSCharacters[Index1].CharacterSelectSprites[Color1]
+			Shade1=CSCharacters[Index1].CharacterSelectShades[Color1]
 			CSP2S=CSCharacters[Index2].CharacterSelectSprites[Color2]
-			RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,CSP1S,CSP2S)
+			Shade2=CSCharacters[Index2].CharacterSelectShades[Color2]
+			if RenderRequired:
+				RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,Shade1,Shade2,CSP1S,CSP2S)
+				RenderRequired=0
 			for Event in Events:
 				if Event.type == pygame.QUIT:
 					pygame.quit()
@@ -762,36 +901,38 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 			X=P1C.Character(pygame,Events)
 			Y=P2C.Character(pygame,Events)
 			if X!=X2 and not P1R:
+				RenderRequired=1
 				if X["l"] or X["m"] or X["h"] or X["v"]:
 					for k in "lmhv":
 						if X[k]:
 							SelectButton1=k
 					MenuSounds[1].play()
 					P1R=1
-					RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,CSP1S,CSP2S)
+					RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,Shade1,Shade2,CSP1S,CSP2S)
 				else:
-					Index1+=X["X"]
-					Color1+=X["Y"]
-					Camera.X=X["X"]*10
-					Camera.Y=(X["Y"]*10)-15
+					Index1+=X["X2"]
+					Color1+=X["Y2"]
+					#Camera.X=X["X2"]*10
+					#Camera.Y=(X["Y2"]*10)-15
 					if OI1!=Index1:
 						MenuSounds[0].play()
 						OI1=Index1
 				X2=X
 				G=0
 			if Y!=Y2 and not P2R:
+				RenderRequired=1
 				if Y["l"] or Y["m"] or Y["h"] or Y["v"]:
 					for k in "lmhv":
 						if Y[k]:
 							SelectButton2=k
 					MenuSounds[1].play()
 					P2R=1
-					RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,CSP1S,CSP2S)
+					RenderSelect(P1T,P2T,Index1,Index2,P1R,P2R,Shade1,Shade2,CSP1S,CSP2S)
 				else:
-					Index2+=Y["X"]
-					Color2+=Y["Y"]
-					Camera.X=Y["X"]*10
-					Camera.Y=(Y["Y"]*10)-15
+					Index2+=Y["X2"]
+					Color2+=Y["Y2"]
+					#Camera.X=Y["X2"]*10
+					#Camera.Y=(Y["Y2"]*10)-15
 					if OI2!=Index2:
 						MenuSounds[0].play()
 						OI2=Index2

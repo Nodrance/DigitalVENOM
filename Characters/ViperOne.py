@@ -100,6 +100,9 @@ class Default:
 		self.Character=Character
 		self.HitMeterGain=HitMeterGain
 		self.AutoSpriteChange=AutoSpriteChange
+		self.RCFont=pygame.font.Font("Fonts/Messapia-Bold.otf",256)
+		self.OldMeter=0
+		self.MeterChangeTime=0
 		pass
 	def Reset(self,CHA):
 		CHA.Health=self.MaxHealth
@@ -110,6 +113,7 @@ class Default:
 		CHA.YV=0
 		CHA.KV=0
 		CHA.HalfTime=0
+		CHA.Overclock=0
 		CHA.Grabbed=False
 		CHA.Offset=self.Offset
 		CHA.W=self.Width
@@ -127,6 +131,7 @@ class Default:
 		CHA.HitLag=0
 		CHA.LTags={}
 		CHA.IPSMaxDistance=0
+		CHA.IPSMinMeter=0
 		pass
 	def Frame(self,Tags):
 		self.Character.Tags=Tags
@@ -154,7 +159,7 @@ class Default:
 					self.Character.Health-=Damage
 					self.Character.StateFrame=-1
 					self.Character.State=self.Character.BlockStun
-					self.Character.Stun=BlockStun
+					self.Character.Stun=BlockStun#*(1+(self.Character.HalfTime>0))
 					pass
 				else:
 					self.Character.Health-=Damage
@@ -164,10 +169,10 @@ class Default:
 					self.Character.KV=0
 					if "Knockdown" in i[1]["Attributes"]:
 						self.Character.CancelStates["Knockdown"]()
-						self.Character.Stun=Stun
+						self.Character.Stun=Stun#*(1+(self.Character.HalfTime>0))
 					else:
 						self.Character.State=self.Character.HitStun
-						self.Character.Stun=Stun
+						self.Character.Stun=Stun#*(1+(self.Character.HalfTime>0))
 			if i[0]["Type"]=="Hurt" and i[1]["Type"]=="Grab":
 				self.Character.Grabbed=1
 				Damage+=i[1]["Damage"]
@@ -181,7 +186,7 @@ class Default:
 			self.Character.X=GrabX
 			self.Character.Y=GrabY
 		if self.Character.State==self.Character.BackState:
-			self.Character.StateFrame+=1
+			self.Character.StateFrame+=(self.Character.HalfTime%2==0)
 		else:
 			self.Character.StateFrame=0
 			self.Character.BackState=self.Character.State
@@ -189,7 +194,12 @@ class Default:
 		for i in Tags["Triggers"]:
 			if i[0]["Type"]=="Hit" and i[1]["Type"]=="Hurt":
 				if Tags["Other Player"].SSN!="Block" or "Unblockable" in i[0]["Attributes"]:
-					self.Character.HitLag+=i[0]["Hit Lag"]
+					if self.Character.HalfTime>0:
+						self.Character.HitLag+=30
+						self.MakeScreenSpaceText("TIMELESS")
+						self.Character.HalfTime=0
+					else:
+						self.Character.HitLag+=i[0]["Hit Lag"]
 				self.Character.Meter+=self.HitMeterGain
 				"""if self.Character.State in [self.Character.States["gh"],self.Character.States["gb"],self.Character.States["ah"],self.Character.States["ab"]]:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Light"]))
@@ -198,12 +208,16 @@ class Default:
 				if self.Character.State in [self.Character.States["gk"],self.Character.States["gm"],self.Character.States["ak"],self.Character.States["am"]]:# and not self.Character.The48Frame:
 					self.Character.Sounds.append(random.choice(self.Character.HitSounds["Heavy"]))"""
 				if Tags["Other Player"].SSN=="HitStun":
+					#print(self.Character.IPSMaxDistance)
+					#print(self.Character.IPSBuffer)
 					self.Character.Combo+=1
-					self.Character.IPSProne=(self.Character.SSN in self.Character.IPSBuffer) and abs(self.Character.X-Tags["Other Player"].X)<=self.Character.IPSMaxDistance
+					self.Character.IPSProne=(self.Character.SSN in self.Character.IPSBuffer) and (abs(self.Character.X-Tags["Other Player"].X)<=self.Character.IPSMaxDistance) and (self.Character.Meter>=self.Character.IPSMinMeter)
 					self.Character.IPSMaxDistance=max(self.Character.IPSMaxDistance,abs(self.Character.X-Tags["Other Player"].X))
+					self.Character.IPSMinMeter=min(self.Character.IPSMinMeter,self.Character.Meter)
 					self.Character.IPSBuffer.append(self.Character.SSN)
 				else:
 					self.Character.IPSMaxDistance=0
+					self.Character.IPSMinMeter=0
 					self.Character.Combo=1
 					self.Character.IPSProne=0
 					self.Character.IPSBuffer=[self.Character.SSN]
@@ -213,8 +227,13 @@ class Default:
 		if self.Character.SN!=self.Character.TSN and self.AutoSpriteChange==1:
 			self.Character.Sprite=self.Character.Sprites[self.Character.SN]
 			self.Character.TSN=self.Character.SN
-		self.Character.X+=self.Character.XV
-		self.Character.Y+=self.Character.YV
+		if self.Character.HalfTime>0:
+			self.Character.X+=self.Character.XV/2
+			self.Character.Y+=self.Character.YV/2
+			self.Character.HalfTime-=1
+		else:
+			self.Character.X+=self.Character.XV
+			self.Character.Y+=self.Character.YV
 		if R==None:
 			R={}
 		Tags["Side"]=self.Character.X>Tags["Other Player"].X
@@ -224,5 +243,90 @@ class Default:
 			self.Character.HitFlip()
 		if Tags["Fault"]>self.Character.LTags["Fault"]:
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.Character.ViperOne.Player,Sprite=self.Character.CutIns[1],BackgroundColor=[(0,255,255),(255,0,255)][self.Character.ViperOne.Player],Y=30))
+		if Tags["Controller"]["m"] and Tags["Controller"]["h"]:
+			self.BurstCancel()
+		elif Tags["Controller"]["l"] and Tags["Controller"]["m"]:
+			self.RomanCancel()
+		elif Tags["Controller"]["l"] and Tags["Controller"]["h"]:
+			self.OverclockCancel()
+		elif Tags["Controller"]["l"] and Tags["Controller"]["v"]:
+			self.HalfTimeCancel()
 		self.Character.LTags=Tags
+		if self.MeterChangeTime>15:
+			self.Character.Meter-=self.Character.Overclock*5
+			self.OldMeter-=self.Character.Overclock*5
+		self.MeterChangeTime+=1
+		if self.OldMeter!=self.Character.Meter:
+			self.MeterChangeTime=0
+		self.Character.Meter=min(max(self.Character.Meter,0),self.Character.MaxMeter)
+		self.OldMeter=self.Character.Meter
 		return R
+	def MakeScreenSpaceText(self,X):
+		#RCT=self.RCFont.render(X,1,(255,255,255))
+		#W=512*256/(RCT.get_width()+RCT.get_height())
+		#Loli.Particles.append(Loli.ScreenSpaceParticle(W*RCT.get_width()/RCT.get_height(),W,[RCT],0.5))
+		Loli.Particles.append(Loli.SlidingInvertTextParticle(X,0.5))
+		Loli.Particles.append(Loli.PulseParticle((self.Character.X+self.Character.Offset[0],self.Character.Y+self.Character.Offset[1]),0.5,200,(255,255,0)))
+	def OverclockCancel(self):
+		if self.Character.Meter>=self.Character.MaxMeter:
+			self.MakeScreenSpaceText("OVERCLOCK")
+			self.Character.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
+				"Damage":50,
+				"Chip Damage":0,
+				"Stun":60,
+				"Block Stun":5,
+				"Knockback":0,
+				"Hit Lag":30,
+				"Knockback2":0,
+				"Attributes":[],
+				}]
+			if self.Character.Y<0 or self.Character.YV<0:
+				self.Character.State=self.Character.Jump
+			else:
+				#self.X+=(self.Tags["Side"]-0.5)*-128
+				self.Character.State=self.Character.Idle
+			self.Character.Meter=0
+			self.Character.Overclock+=1
+	def RomanCancel(self):
+		if self.Character.Meter>int(self.Character.MaxMeter/4):
+			#self.FaultReversalTag=1
+			self.MakeScreenSpaceText("CANCEL")
+			self.Character.HitLag+=30
+			if self.Character.Y<0 or self.Character.YV<0:
+				self.Character.State=self.Character.Jump
+			else:
+				#self.X+=(self.Tags["Side"]-0.5)*-128
+				self.Character.State=self.Character.Idle
+			self.Character.Meter-=int(self.Character.MaxMeter/4)
+	def HalfTimeCancel(self):
+		if self.Character.Meter>=self.Character.MaxMeter/2:
+			#Loli.Particles.append(Loli.ClockParticle((self.Character.Tags["Other Player"].X+self.Character.Tags["Other Player"].Offset[0],self.Character.Tags["Other Player"].Y+self.Character.Tags["Other Player"].Offset[1]),3.5,50,(255,255,0)))
+			self.Character.Tags["Other Player"].HalfTime=180
+			self.MakeScreenSpaceText("HALFTIME")
+			self.Character.HitLag+=30
+			if self.Character.Y<0 or self.Character.YV<0:
+				self.Character.State=self.Character.Jump
+			else:
+				#self.X+=(self.Tags["Side"]-0.5)*-128
+				self.Character.State=self.Character.Idle
+			self.Character.Meter-=int(self.Character.MaxMeter/2)
+	def BurstCancel(self):
+		if self.Character.Meter>=self.Character.MaxMeter/2 or self.Character.Tags["Other Player"].IPSProne:
+			self.MakeScreenSpaceText("BURST")
+			self.Character.Triggers=[{"Box":[[-64,64],[-128,0]],"Type":"Hit",
+				"Damage":50,
+				"Chip Damage":0,
+				"Stun":30,
+				"Block Stun":5,
+				"Knockback":30,
+				"Hit Lag":30,
+				"Knockback2":30,
+				"Attributes":[],
+				}]
+			if self.Character.Y<0 or self.Character.YV<0:
+				self.Character.State=self.Character.Jump
+			else:
+				#self.X+=(self.Tags["Side"]-0.5)*-128
+				self.Character.State=self.Character.Idle
+			if not self.Character.Tags["Other Player"].IPSProne:
+				self.Character.Meter-=int(self.Character.MaxMeter/2)
