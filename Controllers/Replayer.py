@@ -4,7 +4,7 @@ class Controller:
 		self.Player=Player
 		self.Frame=0
 		pass
-	def Character(self,pygame):
+	def Character(self,pygame,PygameEvents):
 		try:
 			self.Frame+=1
 			return self.ReplayData[self.Frame][self.Player]

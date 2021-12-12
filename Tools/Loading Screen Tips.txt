@@ -1,0 +1,16 @@
+How are you today?
+VENOM attacks are very reactable, but they can lead to good damage if hit.
+QuW's jiggle physics parameters depend on what button is used to select her.
+DigitalVENOM's source code is available on GitHub.
+Eden is pretty lazy, that's why Injection Cube hasn't been reworked yet.
+Each game mode in DigitalVENOM has it's own unique emblem, they aren't too difficult to remember.
+DigitalVENOM has an infinite prevention system, if you're in an infinite, you can burst for free.
+QuW's meter fills every time she uses an attack that shows her panties.
+ERic is corrupted by a virus within DigitalVENOM, this is reflected in his sprites and animations.
+You can gain meter by walking forward. The longer you're walking, the faster it will increase.
+QuW has unique jiggle physics parameters for each color, try them out and see which one is your favourite.
+While in half time, a character isn't able to jump as high. This is because the force of gravity remains constant.
+Dashing can only be done while in the air, simply double tap forward to iniate a dash.
+Story mode doesn't contain any fighting. It's more like a visual novel.
+ERic has more health than QuW and often does more damage, but his inputs are a lot harder to pull off.
+Almost all meter options will return you to either an idle or jumping state, canceling whatever you're doing.

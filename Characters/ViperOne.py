@@ -132,6 +132,7 @@ class Default:
 		CHA.LTags={}
 		CHA.IPSMaxDistance=0
 		CHA.IPSMinMeter=0
+		self.Echo=0
 		pass
 	def Frame(self,Tags):
 		self.Character.Tags=Tags
@@ -245,6 +246,8 @@ class Default:
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.Character.ViperOne.Player,Sprite=self.Character.CutIns[1],BackgroundColor=[(0,255,255),(255,0,255)][self.Character.ViperOne.Player],Y=30))
 		if Tags["Controller"]["m"] and Tags["Controller"]["h"]:
 			self.BurstCancel()
+		elif Tags["Controller"]["m"] and Tags["Controller"]["v"]:
+			self.EchoCancel()
 		elif Tags["Controller"]["l"] and Tags["Controller"]["m"]:
 			self.RomanCancel()
 		elif Tags["Controller"]["l"] and Tags["Controller"]["h"]:
@@ -298,6 +301,31 @@ class Default:
 				#self.X+=(self.Tags["Side"]-0.5)*-128
 				self.Character.State=self.Character.Idle
 			self.Character.Meter-=int(self.Character.MaxMeter/4)
+	def EchoCancel(self):
+		if self.Echo:
+			self.Character.FaultReversalTag=1
+			#self.MakeScreenSpaceText("ECHO")
+			self.Echo=0
+			self.Character.X=self.EchoX
+			self.Character.Y=self.EchoY
+			if self.Character.Y<0 or self.Character.YV<0:
+				self.Character.State=self.Character.Jump
+			else:
+				self.Character.State=self.Character.Idle
+		else:
+			if self.Character.Meter>int(self.Character.MaxMeter/2):
+				#self.MakeScreenSpaceText("ECHO")
+				self.Character.FaultReversalTag=1
+				Loli.Particles.append(Loli.EchoParticle((self.Character.X+self.Character.Offset[0],self.Character.Y+self.Character.Offset[1]),self.Character.W,self.Character.H,self.Character.Sprite,2,self,Blend=None))
+				self.Echo=1
+				self.EchoX=self.Character.X
+				self.EchoY=self.Character.Y
+				self.Character.X-=(self.Character.Tags["Side"]*2-1)*200
+				if self.Character.Y<0 or self.Character.YV<0:
+					self.Character.State=self.Character.Jump
+				else:
+					self.Character.State=self.Character.Idle
+				self.Character.Meter-=int(self.Character.MaxMeter/2)
 	def HalfTimeCancel(self):
 		if self.Character.Meter>=self.Character.MaxMeter/2:
 			#Loli.Particles.append(Loli.ClockParticle((self.Character.Tags["Other Player"].X+self.Character.Tags["Other Player"].Offset[0],self.Character.Tags["Other Player"].Y+self.Character.Tags["Other Player"].Offset[1]),3.5,50,(255,255,0)))

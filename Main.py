@@ -10,7 +10,8 @@ from Rulesets import Competitive,Warmup,Training
 from Engines import Alchemy,Combustion
 from Stages import VenomCompetitive,VenomWarmup,City,CityLights,NightLight,RoyalDuel
 from Tools import HitBoxer,ControllerDebug
-import sys,copy,json,pygame,dis,inspect,Debug
+from Story import StoryMode
+import sys,copy,json,pygame,dis,inspect,Debug,os,datetime,threading
 #sys.stdout = open("OutputLog.txt", "w")
 #sys.stderr = open("ErrorLog.txt", "w")
 """
@@ -92,6 +93,19 @@ def TitleScreen():
 		for Event in pygame.event.get():
 			if Event.type==pygame.KEYDOWN:
 				G=0"""
+
+class ReplayMenuItemFunction:
+	def __init__(self,FileName):
+		self.FileName=FileName
+	def __call__(self):
+		return self.FileName
+
+def ReplayMenuItem(FileName):
+	return Loli.MenuLabel(datetime.datetime.utcfromtimestamp(float(FileName[9 :-5])).strftime("%Y-%m-%d %H:%M:%S"),Function=ReplayMenuItemFunction(FileName))
+
+def StoryF():
+	global P1C
+	StoryMode.Main(P1C)
 def CompetitiveF():
 	global P1C,P2C,P1,P2,CSCharacters
 	Combustion.GameMode="Competitive"
@@ -129,20 +143,31 @@ def CasualF():
 	#print(WinIndex[X[0]*2+X[1]])
 def ReplayF():
 	#CharacterSelect()
+	ReplayList=[]
+	Files = []
+	for (dirpath, dirnames, filenames) in os.walk("Replays"):
+		Files.extend(dirpath+"\\"+i for i in filenames)
+	for i in Files:
+		if i.endswith(".json"):
+			ReplayList.append(i)
+	X=Loli.GradientMenu([
+		#Loli.MenuTitle("Replays"),
+		ReplayMenuItem(i) for i in ReplayList
+		]).Open()
 	Loli.HBR=0
 	Loli.P1W=0
 	Loli.P2W=0
-	ReplayData=ReplayData=json.load(open("Replay.json","r"))
-	P1=sys.modules[ReplayData[0]["Player 1 Character Module Name"]].Character(0,pygame)
-	P2=sys.modules[ReplayData[0]["Player 2 Character Module Name"]].Character(1,pygame)
-	P1.Reset(0,pygame)
-	P2.Reset(1,pygame)
+	ReplayData=ReplayData=json.load(open(X,"r"))
+	P1=sys.modules[ReplayData[0]["Player 1 Character Module Name"]].Character(0,0,"v")
+	P2=sys.modules[ReplayData[0]["Player 2 Character Module Name"]].Character(1,0,"v")
+	P1.Reset(0)
+	P2.Reset(1)
 	BG=sys.modules[ReplayData[0]["Stage Module Name"]].Stage(pygame)
 	Replayer1=Replayer.Controller(pygame,Player=0,ReplayData=ReplayData)
 	Replayer2=Replayer.Controller(pygame,Player=1,ReplayData=ReplayData)
-	if ReplayData[0]["Engine Module Name"]=="Engines.Alchemy":
+	if ReplayData[0]["Engine Module Name"]=="Engines.Combustion":
 		#return Warmup.Match(pygame,Loli,Alchemy,Replayer1,Replayer2,P1,P2,BG)
-		WinScreen(Alchemy.Game(P1,P2,Loli,pygame,Replayer1,Replayer2,BG,pygame.mixer.Sound("Sounds/GameStart0.wav"),SaveReplay=0,Rendering=1))
+		WinScreen(Combustion.Game(P1,P2,Loli,pygame,Replayer1,Replayer2,BG,pygame.mixer.Sound("Sounds/GameStart0.wav"),SaveReplay=0,Rendering=1))
 	#X=Competitive.Match(pygame,Loli,Alchemy,P1C,P2C,P1,P2,BG2)
 	#print(WinIndex[X[0]*2+X[1]])
 def QuitGame():
@@ -160,6 +185,7 @@ def MenuScreen():
 		Loli.MenuLabel("Competitive",Function=CompetitiveF),
 		Loli.MenuLabel("Training",Function=TrainingF),
 		Loli.MenuLabel("Casual",Function=CasualF),
+		#Loli.MenuLabel("Story",Function=StoryF),
 		Loli.MenuLabel("Replay",Function=ReplayF),
 		Loli.MenuLabel("Development Menu",Function=Debug.DebugMenu),
 		Loli.MenuLabel("Settings",Function=Settings.Menu),
@@ -210,6 +236,8 @@ class Settings:
 	def BlitBloom(Text):
 		Loli.BlitBloom=(Text=="Blit Bloom On")
 Settings.LoadSettings()
+Loli.LS()
+del Loli.LS
 if __name__=="__main__":
 	TitleScreen()
 	while 1:MenuScreen()

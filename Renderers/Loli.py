@@ -1,4 +1,4 @@
-import os,sys
+import os,sys,threading
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 import pygame,random,math,numpy
 import pygame.gfxdraw
@@ -16,14 +16,96 @@ Clock=pygame.time.Clock()
 TrueWin=pygame.display.set_mode((0,0),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 #win=pygame.Surface((1366,768))
 #win=pygame.Surface((683,384))
-win=pygame.Surface((int(683/2),int(384/2)))
+win=pygame.Surface((341,192))
 #win=pygame.display.set_mode((int(683/2),int(384/2)),pygame.FULLSCREEN|pygame.HWSURFACE|pygame.DOUBLEBUF)
 #print(win.get_width()*2)
 FZ=-1
+SoundtrackList=[]
 HitFlashes=[]
-"""for i in range(16):
-	HitFlashes.append(ParticleGenerator.GenerateSpikes(256,10))
-	pass"""
+Particles=[]
+def FakeTimeFunction():
+	global FakeTime
+	return FakeTime
+
+#pygame.time.get_ticks=FakeTimeFunction
+
+class LoliCamera: #Defines the camera object.
+	def __init__(self,X,Y,Z,FOV):
+		self.X=X
+		self.Y=Y
+		self.Z=Z
+		self.FOV=FOV
+Camera=LoliCamera(0,-15,-1,1)
+
+def UpdateTrueWin():
+	global GlobalAlerts
+	GlobalAlerts=[i for i in GlobalAlerts if i.Time<i.LifeTime]
+	for i in GlobalAlerts:
+		S=i.Render()
+		if i.Side:
+			TrueWin.blit(S,(TrueWin.get_width()-S.get_width(),i.Y))
+		else:
+			TrueWin.blit(S,(0,i.Y))
+	pygame.display.flip()
+
+def ScaleWin():
+	pygame.transform.scale(win,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
+	#pygame.transform.scale(pygame.transform.scale(win,(int(win.get_width()/2),int(win.get_height()/2))),(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
+	#pygame.transform.scale2x(win,TrueWin)
+	#pygame.transform.scale(pygame.transform.scale2x(pygame.transform.scale2x(win)),(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
+	UpdateTrueWin()
+
+def HandleMusic():
+	global SoundtrackList
+	if len(SoundtrackList)>0:
+		if P.mixer.music.get_busy()==0:
+			P.mixer.music.load(random.choice(SoundtrackList))
+			P.mixer.music.play()
+			P.mixer.music.queue(random.choice(SoundtrackList))
+
+class LoadingScreen:
+	def __init__(self):
+		global win,TrueWin,Camera,CamCap,ReadyScreen,HBR,SoundtrackList,CSBackground
+		self.RequestStop=0
+		self.Stopped=0
+		self.Font=pygame.font.Font("Fonts/Kenney Future Square.ttf",16)
+		self.LoadingText=self.Font.render("DigitalVENOM Loading...",0,(255,255,0)).convert_alpha()
+		self.RenderY=win.get_height()-self.LoadingText.get_height()
+		self.LST=threading.Thread(target=self.Start)
+		self.LST.daemon=True
+		self.LST.start()
+	def Start(self):
+		self.StartTime=pygame.time.get_ticks()
+		while 1:
+			if self.RequestStop:
+				self.Stopped=1
+				return
+			else:
+				self.Render()
+	def Render(self):
+		global Camera
+		self.TotalTime=pygame.time.get_ticks()-self.StartTime
+		if self.TotalTime<100:
+			self.TotalTime=100
+		Camera.X=0
+		Camera.Y=-15
+		Camera.Z=-1
+		Camera.FOV=2
+		K=pygame.Surface((2,2))
+		K.set_at((0,0),(0,127,127))
+		K.set_at((1,1),(127,0,127))
+		pygame.transform.smoothscale(K,(win.get_width(),win.get_height()),win)
+		#print(self.TotalTime)
+		win.blit(self.LoadingText,(32-int(32/self.TotalTime*100),self.RenderY))
+		HandleMusic()
+		ScaleWin()
+	def __call__(self):
+		self.RequestStop=1
+		while 1:
+			if self.Stopped:
+				return
+	pass
+LS=LoadingScreen()
 BlitBloom=0
 win.set_alpha(None)
 ImpactGlitch=1
@@ -57,31 +139,25 @@ CSP2Image=pygame.image.load("Sprites/Character Select Screen/P2.png").convert_al
 CSSImage=pygame.image.load("Sprites/Character Select Screen/Screen.png").convert()
 CSBackground=pygame.image.load("Sprites/Character Select Screen/Background.png").convert()#.convert_alpha()
 CSCharacters=[
-pygame.image.load("Sprites/Character Select Screen/InjectionCubePortrait.png").convert_alpha(),
+pygame.image.load("Sprites/Character Select Screen/ERicPortrait.png").convert_alpha(),
 pygame.image.load("Sprites/Character Select Screen/QuWPortrait.png").convert_alpha(),
 ]
 """SoundtrackList=[
 "Music/Lethal Injection.wav",
 "Music/QT.wav",
 ]"""
-SoundtrackList=[]
 Files = []
 for (dirpath, dirnames, filenames) in walk("Music"):
 	Files.extend(dirpath+"\\"+i for i in filenames)
 for i in Files:
-	if i.endswith(".wav"):
+	if i.endswith(".mp3"):
 		SoundtrackList.append(i)
-pygame.mixer.music.load(random.choice(SoundtrackList))#"Music/Dusk and Daylight.wav")
-pygame.mixer.music.play()
-pygame.mixer.music.queue(random.choice(SoundtrackList))
-#The above commented code began crashing the game, this has now been fixed.
-Particles=[]
-def FakeTimeFunction():
-	global FakeTime
-	return FakeTime
-
-#pygame.time.get_ticks=FakeTimeFunction
-
+LoadingScreenArtList=[]
+for (dirpath, dirnames, filenames) in walk("Sprites/Loading Screen Art"):
+	Files.extend(dirpath+"\\"+i for i in filenames)
+for i in Files:
+	if i.endswith(".png"):
+		LoadingScreenArtList.append(pygame.image.load(i).convert())
 def GenerateSlidingInvertText(Text,Size,Frame,Inverted=0,Color=(255,255,255)):
 	Font=pygame.font.Font("Fonts/Kenney Future Narrow.ttf",Size)
 	Surface=win.copy()
@@ -92,6 +168,50 @@ def GenerateSlidingInvertText(Text,Size,Frame,Inverted=0,Color=(255,255,255)):
 	Surface3=pygame.transform.chop(Surface2,[(G-int(G/Frame),0),(2*int(G/Frame),0)])
 	Surface.blit(Surface3,(int(Surface.get_width()/2-Surface3.get_width()/2),int(Surface.get_height()/2-Surface3.get_height()/2)))
 	return Surface
+LoadingScreenTips=open("Tools/Loading Screen Tips.txt").read().split("\n")
+class BigLoadingScreen:
+	def __init__(self):
+		global LoadingScreenTips,win,TrueWin,Camera,CamCap,ReadyScreen,HBR,SoundtrackList,CSBackground,LoadingScreenArtList
+		self.RequestStop=0
+		self.Stopped=0
+		self.Font=pygame.font.Font("Fonts/Messapia-Bold.otf",16)
+		self.Font2=pygame.font.Font("Fonts/Kenney Future Narrow.ttf",128)
+		self.Art=random.choice(LoadingScreenArtList)
+		self.LoadingText=self.Font.render(random.choice(LoadingScreenTips),1,(255,255,0)).convert_alpha()
+		self.LoadingLogo=self.Font2.render("DigitalVENOM",1,(255,255,0)).convert_alpha()
+		self.RenderY=TrueWin.get_height()-self.LoadingText.get_height()
+		self.RenderX=TrueWin.get_width()-self.LoadingLogo.get_width()
+		self.LST=threading.Thread(target=self.Start)
+		self.LST.daemon=True
+		self.LST.start()
+	def Start(self):
+		self.StartTime=pygame.time.get_ticks()
+		while 1:
+			if self.RequestStop:
+				self.Stopped=1
+				return
+			else:
+				self.Render()
+	def Render(self):
+		global Camera
+		self.TotalTime=pygame.time.get_ticks()-self.StartTime
+		if self.TotalTime<100:
+			self.TotalTime=100
+		#K=pygame.Surface((2,2))
+		#K.set_at((0,0),(0,127,127))
+		#K.set_at((1,1),(127,0,127))
+		pygame.transform.smoothscale(self.Art,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
+		#print(self.TotalTime)
+		TrueWin.blit(self.LoadingText,(32-int(32/self.TotalTime*100),self.RenderY))
+		TrueWin.blit(self.LoadingLogo,(self.RenderX-32+int(32/self.TotalTime*100),0))
+		HandleMusic()
+		UpdateTrueWin()
+	def __call__(self):
+		self.RequestStop=1
+		while 1:
+			if self.Stopped:
+				return
+	pass
 
 class AbstractSign:
 	def __init__(self,Stages):
@@ -196,6 +316,21 @@ class BlitParticle:
 	def Render(self,Camera):
 		RenderSprite(self.Animation[int((pygame.time.get_ticks()-self.StartTime)/17)%len(self.Animation)],self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
+class EchoParticle:
+	def __init__(self,Pos,Width,Height,Animation,Life,ViperOne,Blend=None):
+		self.StartTime=pygame.time.get_ticks()
+		self.Pos=(Pos[0],Pos[1],0)
+		self.Life=Life
+		self.ViperOne=ViperOne
+		self.Width=Width
+		self.Height=Height
+		self.Blend=Blend
+		self.Animation=Animation
+	def Render(self,Camera):
+		RenderSprite(self.Animation,self.Pos,self.Width,self.Height,Camera,Blending=self.Blend)
+		#if (pygame.time.get_ticks()-self.StartTime)/1000>self.Life:
+			#Echo=0
+		return not self.ViperOne.Echo
 class ScreenSpaceParticle:
 	def __init__(self,Width,Height,Animation,Life,Blend=None):
 		global Camera
@@ -377,37 +512,17 @@ class ClockParticle:
 		pygame.draw.arc(win,self.Color,[(X+1-self.Length,Y+1-self.Length),(2*self.Length,2*self.Length)],SA,EA, width=self.Length)
 			#pygame.draw.circle(win,self.Color,(int(X),int(Y)),int(H4),width=2)
 		return (pygame.time.get_ticks()-self.StartTime)/1000>self.Life
-class LoliCamera: #Defines the camera object.
-	def __init__(self,X,Y,Z,FOV):
-		self.X=X
-		self.Y=Y
-		self.Z=Z
-		self.FOV=FOV
-Camera=LoliCamera(0,-15,-1,1)
-def UpdateTrueWin():
-	global GlobalAlerts
-	GlobalAlerts=[i for i in GlobalAlerts if i.Time<i.LifeTime]
-	for i in GlobalAlerts:
+
+def HandleLocalAlerts(Cull=1):
+	global LocalAlerts
+	if Cull:
+		LocalAlerts=[i for i in LocalAlerts if i.Time<i.LifeTime]
+	for i in LocalAlerts:
 		S=i.Render()
 		if i.Side:
-			TrueWin.blit(S,(TrueWin.get_width()-S.get_width(),i.Y))
+			win.blit(S,(win.get_width()-S.get_width(),i.Y))
 		else:
-			TrueWin.blit(S,(0,i.Y))
-	pygame.display.flip()
-
-def ScaleWin():
-	pygame.transform.scale(win,(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
-	#pygame.transform.scale(pygame.transform.scale(win,(int(win.get_width()/2),int(win.get_height()/2))),(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
-	#pygame.transform.scale2x(win,TrueWin)
-	#pygame.transform.scale(pygame.transform.scale2x(pygame.transform.scale2x(win)),(TrueWin.get_width(),TrueWin.get_height()),TrueWin)
-	UpdateTrueWin()
-
-def HandleMusic():
-	global SoundtrackList
-	if P.mixer.music.get_busy()==0:
-		P.mixer.music.load(random.choice(SoundtrackList))
-		P.mixer.music.play()
-		P.mixer.music.queue(random.choice(SoundtrackList))
+			win.blit(S,(0,i.Y))
 def CreateShadow(Sprite,Color,Highlight,Angle):
 	Mask=pygame.mask.from_surface(Sprite)
 	Shadow=Mask.to_surface(setcolor=Color,unsetcolor=Highlight)
@@ -757,13 +872,7 @@ def Render(P1,P2,BG,Countdown,P1T={},P2T={},Collisions=[],Impact=0,HF=0,CameraZo
 				BlitList.append(RenderSprite(TriggerSprites[i["Type"]=="Hit"],((i["Box"][0][1]+i["Box"][0][0])/2+P1.X,(i["Box"][1][1]+i["Box"][1][0])/2+P1.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
 			for i in P2.Triggers:
 				BlitList.append(RenderSprite(TriggerSprites[i["Type"]=="Hit"],((i["Box"][0][1]+i["Box"][0][0])/2+P2.X,(i["Box"][1][1]+i["Box"][1][0])/2+P2.Y,0),i["Box"][0][1]-i["Box"][0][0],i["Box"][1][1]-i["Box"][1][0],Camera,pygame.BLEND_ADD,Blit=0))
-		LocalAlerts=[i for i in LocalAlerts if i.Time<i.LifeTime]
-		for i in LocalAlerts:
-			S=i.Render()
-			if i.Side:
-				win.blit(S,(win.get_width()-S.get_width(),i.Y))
-			else:
-				win.blit(S,(0,i.Y))
+		HandleLocalAlerts()
 		win.blits(BlitList)
 		if Countdown != 0:
 			X=pygame.Surface((2,2))
@@ -868,7 +977,11 @@ def CharacterSelect(P1C,P2C,P1,P2,CSCharacters):
 	Events=pygame.event.get()
 	while True:
 		if P1R and P2R:
-			return CSCharacters[Index1](0,Color1,SelectButton1),CSCharacters[Index2](1,Color2,SelectButton2)
+			LS=BigLoadingScreen()
+			G1,G2=CSCharacters[Index1](0,Color1,SelectButton1),CSCharacters[Index2](1,Color2,SelectButton2)
+			LS()
+			del LS
+			return G1,G2
 		P1T=[64*(Index1%2)-32,0]
 		P2T=[64*(Index2%2)-32,0]
 		Index1=Index1%len(CSCharacters)
@@ -1154,19 +1267,25 @@ class GradientMenu:
 				return L
 		pass
 class AlertText:
-	Font=pygame.font.Font("Fonts/Kenney Future Narrow.ttf",25)
-	def __init__(self,Text,Color=(255,255,0),BackgroundColor=(0,0,0),Side=0):
+	Font=pygame.font.Font("Fonts/Kenney Future Square.ttf",8)
+	def __init__(self,Text,Color=(255,255,0),BackgroundColor=(0,0,0),Side=0,Y=30,LifeTime=24):
 		self.Text=Text
 		self.Side=Side
 		self.Time=0
-		self.LifeTime=24
+		self.LifeTime=LifeTime
 		self.BackgroundColor=BackgroundColor
 		self.Color=Color
-		self.Y=30
-		self.Sprite=self.Font.render(self.Text,1,self.Color,BackgroundColor).convert_alpha()
+		self.Y=Y
+		self.Sprite=self.Font.render(self.Text,0,self.Color,BackgroundColor).convert_alpha()
 	def Render(self):
 		self.Time+=1
-		return self.Sprite
+		S=pygame.Surface((TrueWin.get_width(),self.Sprite.get_height()))
+		S.fill(self.BackgroundColor)
+		if self.Side:
+			S.blit(self.Sprite,(S.get_width()-self.Sprite.get_width()+int(256/self.Time)-20,0))
+		else:
+			S.blit(self.Sprite,(0-int(256/self.Time)+20,0))
+		return S
 class AlertCutIn:
 	def __init__(self,BackgroundColor=(255,255,0),Side=0,Sprite=None,Y=30,LifeTime=24):
 		self.Side=Side
@@ -1184,3 +1303,11 @@ class AlertCutIn:
 		else:
 			S.blit(self.Sprite,(0-int(256/self.Time),0))
 		return S
+class AlertOverlay:
+	def __init__(self,Sprite=None,LifeTime=24):
+		self.Time=0
+		self.LifeTime=LifeTime
+		self.Y=0
+		self.Sprite=Sprite
+	def Render(self):
+		return Sprite

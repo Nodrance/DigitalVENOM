@@ -695,15 +695,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -724,15 +715,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -753,15 +735,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -782,15 +755,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -811,15 +775,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -840,15 +795,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -869,15 +815,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -898,15 +835,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -927,15 +855,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -956,15 +875,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -985,15 +895,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1014,15 +915,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1043,15 +935,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1072,15 +955,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1101,15 +975,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1130,15 +995,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1159,15 +1015,6 @@
 				},
 				"Effect": 0,
 				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "FaultReversal"
 			}
 		],
 		[
@@ -1183,20 +1030,11 @@
 			{
 				"Conditions": {
 					"l": [
-						1
-					]
-				},
-				"Effect": 0,
-				"State": "AutoPanchiraJumpCancel"
-			},
-			{
-				"Conditions": {
-					"m": [
 						1
 					]
 				},
 				"Effect": 1,
-				"State": "FaultReversal"
+				"State": "AutoPanchiraJumpCancel"
 			}
 		],
 		[],
