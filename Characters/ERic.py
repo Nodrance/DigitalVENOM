@@ -495,7 +495,7 @@ class Character:
 				self.State=self.BackWalk
 		return {}
 	def Taunt(self,Tags):
-		self.Meter+=999999999999
+		self.Meter+=10
 		self.SSN="Idle"
 		self.SN="idle1"
 		if self.StateFrame>120:
