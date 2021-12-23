@@ -45,6 +45,7 @@ class Controller:
 		"m":0,
 		"h":0,
 		"v":0,
+		"t":0,
 		"X":max(-1,int(self.Joystick.get_axis(0)*1.99)),
 		"Y":max(-1,int(self.Joystick.get_axis(1)*1.99)),
 		}
@@ -55,6 +56,7 @@ class Controller:
 		for Event in PygameEvents:
 			if Event.type==pygame.JOYBUTTONDOWN:
 				if Event.instance_id==self.Joystick.get_instance_id():
+					print(Event.button)
 					if Event.button==3:
 						R["l"]=1
 					if Event.button==1:
@@ -63,6 +65,8 @@ class Controller:
 						R["h"]=1
 					if Event.button==2:
 						R["v"]=1
+					if Event.button==2:
+						R["t"]=1
 			if Event.type==pygame.JOYAXISMOTION:
 				if Event.instance_id==self.Joystick.get_instance_id():
 					if R["X"]!=self.OX: #Event.axis==0

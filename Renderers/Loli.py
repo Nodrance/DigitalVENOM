@@ -60,7 +60,10 @@ def HandleMusic():
 	if len(SoundtrackList)>0:
 		if P.mixer.music.get_busy()==0:
 			P.mixer.music.load(random.choice(SoundtrackList))
-			P.mixer.music.play()
+			try:
+				P.mixer.music.play()
+			except pygame.error:
+				pass
 			P.mixer.music.queue(random.choice(SoundtrackList))
 
 class LoadingScreen:

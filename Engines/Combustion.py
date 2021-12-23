@@ -22,12 +22,14 @@ AntiTurbo=[
 	"m":0,
 	"h":0,
 	"v":0,
+	"t":0,
 },
 {
 	"l":0,
 	"m":0,
 	"h":0,
 	"v":0,
+	"t":0,
 }
 ]
 AntiTurboStrength=5
@@ -137,6 +139,7 @@ PygameEvents=[]
 HalfTime=0
 def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one frame of gameplay.
 	global HalfTime,OverclockBalance,AntiTurboTimer,AntiTurbo,AntiTurboStrength,StayMaxTension,Tension,PlayerSides,Rendering2,CameraZoom,HF,MaxWallDurability,WallDurability1,WallDurability2,RenderCount,Clock,Camera,LFC1,LFC2,P1C1,P1C2,P2C1,P2C2,PreFault,Fault,DuelFault,StartTime,SimulatedFrames,SimulatedFramerate,ReplayData,P1T,P2T,T1,T2,GlobalPlayer1,GlobalPlayer2,PygameEvents,keys
+	# bad practise ^
 	i=0
 	PygameEvents=pygame.event.get()
 	for Event in PygameEvents:
@@ -208,29 +211,33 @@ def Frame(P1,P2,Renderer,pygame,P1C,P2C,BG,Training=0): #This function runs one 
 		AntiTurbo[0]["m"]+=P1C1["m"]*AntiTurboStrength
 		AntiTurbo[0]["h"]+=P1C1["h"]*AntiTurboStrength
 		AntiTurbo[0]["v"]+=P1C1["v"]*AntiTurboStrength
+		AntiTurbo[0]["t"]+=P1C1["t"]*AntiTurboStrength
 		AntiTurbo[1]["l"]+=P2C1["l"]*AntiTurboStrength
 		AntiTurbo[1]["m"]+=P2C1["m"]*AntiTurboStrength
 		AntiTurbo[1]["h"]+=P2C1["h"]*AntiTurboStrength
 		AntiTurbo[1]["v"]+=P2C1["v"]*AntiTurboStrength
+		AntiTurbo[1]["t"]+=P2C1["t"]*AntiTurboStrength
 		AntiTurbo[0]["l"]=max(0,AntiTurbo[0]["l"]-1)
 		AntiTurbo[0]["m"]=max(0,AntiTurbo[0]["m"]-1)
 		AntiTurbo[0]["h"]=max(0,AntiTurbo[0]["h"]-1)
 		AntiTurbo[0]["v"]=max(0,AntiTurbo[0]["v"]-1)
+		AntiTurbo[0]["t"]=max(0,AntiTurbo[0]["t"]-1)
 		AntiTurbo[1]["l"]=max(0,AntiTurbo[1]["l"]-1)
 		AntiTurbo[1]["m"]=max(0,AntiTurbo[1]["m"]-1)
 		AntiTurbo[1]["h"]=max(0,AntiTurbo[1]["h"]-1)
 		AntiTurbo[1]["v"]=max(0,AntiTurbo[1]["v"]-1)
+		AntiTurbo[1]["t"]=max(0,AntiTurbo[1]["t"]-1)
 		if max([AntiTurbo[0][i] for i in AntiTurbo[0].keys()])>5:
 			P1.Health-=int(P1.MaxHealth/2)
 			NegativePenaltySound.play()
-			AntiTurbo=[{"l":0,"m":0,"h":0,"v":0},{"l":0,"m":0,"h":0,"v":0}]
+			AntiTurbo=[{"l":0,"m":0,"h":0,"v":0,"t":0},{"l":0,"m":0,"h":0,"v":0,"t":0}]
 		if max([AntiTurbo[1][i] for i in AntiTurbo[1].keys()])>5:
 			P2.Health-=int(P2.MaxHealth/2)
 			NegativePenaltySound.play()
-			AntiTurbo=[{"l":0,"m":0,"h":0,"v":0},{"l":0,"m":0,"h":0,"v":0}]
+			AntiTurbo=[{"l":0,"m":0,"h":0,"v":0,"t":0},{"l":0,"m":0,"h":0,"v":0,"t":0}]
 	else:
 		#print(AntiTurboTimer)
-		AntiTurbo=[{"l":0,"m":0,"h":0,"v":0},{"l":0,"m":0,"h":0,"v":0}]
+		AntiTurbo=[{"l":0,"m":0,"h":0,"v":0,"t":0},{"l":0,"m":0,"h":0,"v":0,"t":0}]
 		AntiTurboTimer-=1
 	"""try:
 		LFC1

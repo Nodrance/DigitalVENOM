@@ -1,8 +1,10 @@
 class Controller:
 	def __init__(self,pygame):
-		self.Joystick=pygame.joystick.Joystick(1)
+		self.Joystick=pygame.joystick.Joystick(0)
 		self.Joystick.init()
 		self.current = False
+		self.OX=0
+		self.OY=0
 	def Character(self,pygame,PygameEvents):
 		"""A=0
 		B=1
@@ -42,6 +44,8 @@ class Controller:
 		"l":0,
 		"m":0,
 		"h":0,
+		"v":0,
+		"t":0,
 		"X":max(-1,int(self.Joystick.get_axis(0)*1.99)),
 		"Y":max(-1,int(self.Joystick.get_axis(1)*1.99)),
 		}
@@ -58,13 +62,19 @@ class Controller:
 						R["m"]=1
 					if Event.button==0:
 						R["h"]=1
+					if Event.button==2:
+						R["v"]=1
+					if Event.button==10:
+						R["t"]=1
+						print("worked")
 			if Event.type==pygame.JOYAXISMOTION:
 				if Event.instance_id==self.Joystick.get_instance_id():
-					if Event.axis==0:
+					if R["X"]!=self.OX: #Event.axis==0
 						R["X2"]=R["X"]
-					if Event.axis==1:
+					if R["Y"]!=self.OY: #Event.axis==1
 						R["Y2"]=R["Y"]
 						R["Jump2"]=max(-R["Y2"],0)
+		self.OX=R["X"]
+		self.OY=R["Y"]
 		return R
-		pass
 	pass

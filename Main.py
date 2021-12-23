@@ -1,7 +1,5 @@
 import os,sys
-import numpy.random.common
-import numpy.random.bounded_integers
-import numpy.random.entropy
+
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT']="hide"
 from Controllers import Owen,OwenJoystick,Eden,EdenJoystick,Replayer,EdenJoystick2
 from Characters import InjectionCube,QuW,ERic
