@@ -498,7 +498,7 @@ class Character:
 		self.SSN="Idle"
 		self.SN="idle1"
 		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
-		if self.StateFrame=60:
+		if self.StateFrame==60:
 			self.Meter+=999999999999
 		if self.StateFrame>60:
 			self.State=self.Idle
