@@ -495,11 +495,14 @@ class Character:
 				self.State=self.BackWalk
 		return {}
 	def Taunt(self,Tags):
-		self.Meter+=30
 		self.SSN="Idle"
 		self.SN="idle1"
-		if self.StateFrame>120:
+		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
+		if self.StateFrame=60:
+			self.Meter+=999999999999
+		if self.StateFrame>60:
 			self.State=self.Idle
+		return {}
 	def Dash(self,Tags):
 		self.Meter+=2
 		self.SSN="Dash"

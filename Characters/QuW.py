@@ -463,6 +463,8 @@ class Character:
 			Tags["Other Player"].HalfTime+=50
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
 			self.Meter-=int(self.MaxMeter/2)"""
+		if Tags["Controller"]["t"]:
+			self.State=self.Taunt
 		if Tags["Controller"]["l"] and Tags["Controller"]["m"] and Tags["Controller"]["h"] and self.Meter>=self.MaxMeter:# and Tags["Controller"]["Y2"]==-1:
 			#Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=[(0,255,255),(255,0,255)][self.ViperOne.Player],Y=30))
 			Loli.LocalAlerts.append(Loli.AlertCutIn(Side=self.ViperOne.Player,Sprite=self.MegaCutIns[0],BackgroundColor=(0,0,0),Y=30,LifeTime=12))
@@ -701,6 +703,15 @@ class Character:
 			self.YV=0
 			if self.StateFrame>self.Stun:
 				self.State=self.BackWalk
+		return {}
+	def Taunt(self,Tags):
+		self.SSN="Idle"
+		self.SN="idle1"
+		self.Triggers=[{"Box":[[-25,30],[-105,0]],"Type":"Hurt"}]
+		if self.StateFrame=60:
+			self.Meter+=999999999999
+		if self.StateFrame>60:
+			self.State=self.Idle
 		return {}
 	def Dash(self,Tags):
 		self.Meter+=2
