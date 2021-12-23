@@ -498,7 +498,7 @@ class Character:
 		self.Meter+=999999999999
 		self.SSN="Idle"
 		self.SN="idle1"
-		if self.StateFrame>30:
+		if self.StateFrame>120:
 			self.State=self.Idle
 	def Dash(self,Tags):
 		self.Meter+=2
